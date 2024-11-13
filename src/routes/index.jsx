@@ -1,37 +1,108 @@
 import { Route, Routes } from 'react-router-dom';
+import useAuth from '../hooks/useAuth';
 import DefaultLayout from '../layout/DefaultLayout';
-import AddResult from '../pages/AddResult';
-import AddResultsBulk from '../pages/AddResultsBulk';
-import AddStudents from '../pages/AddStudents';
-import AddStudentsBulk from '../pages/AddStudentsBulk';
-import Home from '../pages/Home';
-import ManageUsers from '../pages/ManageUsers';
-import NotFound from '../pages/NotFound';
-import Profile from '../pages/Profile';
-import SignIn from '../pages/auth/SignIn';
-import AuthProvider from '../providers/AuthProvider';
-import PrivateRoutes from './PrivateRoute';
+import {
+	AddResult,
+	AddResultsBulk,
+	AddStudents,
+	AddStudentsBulk,
+	AddUser,
+	Home,
+	ManageUsers,
+	NotFound,
+	Profile,
+	ResultList,
+	SignIn,
+	StudentList,
+	StudentResult,
+	UserList,
+} from '../pages';
+
+import PrivateRoute from './PrivateRoute';
 
 const AppRoutes = () => {
-	return (
-		<AuthProvider>
-			<Routes>
-				<Route path="/auth/signin" index element={<SignIn />} />
-				<Route element={<PrivateRoutes />}>
-					<Route element={<DefaultLayout />}>
-						<Route path="/" index element={<Home />} />
-						<Route path="/add-student" element={<AddStudents />} />
-						<Route path="/add-student-bulk" element={<AddStudentsBulk />} />
+	const { auth } = useAuth();
+	const userType = auth.userType;
 
-						<Route path="/add-result" element={<AddResult />} />
-						<Route path="/add-result-bulk" element={<AddResultsBulk />} />
-						<Route path="/manage-users" element={<ManageUsers />} />
+	// Common routes - between admin and teacher
+	const commonAdminTeacherRoutes = [
+		{ path: '/add-student', element: <AddStudents /> },
+		{ path: '/add-student-bulk', element: <AddStudentsBulk /> },
+		{ path: '/student-list', element: <StudentList /> },
+		{ path: '/add-result', element: <AddResult /> },
+		{ path: '/add-result-bulk', element: <AddResultsBulk /> },
+		{ path: '/result-list', element: <ResultList /> },
+	];
+
+	// Admin routes
+	const adminOnlyRoutes = [
+		{ path: '/add-user', element: <AddUser /> },
+		{ path: '/user-list', element: <UserList /> },
+		{ path: '/manage-users', element: <ManageUsers /> },
+	];
+
+	// render routes based on user type
+	const renderAuthorizedRoutes = () => {
+		switch (userType) {
+			case 'admin':
+				return (
+					<>
+						{commonAdminTeacherRoutes.map((route) => (
+							<Route
+								key={route.path}
+								path={route.path}
+								element={route.element}
+							/>
+						))}
+						{adminOnlyRoutes.map((route) => (
+							<Route
+								key={route.path}
+								path={route.path}
+								element={route.element}
+							/>
+						))}
 						<Route path="/profile" element={<Profile />} />
-					</Route>
+					</>
+				);
+
+			case 'teacher':
+				return (
+					<>
+						{commonAdminTeacherRoutes.map((route) => (
+							<Route
+								key={route.path}
+								path={route.path}
+								element={route.element}
+							/>
+						))}
+						<Route path="/profile" element={<Profile />} />
+					</>
+				);
+
+			case 'student':
+				return (
+					<>
+						<Route path="/result" element={<StudentResult />} />
+						<Route path="/profile" element={<Profile />} />
+					</>
+				);
+			default:
+				return null;
+		}
+	};
+
+	return (
+		<Routes>
+			<Route path="/auth/signin" element={<SignIn />} />
+			<Route element={<PrivateRoute />}>
+				<Route element={<DefaultLayout />}>
+					<Route path="/" element={<Home />} />
+					{renderAuthorizedRoutes()}
 				</Route>
-				<Route path="*" element={<NotFound />} />
-			</Routes>
-		</AuthProvider>
+			</Route>
+			<Route path="*" element={<NotFound />} />
+		</Routes>
 	);
 };
+
 export default AppRoutes;

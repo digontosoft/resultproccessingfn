@@ -1,4 +1,11 @@
+import useAuth from '../hooks/useAuth';
+
 const Home = () => {
-	return <div>Home</div>;
+	const { auth } = useAuth();
+	return (
+		<div>
+			Home <br /> userType: {auth?.userType}
+		</div>
+	);
 };
 export default Home;

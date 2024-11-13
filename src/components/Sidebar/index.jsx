@@ -1,4 +1,5 @@
 import {
+	IconCategory,
 	IconTextGrammar,
 	IconUser,
 	IconUsers,
@@ -6,6 +7,8 @@ import {
 } from '@tabler/icons-react';
 import { useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
+
+import useAuth from '../../hooks/useAuth';
 import SidebarItem from './SidebarItem';
 import SidebarLinkGroup from './SidebarLinkGroup';
 import Logo from '/logo.png';
@@ -13,6 +16,8 @@ import Logo from '/logo.png';
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
 	const location = useLocation();
 	const { pathname } = location;
+	const { auth } = useAuth();
+	const userType = auth.userType;
 
 	const trigger = useRef(null);
 	const sidebar = useRef(null);
@@ -55,15 +60,17 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
 		}
 	}, [sidebarExpanded]);
 
-	const menuItems = [
+	const adminMenuItems = [
 		{
 			label: 'Students',
 			icon: IconUser,
 			links: [
 				{ to: '/add-student', label: 'Add Student' },
 				{ to: '/add-student-bulk', label: 'Add Student Bulk' },
+				{ to: '/student-list', label: 'Student List' },
 			],
-			activeCondition: pathname === '/' || pathname.includes('dashboard'),
+			activeCondition:
+				pathname.includes === 'student' || pathname.includes('dashboard'),
 		},
 		{
 			label: 'Results',
@@ -71,10 +78,75 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
 			links: [
 				{ to: '/add-result', label: 'Add Result' },
 				{ to: '/add-result-bulk', label: 'Add Result Bulk' },
+				{ to: '/result-list', label: 'Result List' },
 			],
-			activeCondition: pathname === '/' || pathname.includes('dashboard'),
+			activeCondition:
+				pathname.includes === 'result' || pathname.includes('dashboard'),
+		},
+		{
+			label: 'Manage Users',
+			icon: IconUsers,
+			links: [
+				{ to: '/add-user', label: 'Add User' },
+				{ to: '/user-list', label: 'User List' },
+				{ to: '/manage-users', label: 'Manage Users' },
+			],
+			activeCondition:
+				pathname.includes === 'user' || pathname.includes('dashboard'),
 		},
 	];
+
+	const teacherMenuItems = [
+		{
+			label: 'Students',
+			icon: IconUser,
+			links: [
+				{ to: '/add-student', label: 'Add Student' },
+				{ to: '/add-student-bulk', label: 'Add Student Bulk' },
+				{ to: '/student-list', label: 'Student List' },
+			],
+			activeCondition:
+				pathname.includes === 'student' || pathname.includes('dashboard'),
+		},
+		{
+			label: 'Results',
+			icon: IconTextGrammar,
+			links: [
+				{ to: '/add-result', label: 'Add Result' },
+				{ to: '/add-result-bulk', label: 'Add Result Bulk' },
+				{ to: '/result-list', label: 'Result List' },
+			],
+			activeCondition:
+				pathname.includes === 'result' || pathname.includes('dashboard'),
+		},
+	];
+
+	const studentMenuItems = [
+		{
+			label: 'Results',
+			icon: IconCategory,
+			links: [
+				{ to: '/result', label: 'View Result' },
+				{ to: '/profile', label: 'Profile' },
+			],
+			activeCondition:
+				pathname.includes === 'result' || pathname.includes('profile'),
+		},
+	];
+
+	// Function to get menu items based on user type
+	const getMenuItems = () => {
+		switch (userType) {
+			case 'admin':
+				return adminMenuItems;
+			case 'teacher':
+				return teacherMenuItems;
+			case 'student':
+				return studentMenuItems;
+			default:
+				return [];
+		}
+	};
 
 	return (
 		<aside
@@ -103,7 +175,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
 				<nav className="mt-5 py-4 px-4 lg:mt-9 lg:px-6">
 					<div>
 						<ul className="mb-6 flex flex-col gap-1.5">
-							{menuItems.map((item, idx) => (
+							{getMenuItems().map((item, idx) => (
 								<SidebarLinkGroup
 									key={idx}
 									activeCondition={item.activeCondition}
@@ -124,19 +196,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
 									)}
 								</SidebarLinkGroup>
 							))}
-
-							<li>
-								<NavLink
-									to="/manage-users"
-									className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-										pathname.includes('calendar') &&
-										'bg-graydark dark:bg-meta-4'
-									}`}
-								>
-									<IconUsers stroke={1.25} />
-									Manage Users
-								</NavLink>
-							</li>
 						</ul>
 					</div>
 				</nav>

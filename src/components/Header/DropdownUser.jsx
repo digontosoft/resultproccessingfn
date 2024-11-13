@@ -3,12 +3,15 @@ import { Link } from 'react-router-dom';
 
 import { IconChevronDown, IconUser } from '@tabler/icons-react';
 
+import useAuth from '../../hooks/useAuth';
 import Logout from '../../pages/auth/Logout';
 import ClickOutside from '../ClickOutside';
 import UserOne from '/user/user-01.png';
 
 const DropdownUser = () => {
 	const [dropdownOpen, setDropdownOpen] = useState(false);
+	const { auth } = useAuth();
+	const userType = auth.userType;
 
 	return (
 		<ClickOutside onClick={() => setDropdownOpen(false)} className="relative">
@@ -21,7 +24,7 @@ const DropdownUser = () => {
 					<span className="block text-sm font-medium text-black dark:text-white">
 						Md Readwan
 					</span>
-					<span className="block text-xs">Admin</span>
+					<span className="block text-xs">{userType}</span>
 				</span>
 
 				<span className="h-12 w-12 rounded-full">

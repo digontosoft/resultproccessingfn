@@ -16,7 +16,7 @@ const SignIn = () => {
 
 	const onSubmit = (data) => {
 		const token = crypto.randomUUID().toString();
-		const userType = 'admin';
+		const userType = 'student';
 		const authData = {
 			...data,
 			token,
