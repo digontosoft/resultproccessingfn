@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { IconChevronDown, IconSettings, IconUser } from '@tabler/icons-react';
+import { IconChevronDown, IconUser } from '@tabler/icons-react';
+
 import Logout from '../../pages/auth/Logout';
 import ClickOutside from '../ClickOutside';
 import UserOne from '/user/user-01.png';
@@ -46,7 +47,7 @@ const DropdownUser = () => {
 							</Link>
 						</li>
 
-						<li>
+						{/* <li>
 							<Link
 								to="/settings"
 								className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
@@ -54,7 +55,7 @@ const DropdownUser = () => {
 								<IconSettings stroke={1.25} />
 								Account Settings
 							</Link>
-						</li>
+						</li> */}
 					</ul>
 
 					<Logout />
