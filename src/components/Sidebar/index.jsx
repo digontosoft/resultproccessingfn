@@ -1,10 +1,3 @@
-import {
-	IconCategory,
-	IconTextGrammar,
-	IconUser,
-	IconUsers,
-	IconX,
-} from '@tabler/icons-react';
 import { useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 
@@ -63,7 +56,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
 	const adminMenuItems = [
 		{
 			label: 'Students',
-			icon: IconUser,
+			icon: '/user.svg',
 			links: [
 				{ to: '/add-student', label: 'Add Student' },
 				{ to: '/add-student-bulk', label: 'Add Student Bulk' },
@@ -74,7 +67,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
 		},
 		{
 			label: 'Results',
-			icon: IconTextGrammar,
+			icon: '/text-grammar.svg',
 			links: [
 				{ to: '/add-result', label: 'Add Result' },
 				{ to: '/add-result-bulk', label: 'Add Result Bulk' },
@@ -85,7 +78,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
 		},
 		{
 			label: 'Manage Users',
-			icon: IconUsers,
+			icon: '/users.svg',
 			links: [
 				{ to: '/add-user', label: 'Add User' },
 				{ to: '/user-list', label: 'User List' },
@@ -99,7 +92,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
 	const teacherMenuItems = [
 		{
 			label: 'Students',
-			icon: IconUser,
+			icon: '/user.svg',
 			links: [
 				{ to: '/add-student', label: 'Add Student' },
 				{ to: '/add-student-bulk', label: 'Add Student Bulk' },
@@ -110,7 +103,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
 		},
 		{
 			label: 'Results',
-			icon: IconTextGrammar,
+			icon: '/text-grammar.svg',
 			links: [
 				{ to: '/add-result', label: 'Add Result' },
 				{ to: '/add-result-bulk', label: 'Add Result Bulk' },
@@ -124,7 +117,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
 	const studentMenuItems = [
 		{
 			label: 'Results',
-			icon: IconCategory,
+			icon: '/report-analytics.svg',
 			links: [
 				{ to: '/result', label: 'View Result' },
 				{ to: '/profile', label: 'Profile' },
@@ -137,10 +130,13 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
 	// Function to get menu items based on user type
 	const getMenuItems = () => {
 		switch (userType) {
-			case 'admin':
+			// user type: "admin"
+			case 'superadmin':
 				return adminMenuItems;
-			case 'teacher':
+			// UserType: "teacher"
+			case 'classadmin':
 				return teacherMenuItems;
+			// userType: "student"
 			case 'student':
 				return studentMenuItems;
 			default:
@@ -167,7 +163,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
 					aria-expanded={sidebarOpen}
 					className="block lg:hidden"
 				>
-					<IconX stroke={2} color="#fff" />
+					<img src="/x.svg" stroke={2} color="#fff" />
 				</button>
 			</div>
 

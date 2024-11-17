@@ -1,8 +1,7 @@
-import { IconChevronDown } from '@tabler/icons-react';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-const SidebarItem = ({ label, icon: Icon, links, open, onClick, active }) => {
+const SidebarItem = ({ label, icon, links, open, onClick, active }) => {
 	return (
 		<React.Fragment>
 			<NavLink
@@ -15,11 +14,12 @@ const SidebarItem = ({ label, icon: Icon, links, open, onClick, active }) => {
 					onClick();
 				}}
 			>
-				<Icon stroke={1.5} />
+				<img className="invert" src={icon} stroke={1.5} />
 				{label}
-				<IconChevronDown
+				<img
+					src="/chevron-down.svg"
 					stroke={1}
-					className={`absolute right-4 top-1/2 -translate-y-1/2 ${
+					className={`invert absolute right-4 top-1/2 -translate-y-1/2 ${
 						open ? 'rotate-180' : ''
 					}`}
 				/>

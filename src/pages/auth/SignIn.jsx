@@ -1,6 +1,7 @@
-import { IconBrandGoogleFilled, IconLock, IconMail } from '@tabler/icons-react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { api } from '../../api';
 import useAuth from '../../hooks/useAuth';
 import Logo from '/logo.png';
 
@@ -14,19 +15,40 @@ const SignIn = () => {
 		formState: { errors },
 	} = useForm();
 
-	const onSubmit = (data) => {
-		const token = crypto.randomUUID().toString();
-		const userType = 'student';
-		const authData = {
-			...data,
-			token,
-			userType,
-		};
+	const onSubmit = async (data) => {
+		console.log({ data });
+		try {
+			const response = await api.post('/login', { ...data });
 
-		console.log(authData);
-		localStorage.setItem('auth', JSON.stringify(authData));
-		setAuth({ ...authData });
-		navigate('/');
+			if (response.status === 202) {
+				toast.success('User with given email is not registered yet.', {
+					autoClose: 2500,
+				});
+			}
+
+			if (response.status === 200) {
+				toast.success('Sign In successfully');
+				localStorage.setItem('auth', JSON.stringify({ ...response.data }));
+				setAuth({ ...response.data });
+				navigate('/');
+			}
+		} catch (error) {
+			console.log(error);
+			toast.error(`Error: ${error.response.data.message}`);
+		}
+
+		// const token = crypto.randomUUID().toString();
+		// const userType = 'admin';
+		// const authData = {
+		// 	...data,
+		// 	token,
+		// 	userType,
+		// };
+
+		// console.log(authData);
+		// localStorage.setItem('auth', JSON.stringify(authData));
+		// setAuth({ ...authData });
+		// navigate('/');
 	};
 
 	return (
@@ -78,7 +100,7 @@ const SignIn = () => {
 										} bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary`}
 									/>
 									<span className="absolute right-4 top-4">
-										<IconMail stroke={1.25} />
+										<img src="/mail.svg" stroke={1.25} />
 									</span>
 								</div>
 								{errors.email && (
@@ -108,7 +130,7 @@ const SignIn = () => {
 										} bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary`}
 									/>
 									<span className="absolute right-4 top-4">
-										<IconLock stroke="1.25" />
+										<img src="/lock.svg" stroke="1" />
 									</span>
 								</div>
 								{errors.password && (
@@ -127,12 +149,12 @@ const SignIn = () => {
 							</div>
 						</form>
 
-						<button className="flex w-full items-center justify-center gap-3.5 rounded-lg border border-stroke bg-gray p-4 hover:bg-opacity-50">
+						{/* <button className="flex w-full items-center justify-center gap-3.5 rounded-lg border border-stroke bg-gray p-4 hover:bg-opacity-50">
 							<span>
-								<IconBrandGoogleFilled stroke={1.25} />
+								<img src="/brand-google.svg" stroke={1.25} />
 							</span>
 							Sign in with Google
-						</button>
+						</button> */}
 
 						<div className="mt-6 text-center">
 							<p>

@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { IconChevronDown, IconUser } from '@tabler/icons-react';
-
 import useAuth from '../../hooks/useAuth';
 import Logout from '../../pages/auth/Logout';
 import ClickOutside from '../ClickOutside';
@@ -31,7 +29,11 @@ const DropdownUser = () => {
 					<img src={UserOne} alt="User" />
 				</span>
 
-				<IconChevronDown stroke={1.25} className="hidden sm:block" />
+				<img
+					src="/chevron-down.svg"
+					stroke={1.25}
+					className="hidden sm:block"
+				/>
 			</Link>
 
 			{/* <!-- Dropdown --> */}
@@ -45,7 +47,7 @@ const DropdownUser = () => {
 								to="/profile"
 								className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
 							>
-								<IconUser stroke={1.25} />
+								<img src="/user.svg" stroke={1.25} />
 								My Profile
 							</Link>
 						</li>

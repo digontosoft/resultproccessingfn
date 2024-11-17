@@ -18,6 +18,7 @@ import {
 	UserList,
 } from '../pages';
 
+import SignUp from '../pages/auth/SignUp';
 import PrivateRoute from './PrivateRoute';
 
 const AppRoutes = () => {
@@ -44,7 +45,8 @@ const AppRoutes = () => {
 	// render routes based on user type
 	const renderAuthorizedRoutes = () => {
 		switch (userType) {
-			case 'admin':
+			// userType: 'admin'
+			case 'superadmin':
 				return (
 					<>
 						{commonAdminTeacherRoutes.map((route) => (
@@ -65,7 +67,8 @@ const AppRoutes = () => {
 					</>
 				);
 
-			case 'teacher':
+			// userType: 'teacher'
+			case 'classadmin':
 				return (
 					<>
 						{commonAdminTeacherRoutes.map((route) => (
@@ -79,6 +82,7 @@ const AppRoutes = () => {
 					</>
 				);
 
+			// userType: 'student'
 			case 'student':
 				return (
 					<>
@@ -94,6 +98,7 @@ const AppRoutes = () => {
 	return (
 		<Routes>
 			<Route path="/auth/signin" element={<SignIn />} />
+			<Route path="/auth/signup" element={<SignUp />} />
 			<Route element={<PrivateRoute />}>
 				<Route element={<DefaultLayout />}>
 					<Route path="/" element={<Home />} />
