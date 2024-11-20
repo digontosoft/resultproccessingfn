@@ -1,9 +1,11 @@
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import useAxios from '../../hooks/useAxios';
 
 const AddStudents = () => {
 	const { gurdedApi } = useAxios();
+	const [configs, setConfigs] = useState([]);
 
 	const {
 		register,
@@ -12,8 +14,25 @@ const AddStudents = () => {
 		reset,
 	} = useForm();
 
+	useEffect(() => {
+		const fetchConfigs = async () => {
+			try {
+				const response = await gurdedApi.get('/configs');
+
+				if (response.status === 200) {
+					setConfigs(response.data);
+				}
+			} catch (error) {
+				console.error(error.response.data.message);
+				toast.error(`Error: ${error.response.data.message}`);
+			}
+		};
+
+		fetchConfigs();
+	}, [gurdedApi]);
+
 	const onSubmit = async (data) => {
-		console.log(data);
+		// console.log(data);
 
 		try {
 			const response = await gurdedApi.post('/addStudentData', { ...data });
@@ -31,11 +50,16 @@ const AddStudents = () => {
 
 	// dropdown option
 	const dropdownOptions = {
-		class: Array.from({ length: 10 }, (_, i) => `Class ${i + 1}`),
-		section: ['Section A', 'Section B'],
-		shift: ['Morning', 'Day'],
-		group: ['Science', 'Commerce', 'Humanities'],
-		religion: ['Islam', 'Hinduism', 'Buddhism', 'Christianity', 'Others'],
+		// class: Array.from({ length: 10 }, (_, i) => `Class ${i + 1}`),
+		// section: ['Section A', 'Section B'],
+		// shift: ['Morning', 'Day'],
+		// group: ['Science', 'Commerce', 'Humanities'],
+		// religion: ['Islam', 'Hinduism', 'Buddhism', 'Christianity', 'Others'],
+		class: configs.filter((config) => config.slug === 'Class'),
+		section: configs.filter((config) => config.slug === 'Section'),
+		shift: configs.filter((config) => config.slug === 'shift'),
+		group: configs.filter((config) => config.slug === 'group'),
+		religion: configs.filter((config) => config.slug === 'religion'),
 	};
 
 	// Reusable input field component
@@ -66,8 +90,8 @@ const AddStudents = () => {
 			>
 				<option value="">Select {label}</option>
 				{options.map((option) => (
-					<option key={option} value={option}>
-						{option}
+					<option key={option.key} value={option.value}>
+						{option.key}
 					</option>
 				))}
 			</select>

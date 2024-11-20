@@ -9,7 +9,7 @@ import UserOne from '/user/user-01.png';
 const DropdownUser = () => {
 	const [dropdownOpen, setDropdownOpen] = useState(false);
 	const { auth } = useAuth();
-	const userType = auth.userType;
+	const { name, userType } = auth;
 
 	return (
 		<ClickOutside onClick={() => setDropdownOpen(false)} className="relative">
@@ -20,7 +20,7 @@ const DropdownUser = () => {
 			>
 				<span className="hidden text-right lg:block">
 					<span className="block text-sm font-medium text-black dark:text-white">
-						Md Readwan
+						{name}
 					</span>
 					<span className="block text-xs">{userType}</span>
 				</span>
