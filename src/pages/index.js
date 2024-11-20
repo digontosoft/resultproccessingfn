@@ -1,7 +1,5 @@
 import AddResult from './AddResult';
 import AddResultsBulk from './AddResultsBulk';
-import AddStudents from './AddStudents';
-import AddStudentsBulk from './AddStudentsBulk';
 import AddUser from './AddUser';
 import SignIn from './auth/SignIn';
 import Home from './Home';
@@ -9,8 +7,10 @@ import ManageUsers from './ManageUsers';
 import NotFound from './NotFound';
 import Profile from './Profile';
 import ResultList from './ResultList';
-import StudentList from './StudentList';
 import StudentResult from './StudentResult';
+import AddStudents from './students/AddStudents';
+import AddStudentsBulk from './students/AddStudentsBulk';
+import StudentList from './students/StudentList';
 import UserList from './UserList';
 
 export {

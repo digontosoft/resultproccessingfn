@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import useAxios from '../hooks/useAxios';
+import useAxios from '../../hooks/useAxios';
 
 const AddStudents = () => {
 	const { gurdedApi } = useAxios();
