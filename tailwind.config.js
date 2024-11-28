@@ -266,4 +266,9 @@ export default {
 		},
 	},
 	plugins: [],
+	variants: {
+		extend: {
+			display: ['print'],
+		},
+	},
 };
