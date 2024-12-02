@@ -14,8 +14,8 @@ export const transcriptData = {
 		group: 'Science',
 		roll: '45',
 		merit: '5',
-		type: 'Regular',
-		subject: 'Biology',
+		studentType: 'Regular',
+		fourthSubject: 'Biology',
 	},
 	gradeScale: [
 		{ grade: 'A+', marks: '80-100', gp: '5.00' },
