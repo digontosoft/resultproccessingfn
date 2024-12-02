@@ -38,7 +38,7 @@ const Transcript = () => {
 	return (
 		<div className="relative max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg">
 			{/* Header Section */}
-			<div className="text-center mb-8">
+			<div className="mb-8 flex flex-col items-center">
 				{/* <div className="flex justify-end mb-4">
 					<button
 						onClick={() => window.print()}
@@ -54,16 +54,25 @@ const Transcript = () => {
 						{({ loading }) => (loading ? 'Loading...' : 'Download PDF')}
 					</PDFDownloadLink>
 				</div> */}
-				<h1 className="text-2xl font-bold mb-2">
-					{transcriptData.school.name}
-				</h1>
-				<p className="text-lg mb-2">{transcriptData.school.location}</p>
-				<h2 className="text-xl font-semibold">ACADEMIC TRANSCRIPT</h2>
-				<p className="text-lg">Pre-Test, 2024</p>
+				<h1 className="text-2xl font-bold">{transcriptData.school.name}</h1>
+				<p className="text-lg font-semibold">
+					{transcriptData.school.location}
+				</p>
+				<img
+					src="/public/vidyamoyee_logo.png"
+					alt="school logo"
+					width={80}
+					height={80}
+					className="grayscale"
+				/>
+				<h2 className="text-xl font-semibold border-[1px] border-black px-4 rounded-md">
+					ACADEMIC TRANSCRIPT
+				</h2>
+				<p className="text-lg font-semibold">Pre-Test, 2024</p>
 			</div>
 
 			{/* Student Information */}
-			<div className="grid grid-cols-2 gap-4 mb-6">
+			<div className="">
 				<div>
 					<p>
 						<span className="font-semibold">Student ID:</span>{' '}
@@ -82,51 +91,59 @@ const Transcript = () => {
 						{transcriptData.student.motherName}
 					</p>
 				</div>
-				<div>
-					<p className="flex justify-between">
-						<span>
-							<span className="font-semibold">Class:</span>{' '}
-							{transcriptData.student.class}
-						</span>
-						<span>
-							<span className="font-semibold">Section:</span>{' '}
-							{transcriptData.student.section}
-						</span>
+
+				<div className="mt-4 flex justify-between">
+					<p>
+						<span className="font-semibold">Class:</span>{' '}
+						{transcriptData.student.class}
 					</p>
-					<p className="flex justify-between">
-						<span>
-							<span className="font-semibold">Group:</span>{' '}
-							{transcriptData.student.group}
-						</span>
-						<span>
-							<span className="font-semibold">Roll:</span>{' '}
-							{transcriptData.student.roll}
-						</span>
+					<p>
+						<span className="font-semibold">Section:</span>{' '}
+						{transcriptData.student.section}
+					</p>
+
+					<p>
+						<span className="font-semibold">Group:</span>{' '}
+						{transcriptData.student.group}
+					</p>
+					<p>
+						<span className="font-semibold">Roll:</span>{' '}
+						{transcriptData.student.roll}
+					</p>
+					<p>
+						<span className="font-semibold">Merit:</span>{' '}
+						{transcriptData.student.merit}
+					</p>
+					<p>
+						<span className="font-semibold">Type:</span>{' '}
+						{transcriptData.student.studentType}
+					</p>
+					<p>
+						<span className="font-semibold">
+							4<sup>th</sup> Subject:
+						</span>{' '}
+						{transcriptData.student.fourthSubject}
 					</p>
 				</div>
 			</div>
 
 			{/* Grade Scale */}
-			<div className="mb-6 absolute top-0 right-0">
+			<div className="mb-6 absolute top-5 right-2">
 				<div className="overflow-x-auto">
 					<table className="min-w-full border">
 						<thead>
-							<tr className="bg-gray-100">
-								<th className="border px-4 py-2">Grade</th>
-								<th className="border px-4 py-2">Marks</th>
-								<th className="border px-4 py-2">GP</th>
+							<tr className="">
+								<th className="border px-4">Grade</th>
+								<th className="border px-4">Marks</th>
+								<th className="border px-4">GP</th>
 							</tr>
 						</thead>
 						<tbody>
 							{transcriptData.gradeScale.map((grade, index) => (
 								<tr key={index}>
-									<td className="border px-4 py-2 text-center">
-										{grade.grade}
-									</td>
-									<td className="border px-4 py-2 text-center">
-										{grade.marks}
-									</td>
-									<td className="border px-4 py-2 text-center">{grade.gp}</td>
+									<td className="border px-4 text-center">{grade.grade}</td>
+									<td className="border px-4 text-center">{grade.marks}</td>
+									<td className="border px-4 text-center">{grade.gp}</td>
 								</tr>
 							))}
 						</tbody>
@@ -174,42 +191,74 @@ const Transcript = () => {
 								</td>
 							</tr>
 						))}
+
+						{/* Totla marks row */}
+						<tr>
+							<td className="border px-4 py-2 font-semibold text-right ">
+								Total Marks:
+							</td>
+							<td className="border px-4 py-2 text-center">
+								{transcriptData.summary.totalMarks}
+							</td>
+							<td className="border px-4 py-2 text-center"></td>
+							<td className="border px-4 py-2 text-center"></td>
+							<td className="border px-4 py-2 text-center"></td>
+							<td className="border px-4 py-2 text-center">
+								{transcriptData.summary.obtainedMarks}
+							</td>
+							<td className="border px-4 py-2 text-center"></td>
+							<td className="border px-4 py-2 text-center"></td>
+							<td className="border px-4 py-2 text-center"></td>
+						</tr>
+
+						{/* Working days row */}
+						<tr>
+							<td className="border px-4 py-2 font-semibold text-right ">
+								Working days:
+							</td>
+							<td className="border px-4 py-2 text-center">
+								{/* Working days count here */}
+							</td>
+							<td className="border px-4 py-2 font-semibold text-right">
+								Present:
+							</td>
+							<td className="border px-4 py-2 text-center"></td>
+							<td className="border px-4 py-2 font-semibold text-right ">
+								{/* Present count here */}
+							</td>
+							<td className="border px-4 py-2 text-center">Max. Present:</td>
+							<td className="border px-4 py-2 text-center">
+								{/* Max. Present count here */}
+							</td>
+							<td className="border px-4 py-2 text-center"></td>
+							<td className="border px-4 py-2 text-center"></td>
+						</tr>
+
+						{/* summary of results */}
+						<tr>
+							<td className="border px-4 py-2 font-semibold text-right ">
+								No. of Students:
+							</td>
+							<td className="border px-4 py-2 text-center">
+								{transcriptData.summary.studentsCount}
+							</td>
+							<td className="border px-4 py-2 font-semibold text-right">
+								GPA Without 4th:
+							</td>
+							<td className="border px-4 py-2 text-center">
+								{transcriptData.summary.gpaWithout4th}
+							</td>
+							<td className="border px-4 py-2 font-semibold text-right">
+								GPA:
+							</td>
+							<td className="border px-4 py-2 text-center">
+								{transcriptData.summary.gpa}
+							</td>
+							<td className="border py-2 font-semibold text-right">Remark:</td>
+							<td>Good</td>
+						</tr>
 					</tbody>
 				</table>
-			</div>
-
-			{/* Summary */}
-			<div className="grid grid-cols-3 gap-4 mb-6">
-				<div>
-					<p>
-						<span className="font-semibold">Total Marks:</span>{' '}
-						{transcriptData.summary.totalMarks}
-					</p>
-					<p>
-						<span className="font-semibold">Obtained:</span>{' '}
-						{transcriptData.summary.obtainedMarks}
-					</p>
-				</div>
-				<div>
-					<p>
-						<span className="font-semibold">GPA (Without 4th):</span>{' '}
-						{transcriptData.summary.gpaWithout4th}
-					</p>
-					<p>
-						<span className="font-semibold">GPA:</span>{' '}
-						{transcriptData.summary.gpa}
-					</p>
-				</div>
-				<div>
-					<p>
-						<span className="font-semibold">Remark:</span>{' '}
-						{transcriptData.summary.remark}
-					</p>
-					<p>
-						<span className="font-semibold">Students:</span>{' '}
-						{transcriptData.summary.studentsCount}
-					</p>
-				</div>
 			</div>
 
 			{/* Signatures */}

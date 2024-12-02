@@ -1,6 +1,7 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import * as XLSX from 'xlsx';
 
 const AddStudentsBulk = () => {
 	const fileInputRef = useRef(null);
@@ -27,22 +28,22 @@ const AddStudentsBulk = () => {
 			'address',
 			'fatherName',
 			'motherName',
-		].join(',');
-
+		];
 		const sampleData = [
-			'John,Doe,STD001,Class 1,Section A,Morning,Science,Islam,2000-01-01,1234567890,john@example.com,123 Street,Father Name,Mother Name',
-		].join('\n');
+			[
+				'John,Doe,STD001,Class 1,Section A,Morning,Science,Islam,2000-01-01,1234567890,john@example.com,123 Street,Father Name,Mother Name',
+			],
+		];
 
-		const csvContent = `${headers}\n${sampleData}`;
-		const blob = new Blob([csvContent], { type: 'text/csv' });
-		const url = window.URL.createObjectURL(blob);
-		const a = document.createElement('a');
-		a.href = url;
-		a.download = 'student_upload_template.csv';
-		document.body.appendChild(a);
-		a.click();
-		document.body.removeChild(a);
-		window.URL.revokeObjectURL(url);
+		// Create a worksheet
+		const worksheet = XLSX.utils.aoa_to_sheet([headers, ...sampleData]);
+
+		// Create a workbook and append the worksheet
+		const workbook = XLSX.utils.book_new();
+		XLSX.utils.book_append_sheet(workbook, worksheet, 'Template');
+
+		// Write the workbook and trigger the download
+		XLSX.writeFile(workbook, 'student_upload_template.xlsx');
 	};
 
 	const onSubmit = async (data) => {
