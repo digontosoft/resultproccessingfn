@@ -1,4 +1,4 @@
-import Transcript from './transcript/transcript';
+import Transcript from './transcript/Transcript';
 
 const ResultList = () => {
 	return (
