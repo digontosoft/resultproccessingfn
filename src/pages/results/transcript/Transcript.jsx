@@ -59,11 +59,11 @@ const Transcript = () => {
 					{transcriptData.school.location}
 				</p>
 				<img
-					src="/public/vidyamoyee_logo.png"
+					src="/vidyamoyee_logo.png"
 					alt="school logo"
 					width={80}
 					height={80}
-					className="grayscale"
+					className=""
 				/>
 				<h2 className="text-xl font-semibold border-[1px] border-black px-4 rounded-md">
 					ACADEMIC TRANSCRIPT
