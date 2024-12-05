@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
+import { api } from '../../api';
 
 const shifts = ['morning', 'day'];
 const currentYear = new Date().getFullYear();
@@ -100,8 +102,31 @@ const AddResult = () => {
 		return [];
 	};
 
-	const onSubmit = (data) => {
+	const onSubmit = async (data) => {
 		console.log('Form submitted:', data);
+		try {
+			const response = await api.post('/result/create', data);
+			if (response.status === 201) {
+				toast.success('Result uploaded');
+				// Reset all form fields including subjects
+				setSelectedClass('');
+				setSelectedGroup('');
+				reset({
+					section: '',
+					shift: '',
+					session: '',
+					term: '',
+					roll: '',
+					class: '',
+					group: '',
+					subjects: {},
+				});
+			} else {
+				throw new Error('Result Upload failed');
+			}
+		} catch (error) {
+			toast.error('Failed to upload results: ' + error.message);
+		}
 	};
 
 	const FormSelect = ({ label, name, options, onChange }) => (

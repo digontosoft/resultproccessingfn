@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import useAxios from '../../hooks/useAxios';
 
 const AddStudents = () => {
 	const { gurdedApi } = useAxios();
 	const [configs, setConfigs] = useState([]);
+	const navigate = useNavigate();
 
 	const {
 		register,
@@ -41,6 +43,7 @@ const AddStudents = () => {
 			if (response.status === 200) {
 				toast.success('Student added successfully');
 				reset();
+				navigate('/student-list');
 			}
 		} catch (error) {
 			console.error(error.response.data.message);
