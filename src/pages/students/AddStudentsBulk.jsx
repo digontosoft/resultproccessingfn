@@ -107,20 +107,6 @@ const AddStudentsBulk = () => {
               <label className="mb-3 block text-black dark:text-white">
                 Upload Excel File
               </label>
-              {/* <input
-                type="file"
-                accept=".xlsx,.xls,.csv"
-                ref={fileInputRef}
-                {...register("excelFile", {
-                  required: "Please select a file to upload",
-                })}
-                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-              />
-              {errors.excelFile && (
-                <span className="text-red-500 text-sm mt-1">
-                  {errors.excelFile.message}
-                </span>
-              )} */}
               <input
                 type="file"
                 accept=".xlsx,.xls,.csv"
