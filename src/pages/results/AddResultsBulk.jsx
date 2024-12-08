@@ -1,11 +1,14 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import * as XLSX from "xlsx";
 
 const AddResultsBulk = () => {
   const fileInputRef = useRef(null);
   const url = import.meta.env.VITE_SERVER_BASE_URL;
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
   const currentYear = new Date().getFullYear();
   const {
     handleSubmit,
@@ -49,6 +52,7 @@ const AddResultsBulk = () => {
   };
 
   const onSubmit = async (data) => {
+    setIsLoading(true);
     try {
       const formData = new FormData();
       formData.append("file", data.excelFile[0]);
@@ -69,11 +73,14 @@ const AddResultsBulk = () => {
       }
 
       toast.success("Results uploaded successfully");
+      navigate("/result-list");
       if (fileInputRef.current) {
         fileInputRef.current.value = "";
       }
     } catch (error) {
       toast.error("Failed to upload results: " + error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -165,9 +172,12 @@ const AddResultsBulk = () => {
 
             <button
               type="submit"
-              className="inline-flex items-center justify-center bg-primary py-3 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
+              disabled={isLoading}
+              className={`inline-flex items-center justify-center bg-primary py-3 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 ${
+                isLoading ? "opacity-50 cursor-not-allowed" : ""
+              }`}
             >
-              Upload Result
+              {isLoading ? "Uploading..." : "Upload Result"}
             </button>
           </form>
         </div>

@@ -1,10 +1,12 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import * as XLSX from "xlsx";
 
 const AddStudentsBulk = () => {
   const url = import.meta.env.VITE_SERVER_BASE_URL;
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
   const fileInputRef = useRef(null);
   const {
     handleSubmit,
@@ -12,42 +14,14 @@ const AddStudentsBulk = () => {
     register,
   } = useForm();
 
-  // Create sample data for Excel template
   const handleDownloadTemplate = () => {
-    const headers = [
-      "firstName",
-      "lastName",
-      "studentId",
-      "class",
-      "section",
-      "shift",
-      "group",
-      "religion",
-      "dateOfBirth",
-      "phoneNumber",
-      "email",
-      "address",
-      "fatherName",
-      "motherName",
-    ];
-    const sampleData = [
-      [
-        "John,Doe,STD001,Class 1,Section A,Morning,Science,Islam,2000-01-01,1234567890,john@example.com,123 Street,Father Name,Mother Name",
-      ],
-    ];
-
-    // Create a worksheet
-    const worksheet = XLSX.utils.aoa_to_sheet([headers, ...sampleData]);
-
-    // Create a workbook and append the worksheet
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Template");
-
-    // Write the workbook and trigger the download
-    XLSX.writeFile(workbook, "student_upload_template.xlsx");
+    // File path in the public folder
+    const fileUrl = "/student-sample-file.xlsx";
+    window.location.href = fileUrl;
   };
 
   const onSubmit = async (data) => {
+    setIsLoading(true);
     try {
       const file = data.file[0]; // Access the uploaded file
       const formData = new FormData();
@@ -64,11 +38,14 @@ const AddStudentsBulk = () => {
       }
 
       toast.success("Students uploaded successfully");
+      navigate("/student-list");
       if (fileInputRef.current) {
         fileInputRef.current.value = "";
       }
     } catch (error) {
       toast.error("Failed to upload students: " + error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -125,9 +102,12 @@ const AddStudentsBulk = () => {
 
             <button
               type="submit"
-              className="inline-flex items-center justify-center bg-primary py-3 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
+              disabled={isLoading}
+              className={`inline-flex items-center justify-center bg-primary py-3 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 ${
+                isLoading ? "opacity-50 cursor-not-allowed" : ""
+              }`}
             >
-              Upload Students
+              {isLoading ? "Uploading..." : "Upload Students"}
             </button>
           </form>
         </div>

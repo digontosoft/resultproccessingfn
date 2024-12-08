@@ -121,6 +121,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
         { to: "/merit-list", label: "Merit List" },
         { to: "/fail-list", label: "Fail List" },
         { to: "/result-summary", label: "Result Summary" },
+        { to: "/subject-entry", label: "Subject Entry" },
         { to: "/teachers", label: "Teacher List" },
       ],
       activeCondition:

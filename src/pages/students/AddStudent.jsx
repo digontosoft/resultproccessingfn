@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import useAxios from "../../hooks/useAxios";
 import { useNavigate } from "react-router-dom";
 
-const AddStudents = () => {
+const AddStudent = () => {
   const { gurdedApi } = useAxios();
   const [configs, setConfigs] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -207,4 +207,4 @@ const AddStudents = () => {
   );
 };
 
-export default AddStudents;
+export default AddStudent;

@@ -27,6 +27,7 @@ import Transcript from "../pages/results/transcript/Transcript";
 import ResultSummary from "../pages/ResultSummary/ResultSummary";
 import TabulationSheet from "../pages/TabulationSheet/TabulationSheet";
 import PrivateRoute from "./PrivateRoute";
+import SubjectEntry from "../pages/Reports/SubjectEntry";
 
 const AppRoutes = () => {
   const { auth } = useAuth();
@@ -35,6 +36,7 @@ const AppRoutes = () => {
   // Common routes - between admin and teacher
   const commonAdminTeacherRoutes = [
     { path: "/add-student", element: <AddStudents /> },
+    { path: "/subject-entry", element: <SubjectEntry /> },
     { path: "/add-student-bulk", element: <AddStudentsBulk /> },
     { path: "/student-list", element: <StudentList /> },
     { path: "/add-result", element: <AddResult /> },
