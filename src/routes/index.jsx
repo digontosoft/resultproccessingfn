@@ -25,6 +25,7 @@ import MeritList from "../pages/MeritList/MeritList";
 import FailList from "../pages/FailList/FailList";
 import ResultSummary from "../pages/ResultSummary/ResultSummary";
 import MarkSheet from "../pages/MarkSheet/MarkSheet";
+import TeacherList from "../pages/Teachers/TeacherList";
 
 const AppRoutes = () => {
   const { auth } = useAuth();
@@ -43,6 +44,7 @@ const AppRoutes = () => {
     { path: "/merit-list", element: <MeritList /> },
     { path: "/fail-list", element: <FailList /> },
     { path: "/result-summary", element: <ResultSummary /> },
+    { path: "/teachers", element: <TeacherList /> },
   ];
 
   // Admin routes

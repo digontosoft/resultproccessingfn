@@ -1,107 +1,3 @@
-const students = [
-  {
-    roll: 1,
-    name: "ANHAF ZAHIN",
-    bengali1: { cre: 27, mcq: 26, total: 53, gp: "5.00" },
-    bengali2: { cre: 25, mcq: 27, total: 52, gp: "5.00" },
-    english1: { cre: 78, mcq: 0, total: 78, gp: "4.00" },
-    english2: { cre: 89, mcq: 0, total: 89, gp: "5.00" },
-    mathematics: { total: 98, gp: "5.00" },
-    islam: { total: 95, gp: "5.00" },
-    hinduReligion: { total: 89, gp: "5.00" },
-    physics: { total: 44, gp: "5.00" },
-    chemistry: { total: 44, gp: "5.00" },
-    biology: { total: 44, gp: "5.00" },
-    bangladeshStudies: { total: 44, gp: "5.00" },
-    ict: { total: 44, gp: "5.00" },
-    totalMarks: 992,
-    gpa: "5.00",
-    merit: 7,
-  },
-  {
-    roll: 2,
-    name: "RAEEMA RAZ",
-    bengali1: { cre: 30, mcq: 25, total: 55, gp: "5.00" },
-    bengali2: { cre: 30, mcq: 25, total: 55, gp: "5.00" },
-    english1: { cre: 82, mcq: 0, total: 82, gp: "5.00" },
-    english2: { cre: 82, mcq: 0, total: 82, gp: "5.00" },
-    mathematics: { total: 92, gp: "5.00" },
-    islam: { total: 98, gp: "5.00" },
-    hinduReligion: { total: 95, gp: "5.00" },
-    physics: { total: 45, gp: "5.00" },
-    chemistry: { total: 45, gp: "5.00" },
-    biology: { total: 44, gp: "5.00" },
-    bangladeshStudies: { total: 44, gp: "5.00" },
-    ict: { total: 44, gp: "5.00" },
-    totalMarks: 985,
-    gpa: "5.00",
-    merit: 9,
-  },
-  {
-    roll: 3,
-    name: "NISTHYA HAMID SADIA",
-    bengali1: { cre: 30, mcq: 28, total: 58, gp: "5.00" },
-    bengali2: { cre: 28, mcq: 28, total: 56, gp: "5.00" },
-    english1: { cre: 88, mcq: 0, total: 88, gp: "5.00" },
-    english2: { cre: 82, mcq: 0, total: 82, gp: "5.00" },
-    mathematics: { total: 94, gp: "5.00" },
-    islam: { total: 100, gp: "5.00" },
-    hinduReligion: { total: 87, gp: "5.00" },
-    physics: { total: 45, gp: "5.00" },
-    chemistry: { total: 45, gp: "5.00" },
-    biology: { total: 45, gp: "5.00" },
-    bangladeshStudies: { total: 44, gp: "5.00" },
-    ict: { total: 44, gp: "5.00" },
-    totalMarks: 994,
-    gpa: "5.00",
-    merit: 5,
-  },
-  // Add additional students in the same format
-];
-const table_head = [
-  "Roll",
-  "Student Name",
-  "Bengali 1st Paper",
-  "Bengali 2nd Paper",
-  "Total",
-  "English 1st Paper",
-  "English 2nd Paper",
-  "Total",
-  "Mathematics",
-  "Islam and Moral Education",
-  "Hindu Religion and Moral Education",
-  "Higher Mathematics",
-  "Physics",
-  "Chemistry",
-  "Biology",
-  "Bangladesh & Global Studies",
-  "Information & Communication Technology",
-  "Total Marks & GPA",
-  "Merit",
-];
-
-const subheaders = [
-  ["", ""],
-  ["", ""],
-  ["CRE", "MCQ"],
-  ["CRE", "MCQ"],
-  ["CRE + MCQ", "Grade"],
-  ["Marks", "Grade"],
-  ["Marks", "Grade"],
-  ["CRE + MCQ", "Grade"],
-  ["Marks", "Grade"],
-  ["Marks", "Grade"],
-  ["Marks", "Grade"],
-  ["Marks", "Grade"],
-  ["Marks", "Grade"],
-  ["Marks", "Grade"],
-  ["Marks", "Grade"],
-  ["Marks", "Grade"],
-  ["Marks", "Grade"],
-  ["Total", "GPA"],
-  ["Rank", "Position"],
-];
-
 const data = [
   { title: "Session", value: "2024" },
   { title: "Examination", value: "Test" },
@@ -110,10 +6,48 @@ const data = [
   { title: "Section", value: "A" },
   { title: "Group", value: "Science" },
 ];
+// const students = [
+//   {
+//     roll: 1,
+//     name: "Ahnaf Zahin",
+//     studentId: "231702",
+//     shift: "Morning",
+//     section: "A",
+//     subjects: [
+//       {
+//         name: "Bengali 1st Paper",
+//         cre: 27,
+//         mcq: 25,
+//         total: 52,
+//         lg: "A+",
+//         gp: 5.0,
+//       },
+//       // Add other subjects
+//     ],
+//     totalMarks: 500,
+//     gpa: "5.0",
+//     merit: 1,
+//   },
+//   // Add more students...
+// ];
+
+import { PDFViewer } from "@react-pdf/renderer";
 import Logo from "../../assets/school-logo.png";
+import TabulationPdf from "./TabulationPdf";
 const TabulationSheet = () => {
   return (
     <div>
+      <div className="w-full h-auto min-h-180 border rounded-md">
+        <div className="p-4 border-b">
+          <span className="text-2xl font-semibold leading-normal">
+            Tabulation Sheet
+          </span>
+        </div>
+        <PDFViewer width="100%" height="600">
+          <TabulationPdf />
+        </PDFViewer>
+      </div>
+
       <section className="flex justify-between items-center space-y-10">
         <div>
           <img
@@ -530,7 +464,6 @@ const TabulationSheet = () => {
               <td className="border border-gray-300 px-2 py-1 text-center">
                 5.0
               </td>
-              {/* Add other subjects and data here */}
             </tr>
           </tbody>
         </table>

@@ -4,7 +4,7 @@ import { NavLink, useLocation } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import SidebarItem from "./SidebarItem";
 import SidebarLinkGroup from "./SidebarLinkGroup";
-import Logo from "/logo.png";
+import Logo from "../../assets/school-logo.png";
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
   const location = useLocation();
@@ -121,6 +121,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
         { to: "/merit-list", label: "Merit List" },
         { to: "/fail-list", label: "Fail List" },
         { to: "/result-summary", label: "Result Summary" },
+        { to: "/teachers", label: "Teacher List" },
       ],
       activeCondition:
         pathname.includes === "report" || pathname.includes("dashboard"),
@@ -166,7 +167,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
     >
       <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
         <NavLink to="/">
-          <img src={Logo} alt="Logo" />
+          <img src={Logo} alt="Logo" className="h-30 w-30 object-cover" />
         </NavLink>
 
         <button

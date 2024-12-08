@@ -1,139 +1,137 @@
-import { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
-import useAxios from '../../hooks/useAxios';
-import DeleteConfirmationModal from './DeleteConfirmationModal';
-import EmptyState from './EmptyState';
-import ErrorState from './ErrorState';
-import LoadingState from './LoadingState';
-import StudentEditModal from './StudentEditModal';
-import StudentTable from './StudentTable';
-import StudentViewModal from './StudentViewModal';
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import useAxios from "../../hooks/useAxios";
+import DeleteConfirmationModal from "./DeleteConfirmationModal";
+import EmptyState from "./EmptyState";
+import ErrorState from "./ErrorState";
+import LoadingState from "./LoadingState";
+import StudentEditModal from "./StudentEditModal";
+import StudentTable from "./StudentTable";
+import StudentViewModal from "./StudentViewModal";
 
 const StudentList = () => {
-	const { gurdedApi } = useAxios();
-	const [students, setStudents] = useState([]);
-	const [isLoading, setIsLoading] = useState(true);
-	const [error, setError] = useState(null);
-	const [openModal, setOpenModal] = useState(false);
-	const [selectedStudent, setSelectedStudent] = useState(null);
-	const [isEditing, setIsEditing] = useState(false);
-	const [confirmDelete, setConfirmDelete] = useState(false);
+  const { gurdedApi } = useAxios();
+  const [students, setStudents] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [openModal, setOpenModal] = useState(false);
+  const [selectedStudent, setSelectedStudent] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
 
-	const getStudents = async () => {
-		try {
-			setIsLoading(true);
-			setError(null);
-			const response = await gurdedApi.get('/users');
+  const getStudents = async () => {
+    try {
+      setIsLoading(true);
+      setError(null);
+      const response = await gurdedApi.get("/getAllStudent");
 
-			if (response.status === 200) {
-				const filteredStudents = response.data.data.filter(
-					(user) => user.userType === 'student'
-				);
-				setStudents(filteredStudents);
-			}
-		} catch (error) {
-			console.error(error);
-			setError(error.response?.data?.message || 'Failed to fetch students');
-			toast.error(`Error: ${error.response?.data?.message || 'Unknown error'}`);
-		} finally {
-			setIsLoading(false);
-		}
-	};
+      if (response.status === 200) {
+        setStudents(response.data.data);
+        console.log("students:", response.data.data);
+      }
+    } catch (error) {
+      console.error(error);
+      setError(error.response?.data?.message || "Failed to fetch students");
+      toast.error(`Error: ${error.response?.data?.message || "Unknown error"}`);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-	useEffect(() => {
-		getStudents();
-	}, [gurdedApi]);
+  useEffect(() => {
+    getStudents();
+  }, [gurdedApi]);
 
-	const handleView = (student) => {
-		setSelectedStudent(student);
-		setOpenModal(true);
-		setIsEditing(false);
-	};
+  const handleView = (student) => {
+    setSelectedStudent(student);
+    setOpenModal(true);
+    setIsEditing(false);
+  };
 
-	const handleEdit = (student) => {
-		setSelectedStudent(student);
-		setOpenModal(true);
-		setIsEditing(true);
-	};
+  const handleEdit = (student) => {
+    setSelectedStudent(student);
+    setOpenModal(true);
+    setIsEditing(true);
+  };
 
-	const handleDelete = (student) => {
-		setSelectedStudent(student);
-		setConfirmDelete(true);
-	};
+  const handleDelete = (student) => {
+    setSelectedStudent(student);
+    setConfirmDelete(true);
+  };
 
-	const handleCloseModal = () => {
-		setOpenModal(false);
-		setConfirmDelete(false);
-		setSelectedStudent(null);
-		setIsEditing(false);
-	};
+  const handleCloseModal = () => {
+    setOpenModal(false);
+    setConfirmDelete(false);
+    setSelectedStudent(null);
+    setIsEditing(false);
+  };
 
-	const handleFormSubmit = async (e) => {
-		e.preventDefault();
-		try {
-			await gurdedApi.put(`/user/${selectedStudent.id}`, selectedStudent);
-			setStudents((prevStudents) =>
-				prevStudents.map((student) =>
-					student.id === selectedStudent.id ? selectedStudent : student
-				)
-			);
-			toast.success('Student updated successfully');
-			handleCloseModal();
-		} catch (error) {
-			toast.error('Failed to update student');
-			console.error(error);
-		}
-	};
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await gurdedApi.put(`/user/${selectedStudent.id}`, selectedStudent);
+      setStudents((prevStudents) =>
+        prevStudents.map((student) =>
+          student.id === selectedStudent.id ? selectedStudent : student
+        )
+      );
+      toast.success("Student updated successfully");
+      handleCloseModal();
+    } catch (error) {
+      toast.error("Failed to update student");
+      console.error(error);
+    }
+  };
 
-	const confirmDeleteStudent = async () => {
-		try {
-			await gurdedApi.delete(`/user/${selectedStudent._id}`);
-			await getStudents();
-			toast.success('Student deleted successfully');
-			handleCloseModal();
-		} catch (error) {
-			toast.error('Failed to delete student');
-			console.error(error);
-		}
-	};
+  const confirmDeleteStudent = async () => {
+    try {
+      await gurdedApi.delete(`/user/${selectedStudent._id}`);
+      await getStudents();
+      toast.success("Student deleted successfully");
+      handleCloseModal();
+    } catch (error) {
+      toast.error("Failed to delete student");
+      console.error(error);
+    }
+  };
 
-	if (isLoading) return <LoadingState />;
-	if (error) return <ErrorState error={error} />;
-	if (!students.length) return <EmptyState />;
+  if (isLoading) return <LoadingState />;
+  if (error) return <ErrorState error={error} />;
+  if (!students.length) return <EmptyState />;
 
-	return (
-		<>
-			<StudentTable
-				students={students}
-				onView={handleView}
-				onEdit={handleEdit}
-				onDelete={handleDelete}
-			/>
+  return (
+    <>
+      <StudentTable
+        students={students}
+        onView={handleView}
+        onEdit={handleEdit}
+        onDelete={handleDelete}
+      />
 
-			{selectedStudent && openModal && !isEditing && (
-				<StudentViewModal
-					student={selectedStudent}
-					onClose={handleCloseModal}
-				/>
-			)}
+      {selectedStudent && openModal && !isEditing && (
+        <StudentViewModal
+          student={selectedStudent}
+          onClose={handleCloseModal}
+        />
+      )}
 
-			{selectedStudent && openModal && isEditing && (
-				<StudentEditModal
-					student={selectedStudent}
-					onSubmit={handleFormSubmit}
-					onChange={setSelectedStudent}
-					onClose={handleCloseModal}
-				/>
-			)}
+      {selectedStudent && openModal && isEditing && (
+        <StudentEditModal
+          student={selectedStudent}
+          onSubmit={handleFormSubmit}
+          onChange={setSelectedStudent}
+          onClose={handleCloseModal}
+        />
+      )}
 
-			{confirmDelete && (
-				<DeleteConfirmationModal
-					onConfirm={confirmDeleteStudent}
-					onClose={handleCloseModal}
-				/>
-			)}
-		</>
-	);
+      {confirmDelete && (
+        <DeleteConfirmationModal
+          onConfirm={confirmDeleteStudent}
+          onClose={handleCloseModal}
+        />
+      )}
+    </>
+  );
 };
 
 export default StudentList;
