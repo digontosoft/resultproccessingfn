@@ -125,7 +125,11 @@ const AddStudents = () => {
               name="studentId"
               placeholder="Enter Student ID"
             />
-            <InputField label="Name" name="name" placeholder="Enter Name" />
+            <InputField
+              label="Name"
+              name="studentName"
+              placeholder="Enter Name"
+            />
             <InputField
               label="Father's Name"
               name="fatherName"
@@ -133,7 +137,7 @@ const AddStudents = () => {
             />
             <InputField
               label="Phone Number"
-              name="phoneNumber"
+              name="mobile"
               placeholder="Enter Phone Number"
             />
             <SelectField
@@ -162,8 +166,8 @@ const AddStudents = () => {
               options={dropdownOptions.religion}
             />
             <SelectField
-              label="Sex"
-              name="sex"
+              label="Gender"
+              name="gender"
               options={dropdownOptions.religion}
             />
           </div>

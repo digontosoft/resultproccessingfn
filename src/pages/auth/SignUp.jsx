@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -5,9 +6,14 @@ import { api } from '../../api';
 import Logo from '/logo.png';
 
 const SignUp = () => {
+	const [showPass, setShowPass] = useState(false);
 	const navigate = useNavigate();
 
 	// const { setAuth } = useAuth();
+
+	const handlePasswordShowHide = () => {
+		setShowPass((prev) => !prev);
+	};
 
 	const {
 		register,
@@ -200,20 +206,31 @@ const SignUp = () => {
 								<label className="mb-2.5 block font-medium text-black">
 									Password
 								</label>
-								<input
-									{...register('password', {
-										required: 'Password is required',
-										minLength: {
-											value: 6,
-											message: 'Password must be at least 6 characters',
-										},
-									})}
-									type="password"
-									placeholder="6+ Characters, 1 Capital letter"
-									className={`w-full rounded-lg border ${
-										errors.password ? 'border-red-500' : 'border-stroke'
-									} bg-transparent py-4 pl-6 text-black outline-none focus:border-primary`}
-								/>
+								<div className="relative cursor-pointer">
+									<input
+										{...register('password', {
+											required: 'Password is required',
+											minLength: {
+												value: 6,
+												message: 'Password must be at least 6 characters',
+											},
+										})}
+										type={`${!showPass ? 'password' : 'text'}`}
+										placeholder="6+ Characters, 1 Capital letter"
+										className={`w-full rounded-lg border ${
+											errors.password ? 'border-red-500' : 'border-stroke'
+										} bg-transparent py-4 pl-6 text-black outline-none focus:border-primary`}
+									/>
+									<span
+										onClick={handlePasswordShowHide}
+										className="absolute right-4 top-4"
+									>
+										<img
+											src={`${!showPass ? '/eye-off.svg' : '/eye.svg'}`}
+											stroke="1"
+										/>
+									</span>
+								</div>
 								{errors.password && (
 									<p className="mt-1 text-red-500 text-sm">
 										{errors.password.message}

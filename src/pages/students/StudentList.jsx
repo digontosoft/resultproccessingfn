@@ -69,10 +69,15 @@ const StudentList = () => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     try {
-      await gurdedApi.put(`/user/${selectedStudent.id}`, selectedStudent);
+      await gurdedApi.put(
+        `/student/${selectedStudent?.studentId}`,
+        selectedStudent
+      );
       setStudents((prevStudents) =>
         prevStudents.map((student) =>
-          student.id === selectedStudent.id ? selectedStudent : student
+          student.studentId === selectedStudent.studentId
+            ? selectedStudent
+            : student
         )
       );
       toast.success("Student updated successfully");
@@ -85,7 +90,7 @@ const StudentList = () => {
 
   const confirmDeleteStudent = async () => {
     try {
-      await gurdedApi.delete(`/user/${selectedStudent._id}`);
+      await gurdedApi.delete(`/student/${selectedStudent._id}`);
       await getStudents();
       toast.success("Student deleted successfully");
       handleCloseModal();

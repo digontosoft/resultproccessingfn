@@ -1,11 +1,13 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { api } from "../../api";
 import useAuth from "../../hooks/useAuth";
-import Logo from "../../assets/school-logo.png";
+import Logo from "/logo.png";
 
 const SignIn = () => {
+  const [showPass, setShowPass] = useState(false);
   const navigate = useNavigate();
   const { setAuth } = useAuth();
 
@@ -15,12 +17,16 @@ const SignIn = () => {
     formState: { errors },
   } = useForm();
 
+  const handlePasswordShowHide = () => {
+    setShowPass((prev) => !prev);
+  };
+
   const onSubmit = async (data) => {
     try {
       const response = await api.post("/login", { ...data });
 
       if (response.status === 202) {
-        toast.success("User with given email is not registered yet.", {
+        toast.warn("User with given email is not registered yet.", {
           autoClose: 2500,
         });
       }
@@ -54,9 +60,9 @@ const SignIn = () => {
     <div className="">
       <div className="flex flex-wrap items-center">
         <div className="hidden w-full xl:block xl:w-1/2">
-          <div className="py-17.5 px-26 text-center">
+          <div className="py-17.5 px-26 text-center flex flex-col items-center">
             <Link className="mb-5.5 inline-block" to="/">
-              <img src={Logo} alt="Logo" />
+              <img src={Logo} alt="Logo" className="invert" />
             </Link>
 
             <span className="mt-15 inline-block">
@@ -98,9 +104,9 @@ const SignIn = () => {
                       errors.email ? "border-red-500" : "border-stroke"
                     } bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary`}
                   />
-                  <span className="absolute right-4 top-4">
-                    <img src="/mail.svg" stroke={1.25} />
-                  </span>
+                  {/* <span className="absolute right-4 top-4">
+										<img src="/mail.svg" stroke={1.25} />
+									</span> */}
                 </div>
                 {errors.email && (
                   <p className="mt-1 text-red-500 text-sm">
@@ -113,7 +119,7 @@ const SignIn = () => {
                 <label className="mb-2.5 block font-medium text-black">
                   Password
                 </label>
-                <div className="relative">
+                <div className="relative cursor-pointer">
                   <input
                     {...register("password", {
                       required: "Password is required",
@@ -122,14 +128,20 @@ const SignIn = () => {
                         message: "Password must be at least 6 characters",
                       },
                     })}
-                    type="password"
+                    type={`${!showPass ? "password" : "text"}`}
                     placeholder="6+ Characters, 1 Capital letter"
                     className={`w-full rounded-lg border ${
                       errors.password ? "border-red-500" : "border-stroke"
                     } bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary`}
                   />
-                  <span className="absolute right-4 top-4">
-                    <img src="/lock.svg" stroke="1" />
+                  <span
+                    onClick={handlePasswordShowHide}
+                    className="absolute right-4 top-4"
+                  >
+                    <img
+                      src={`${!showPass ? "/eye-off.svg" : "/eye.svg"}`}
+                      stroke="1"
+                    />
                   </span>
                 </div>
                 {errors.password && (

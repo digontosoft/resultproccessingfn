@@ -19,13 +19,14 @@ import {
 } from "../pages";
 
 import SignUp from "../pages/auth/SignUp";
-import PrivateRoute from "./PrivateRoute";
-import TabulationSheet from "../pages/TabulationSheet/TabulationSheet";
-import MeritList from "../pages/MeritList/MeritList";
 import FailList from "../pages/FailList/FailList";
-import ResultSummary from "../pages/ResultSummary/ResultSummary";
 import MarkSheet from "../pages/MarkSheet/MarkSheet";
-import TeacherList from "../pages/Teachers/TeacherList";
+import MeritList from "../pages/MeritList/MeritList";
+import GetResult from "../pages/results/GetResult/GetResult";
+import Transcript from "../pages/results/transcript/Transcript";
+import ResultSummary from "../pages/ResultSummary/ResultSummary";
+import TabulationSheet from "../pages/TabulationSheet/TabulationSheet";
+import PrivateRoute from "./PrivateRoute";
 
 const AppRoutes = () => {
   const { auth } = useAuth();
@@ -44,7 +45,6 @@ const AppRoutes = () => {
     { path: "/merit-list", element: <MeritList /> },
     { path: "/fail-list", element: <FailList /> },
     { path: "/result-summary", element: <ResultSummary /> },
-    { path: "/teachers", element: <TeacherList /> },
   ];
 
   // Admin routes
@@ -111,6 +111,10 @@ const AppRoutes = () => {
     <Routes>
       <Route path="/auth/signin" element={<SignIn />} />
       <Route path="/auth/signup" element={<SignUp />} />
+
+      <Route path="/get-result" element={<GetResult />} />
+      <Route path="/get-result/transcript" element={<Transcript />} />
+
       <Route element={<PrivateRoute />}>
         <Route element={<DefaultLayout />}>
           <Route path="/" element={<Home />} />
