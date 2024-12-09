@@ -28,6 +28,7 @@ import ResultSummary from "../pages/ResultSummary/ResultSummary";
 import TabulationSheet from "../pages/TabulationSheet/TabulationSheet";
 import PrivateRoute from "./PrivateRoute";
 import SubjectEntry from "../pages/Reports/SubjectEntry";
+import TeacherList from "../pages/Teachers/TeacherList";
 
 const AppRoutes = () => {
   const { auth } = useAuth();
@@ -47,6 +48,7 @@ const AppRoutes = () => {
     { path: "/merit-list", element: <MeritList /> },
     { path: "/fail-list", element: <FailList /> },
     { path: "/result-summary", element: <ResultSummary /> },
+    { path: "/teachers", element: <TeacherList /> },
   ];
 
   // Admin routes

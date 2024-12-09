@@ -125,7 +125,7 @@ const AddResult = () => {
           group: "",
           subjects: {},
         });
-        navigate("/result-list");
+        // navigate("/result-list");
       } else {
         throw new Error("Result Upload failed");
       }

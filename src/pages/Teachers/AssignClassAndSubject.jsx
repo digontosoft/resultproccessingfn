@@ -107,6 +107,7 @@
 // export default AssignClassAndSubject;
 
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 // AssignClassAndSubject Component
 const AssignClassAndSubject = ({ teacher, onAssign }) => {
@@ -138,11 +139,9 @@ const AssignClassAndSubject = ({ teacher, onAssign }) => {
   const handleAssign = () => {
     if (selectedClass && selectedSubject) {
       onAssign(teacher, selectedClass, selectedSubject);
-      alert(
-        `Assigned ${selectedSubject} to ${selectedClass} for ${teacher.name}`
-      );
+      toast.success(`Assigned ${selectedSubject} to ${selectedClass}`);
     } else {
-      alert("Please select both class and subject!");
+      toast.error("Please select both class and subject!");
     }
   };
 

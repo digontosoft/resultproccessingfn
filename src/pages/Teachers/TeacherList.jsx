@@ -1,6 +1,6 @@
 import TeacherTable from "./TeacherTable";
 
-const TeachersTable = () => {
+const TeacherList = () => {
   return (
     <div className="w-full h-auto min-h-180 border rounded-md">
       <div className="p-4 border-b">
@@ -13,4 +13,4 @@ const TeachersTable = () => {
   );
 };
 
-export default TeachersTable;
+export default TeacherList;

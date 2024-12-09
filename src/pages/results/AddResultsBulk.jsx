@@ -73,7 +73,7 @@ const AddResultsBulk = () => {
       }
 
       toast.success("Results uploaded successfully");
-      navigate("/result-list");
+      // navigate("/result-list");
       if (fileInputRef.current) {
         fileInputRef.current.value = "";
       }
