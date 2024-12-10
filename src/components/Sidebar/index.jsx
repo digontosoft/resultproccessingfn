@@ -101,6 +101,17 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
       activeCondition:
         pathname.includes === "student" || pathname.includes("dashboard"),
     },
+    // {
+    //   label: "Manage Users",
+    //   icon: "/users.svg",
+    //   links: [
+    //     { to: "/add-user", label: "Add User" },
+    //     { to: "/user-list", label: "User List" },
+    //     { to: "/manage-users", label: "Manage Users" },
+    //   ],
+    //   activeCondition:
+    //     pathname.includes === "user" || pathname.includes("dashboard"),
+    // },
     {
       label: "Results",
       icon: "/text-grammar.svg",

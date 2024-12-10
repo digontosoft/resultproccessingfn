@@ -49,6 +49,9 @@ const AppRoutes = () => {
     { path: "/fail-list", element: <FailList /> },
     { path: "/result-summary", element: <ResultSummary /> },
     { path: "/teachers", element: <TeacherList /> },
+    { path: "/add-user", element: <AddUser /> },
+    { path: "/user-list", element: <UserList /> },
+    { path: "/manage-users", element: <ManageUsers /> },
   ];
 
   // Admin routes
