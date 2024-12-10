@@ -22,13 +22,14 @@ import SignUp from "../pages/auth/SignUp";
 import FailList from "../pages/FailList/FailList";
 import MarkSheet from "../pages/MarkSheet/MarkSheet";
 import MeritList from "../pages/MeritList/MeritList";
+import SubjectEntry from "../pages/Reports/SubjectEntry";
 import GetResult from "../pages/results/GetResult/GetResult";
+import MarksInput from "../pages/results/MarksInput";
 import Transcript from "../pages/results/transcript/Transcript";
 import ResultSummary from "../pages/ResultSummary/ResultSummary";
 import TabulationSheet from "../pages/TabulationSheet/TabulationSheet";
-import PrivateRoute from "./PrivateRoute";
-import SubjectEntry from "../pages/Reports/SubjectEntry";
 import TeacherList from "../pages/Teachers/TeacherList";
+import PrivateRoute from "./PrivateRoute";
 
 const AppRoutes = () => {
   const { auth } = useAuth();
@@ -41,6 +42,7 @@ const AppRoutes = () => {
     { path: "/add-student-bulk", element: <AddStudentsBulk /> },
     { path: "/student-list", element: <StudentList /> },
     { path: "/add-result", element: <AddResult /> },
+    { path: "/add-result/marks-input", element: <MarksInput /> },
     { path: "/add-result-bulk", element: <AddResultsBulk /> },
     { path: "/result-list", element: <ResultList /> },
     { path: "/tabulation-sheet", element: <TabulationSheet /> },
@@ -49,9 +51,6 @@ const AppRoutes = () => {
     { path: "/fail-list", element: <FailList /> },
     { path: "/result-summary", element: <ResultSummary /> },
     { path: "/teachers", element: <TeacherList /> },
-    { path: "/add-user", element: <AddUser /> },
-    { path: "/user-list", element: <UserList /> },
-    { path: "/manage-users", element: <ManageUsers /> },
   ];
 
   // Admin routes
