@@ -1,6 +1,3 @@
-// import { useState } from "react";
-// import AssignClassAndSubject from "./AssignClassAndSubject";
-
 import { useState } from "react";
 import AssignClassAndSubject from "./AssignClassAndSubject";
 
@@ -356,14 +353,6 @@ const TeacherTable = () => {
         >
           Next
         </button>
-      </div>
-
-      {/* Show Assignments */}
-      <div className="mt-4">
-        <h2 className="text-lg font-bold mb-2">Assignments</h2>
-        <pre className="bg-gray-100 p-4 rounded">
-          {JSON.stringify(assignments, null, 2)}
-        </pre>
       </div>
     </div>
   );
