@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 
+import Logo from "../../assets/school-logo.png";
 import useAuth from "../../hooks/useAuth";
 import SidebarItem from "./SidebarItem";
 import SidebarLinkGroup from "./SidebarLinkGroup";
-import Logo from "../../assets/school-logo.png";
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
   const location = useLocation();
@@ -71,7 +71,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
       links: [
         { to: "/add-result", label: "Add Result" },
         { to: "/add-result-bulk", label: "Add Result Bulk" },
-        { to: "/result-list", label: "Result List" },
+        // { to: "/result-list", label: "Result List" },
       ],
       activeCondition:
         pathname.includes === "result" || pathname.includes("dashboard"),
