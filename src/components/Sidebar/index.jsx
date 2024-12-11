@@ -121,11 +121,20 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
         { to: "/merit-list", label: "Merit List" },
         { to: "/fail-list", label: "Fail List" },
         { to: "/result-summary", label: "Result Summary" },
-        { to: "/subject-entry", label: "Subject Entry" },
-        { to: "/teachers", label: "Teacher List" },
       ],
       activeCondition:
         pathname.includes === "report" || pathname.includes("dashboard"),
+    },
+    {
+      label: "Settings",
+      icon: "/users.svg",
+      links: [
+        { to: "/subject-entry", label: "Subject Entry" },
+        { to: "/subject-List", label: "Subject List" },
+        { to: "/teachers", label: "Assign Subject" },
+      ],
+      activeCondition:
+        pathname.includes === "settings" || pathname.includes("dashboard"),
     },
   ];
 
