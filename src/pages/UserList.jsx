@@ -27,7 +27,7 @@ const UserList = () => {
       setIsLoading(true);
       setError(null);
       // const response = await gurdedApi.get("/users");
-      const response = await axios.get(`${baseUrl}/users`, {
+      const response = await axios.get(`${baseUrl}/users?userType=teacher`, {
         headers: {
           Authorization: `Bearer ${authToken}`,
         },
@@ -71,35 +71,35 @@ const UserList = () => {
     setSelectedProfile(null);
     setIsEditing(false);
   };
-  // const handleFormSubmit = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     await axios.put(`${baseUrl}/users/profile/${selectedProfile?._id}`, {
-  //       headers: {
-  //         Authorization: `Bearer ${authToken}`,
-  //       },
-  //       ...selectedProfile,
-  //     });
-  //     setStudents((prevUser) =>
-  //       prevUser.map((profile) =>
-  //         profile._id === selectedProfile._id ? selectedProfile : profile
-  //       )
-  //     );
-  //     toast.success("profile updated successfully");
-  //     handleCloseModal();
-  //   } catch (error) {
-  //     toast.error("Failed to update profile");
-  //     console.error(error);
-  //   }
-  // };
-  const confirmDeleteProfile = async () => {
-    // setProfile((prevProfile) =>
-    //   prevProfile.filter((p) => p.email !== selectedProfile.email)
-    // );
-    // console.log("Profile deleted successfully");
-    // handleCloseModal();
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
     try {
-      await gurdedApi(`/users/${profile._id}`);
+      await axios.put(`${baseUrl}/teacher/${selectedProfile?._id}`, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+        ...selectedProfile,
+      });
+      setProfile((prevUser) =>
+        prevUser.map((profile) =>
+          profile._id === selectedProfile._id ? selectedProfile : profile
+        )
+      );
+      toast.success("profile updated successfully");
+      handleCloseModal();
+    } catch (error) {
+      toast.error("Failed to update profile");
+      console.error(error);
+    }
+  };
+  const confirmDeleteProfile = async () => {
+    setProfile((prevProfile) =>
+      prevProfile.filter((p) => p._id !== profile._id)
+    );
+    console.log("Profile deleted successfully");
+    handleCloseModal();
+    try {
+      await gurdedApi.delete(`/teacher/${selectedProfile._id}`);
       await getUsers();
       toast.success("Student deleted successfully");
       handleCloseModal();

@@ -49,6 +49,17 @@ const UserEditModal = ({ profile, onClose, onSubmit, onChange }) => {
               className="border rounded p-2 w-full mb-4"
             />
           </div>
+          <div>
+            <label className="block mb-2 text-sm font-medium">position</label>
+            <input
+              type="text"
+              value={profile?.position}
+              onChange={(e) =>
+                onChange({ ...profile, position: e.target.value })
+              }
+              className="border rounded p-2 w-full mb-4"
+            />
+          </div>
 
           <div>
             <label className="block mb-2 text-sm font-medium">Mobile</label>

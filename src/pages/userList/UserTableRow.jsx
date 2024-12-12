@@ -3,8 +3,11 @@ import React from "react";
 const ProfileTableRow = ({ profile, index, onView, onEdit, onDelete }) => {
   return (
     <tr>
-      <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+      <td className="border-b border-[#eee] py-5 px-5 dark:border-strokedark">
         <p className="text-black dark:text-white">{index + 1}</p>
+      </td>
+      <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+        <p className="text-black dark:text-white">{profile.position}</p>
       </td>
       <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
         <p className="text-black dark:text-white">
