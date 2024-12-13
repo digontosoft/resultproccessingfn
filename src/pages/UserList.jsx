@@ -8,6 +8,8 @@ import AddUser from "./userList/AddUser";
 import { toast } from "react-toastify";
 import axios from "axios";
 import useAuth from "../hooks/useAuth";
+import UserViewModal from "./userList/UserViewModal";
+import UserEditModal from "./userList/UserEditModal";
 
 const UserList = () => {
   const [profile, setProfile] = useState([]);
@@ -25,12 +27,11 @@ const UserList = () => {
       setIsLoading(true);
       setError(null);
       // const response = await gurdedApi.get("/users");
-      const response = await axios.get(`${baseUrl}/users`, {
+      const response = await axios.get(`${baseUrl}/users?userType=teacher`, {
         headers: {
           Authorization: `Bearer ${authToken}`,
         },
       });
-      console.log("rwessd", response);
       if (response.status === 200) {
         setProfile(response?.data.data);
         console.log("profile:", response.data.data);
@@ -70,12 +71,42 @@ const UserList = () => {
     setSelectedProfile(null);
     setIsEditing(false);
   };
-  const confirmDeleteProfile = () => {
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.put(`${baseUrl}/teacher/${selectedProfile?._id}`, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+        ...selectedProfile,
+      });
+      setProfile((prevUser) =>
+        prevUser.map((profile) =>
+          profile._id === selectedProfile._id ? selectedProfile : profile
+        )
+      );
+      toast.success("profile updated successfully");
+      handleCloseModal();
+    } catch (error) {
+      toast.error("Failed to update profile");
+      console.error(error);
+    }
+  };
+  const confirmDeleteProfile = async () => {
     setProfile((prevProfile) =>
-      prevProfile.filter((p) => p.email !== selectedProfile.email)
+      prevProfile.filter((p) => p._id !== profile._id)
     );
     console.log("Profile deleted successfully");
     handleCloseModal();
+    try {
+      await gurdedApi.delete(`/teacher/${selectedProfile._id}`);
+      await getUsers();
+      toast.success("Student deleted successfully");
+      handleCloseModal();
+    } catch (error) {
+      toast.error("Failed to delete student");
+      console.error(error);
+    }
   };
 
   return (
@@ -88,15 +119,12 @@ const UserList = () => {
         onDelete={handleDelete}
       />
       {selectedProfile && openModal && !isEditing && (
-        <StudentViewModal
-          student={selectedProfile}
-          onClose={handleCloseModal}
-        />
+        <UserViewModal profile={selectedProfile} onClose={handleCloseModal} />
       )}
 
       {selectedProfile && openModal && isEditing && (
-        <StudentEditModal
-          student={selectedProfile}
+        <UserEditModal
+          profile={selectedProfile}
           onSubmit={handleFormSubmit}
           onChange={setSelectedProfile}
           onClose={handleCloseModal}

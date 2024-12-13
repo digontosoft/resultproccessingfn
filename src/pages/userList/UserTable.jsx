@@ -14,8 +14,11 @@ const ProfileTable = ({ profile, onView, onEdit, onDelete }) => {
         <table className="w-full table-auto">
           <thead>
             <tr className="bg-gray-2 text-left dark:bg-meta-4">
-              <th className="py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
+              <th className="py-4 px-4 font-medium text-black dark:text-white ">
                 SI No
+              </th>
+              <th className="py-4 px-4 font-medium text-black dark:text-white ">
+                position
               </th>
               <th className="py-4 px-4 font-medium text-black dark:text-white">
                 Name
