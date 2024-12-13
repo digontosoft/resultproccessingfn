@@ -1,40 +1,9 @@
-import { useState } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
+import { toast } from "react-toastify";
 
-const classes = ["Class 1", "Class 2", "Class 3", "Class 4"];
-const groups = ["Science", "Commerce", "Arts"];
-const sessions = ["2023", "2024", "2025", "2026"];
-
-// Mock data
-const initialSubjects = [
-  {
-    id: 1,
-    className: "Class 1",
-    group: "Science",
-    session: "2023",
-    name: "Math",
-    code: "M101",
-    marks: 100,
-  },
-  {
-    id: 2,
-    className: "Class 1",
-    group: "Commerce",
-    session: "2023",
-    name: "Accounting",
-    code: "A102",
-    marks: 100,
-  },
-  {
-    id: 3,
-    className: "Class 2",
-    group: "Arts",
-    session: "2024",
-    name: "History",
-    code: "H201",
-    marks: 100,
-  },
-];
+const groups = ["general", "science", "humanities", "business"];
 
 const SubjectList = () => {
   const [filters, setFilters] = useState({
@@ -42,10 +11,14 @@ const SubjectList = () => {
     group: "",
     session: "",
   });
-  const [subjects, setSubjects] = useState(initialSubjects);
-  const [filteredSubjects, setFilteredSubjects] = useState(initialSubjects);
+  const [classes, setClasses] = useState([]);
+  const [subjects, setSubjects] = useState([]);
+  const [filteredSubjects, setFilteredSubjects] = useState([]);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editingSubject, setEditingSubject] = useState(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [subjectToDelete, setSubjectToDelete] = useState(null);
+  const url = import.meta.env.VITE_SERVER_BASE_URL;
 
   const {
     control,
@@ -60,46 +33,133 @@ const SubjectList = () => {
     },
   });
 
+  // Fetch subjects
+  useEffect(() => {
+    const fetchSubjects = async () => {
+      try {
+        const response = await axios.get(`${url}/subjects`);
+        const data = response.data.subjects;
+        setSubjects(data);
+        setFilteredSubjects(data); // Initially set all subjects
+      } catch (error) {
+        toast.error("Failed to fetch subjects");
+        console.error(error);
+      }
+    };
+
+    fetchSubjects();
+  }, [url]);
+
+  // Fetch classes
+  useEffect(() => {
+    const fetchClasses = async () => {
+      try {
+        const response = await axios.get(`${url}/class`);
+        const data = response.data.classes;
+        setClasses(data);
+      } catch (error) {
+        toast.error("Failed to fetch classes");
+        console.error(error);
+      }
+    };
+
+    fetchClasses();
+  }, [url]);
+
   // Handle filter change
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
-    setFilters((prev) => ({ ...prev, [name]: value }));
+    const updatedFilters = { ...filters, [name]: value };
+    setFilters(updatedFilters);
 
-    const filtered = initialSubjects.filter((subject) =>
-      Object.entries({ ...filters, [name]: value }).every(
-        ([key, val]) => val === "" || subject[key] === val
-      )
-    );
+    // Filter subjects based on class and group
+    const filtered = subjects.filter((subject) => {
+      return (
+        (!updatedFilters.className ||
+          subject.class?.name === updatedFilters.className) &&
+        (!updatedFilters.group || subject.group === updatedFilters.group)
+      );
+    });
+
     setFilteredSubjects(filtered);
   };
 
   // Open edit modal
   const openEditModal = (subject) => {
     setEditingSubject(subject);
-    reset(subject);
+    reset({
+      name: subject.name,
+      code: subject.subjectCode,
+      marks: subject.marks,
+    });
     setIsEditModalOpen(true);
   };
 
   // Handle edit form submit
-  const onEditSubmit = (data) => {
-    setSubjects((prev) =>
-      prev.map((subject) =>
-        subject.id === editingSubject.id ? { ...subject, ...data } : subject
-      )
-    );
-    setFilteredSubjects((prev) =>
-      prev.map((subject) =>
-        subject.id === editingSubject.id ? { ...subject, ...data } : subject
-      )
-    );
-    setIsEditModalOpen(false);
+  const onEditSubmit = async (data) => {
+    try {
+      const response = await axios.put(`${url}/subject/${subjects._id}`, {
+        name: data.name,
+        subjectCode: data.code,
+        marks: data.marks,
+      });
+
+      if (response.status === 200) {
+        // Update the subject list after successful edit
+        setSubjects((prev) =>
+          prev.map((subject) =>
+            subject._id === editingSubject._id
+              ? { ...subject, ...data, subjectCode: data.code }
+              : subject
+          )
+        );
+        setFilteredSubjects((prev) =>
+          prev.map((subject) =>
+            subject._id === editingSubject._id
+              ? { ...subject, ...data, subjectCode: data.code }
+              : subject
+          )
+        );
+        toast.success("Subject updated successfully");
+        setIsEditModalOpen(false); // Close the modal after editing
+      }
+    } catch (error) {
+      toast.error("Failed to update subject");
+      console.error(error);
+    }
   };
 
-  // Handle delete action
-  const handleDelete = (id) => {
-    const updatedSubjects = subjects.filter((subject) => subject.id !== id);
-    setSubjects(updatedSubjects);
-    setFilteredSubjects(updatedSubjects);
+  // Handle delete action (Show confirmation modal)
+  const handleDeleteConfirmation = (id) => {
+    setSubjectToDelete(id);
+    setIsDeleteModalOpen(true); // Open confirmation modal
+  };
+
+  // Confirm delete
+  const handleDelete = async () => {
+    try {
+      const response = await axios.delete(`${url}/subject/${subjectToDelete}`);
+
+      if (response.status === 200) {
+        toast.success("Subject deleted successfully");
+        setSubjects((prev) =>
+          prev.filter((subject) => subject._id !== subjectToDelete)
+        );
+        setFilteredSubjects((prev) =>
+          prev.filter((subject) => subject._id !== subjectToDelete)
+        );
+        setIsDeleteModalOpen(false); // Close confirmation modal after deletion
+      }
+    } catch (error) {
+      toast.error("Failed to delete the subject");
+      console.error(error);
+      setIsDeleteModalOpen(false); // Close modal in case of error
+    }
+  };
+
+  // Close the confirmation modal without deleting
+  const closeDeleteModal = () => {
+    setIsDeleteModalOpen(false);
   };
 
   return (
@@ -115,8 +175,8 @@ const SubjectList = () => {
           >
             <option value="">Select Class</option>
             {classes.map((cls) => (
-              <option key={cls} value={cls}>
-                {cls}
+              <option key={cls._id} value={cls.name}>
+                {cls.name}
               </option>
             ))}
           </select>
@@ -130,19 +190,6 @@ const SubjectList = () => {
             {groups.map((grp) => (
               <option key={grp} value={grp}>
                 {grp}
-              </option>
-            ))}
-          </select>
-          <select
-            name="session"
-            value={filters.session}
-            onChange={handleFilterChange}
-            className="w-full rounded-lg border border-stroke py-2 px-4 text-black bg-white dark:bg-boxdark dark:text-white"
-          >
-            <option value="">Select Session</option>
-            {sessions.map((session) => (
-              <option key={session} value={session}>
-                {session}
               </option>
             ))}
           </select>
@@ -160,6 +207,9 @@ const SubjectList = () => {
                   Code
                 </th>
                 <th className="border border-stroke px-4 py-2 text-left">
+                  Class
+                </th>
+                <th className="border border-stroke px-4 py-2 text-left">
                   Marks
                 </th>
                 <th className="border border-stroke px-4 py-2 text-left">
@@ -170,12 +220,15 @@ const SubjectList = () => {
             <tbody>
               {filteredSubjects.length > 0 ? (
                 filteredSubjects.map((subject) => (
-                  <tr key={subject.id}>
+                  <tr key={subject._id}>
                     <td className="border border-stroke px-4 py-2">
                       {subject.name}
                     </td>
                     <td className="border border-stroke px-4 py-2">
-                      {subject.code}
+                      {subject.subjectCode}
+                    </td>
+                    <td className="border border-stroke px-4 py-2">
+                      {subject?.class?.name}
                     </td>
                     <td className="border border-stroke px-4 py-2">
                       {subject.marks}
@@ -188,7 +241,7 @@ const SubjectList = () => {
                         Edit
                       </button>
                       <button
-                        onClick={() => handleDelete(subject.id)}
+                        onClick={() => handleDeleteConfirmation(subject._id)} // Trigger delete confirmation modal
                         className="text-red-500 hover:underline"
                       >
                         Delete
@@ -277,22 +330,46 @@ const SubjectList = () => {
                   </span>
                 )}
               </div>
-              <div className="flex justify-end">
+              <div className="flex justify-end space-x-4">
                 <button
                   type="button"
                   onClick={() => setIsEditModalOpen(false)}
-                  className="mr-4 px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+                  className="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                  className="px-4 py-2 rounded bg-blue-500 text-white hover:bg-blue-600"
                 >
-                  Save
+                  Save Changes
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Modal */}
+      {isDeleteModalOpen && (
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+            <h2 className="text-xl font-semibold mb-4">Delete Subject</h2>
+            <p>Are you sure you want to delete this subject?</p>
+            <div className="flex justify-end space-x-4 mt-4">
+              <button
+                onClick={closeDeleteModal}
+                className="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDelete}
+                className="px-4 py-2 rounded bg-red-500 text-white hover:bg-red-600"
+              >
+                Delete
+              </button>
+            </div>
           </div>
         </div>
       )}

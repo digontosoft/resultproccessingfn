@@ -87,6 +87,17 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
       activeCondition:
         pathname.includes === "user" || pathname.includes("dashboard"),
     },
+    {
+      label: "Settings",
+      icon: "/users.svg",
+      links: [
+        { to: "/subject-entry", label: "Subject Entry" },
+        { to: "/subject-List", label: "Subject List" },
+        { to: "/teachers", label: "Assign Subject" },
+      ],
+      activeCondition:
+        pathname.includes === "settings" || pathname.includes("dashboard"),
+    },
   ];
 
   const teacherMenuItems = [
