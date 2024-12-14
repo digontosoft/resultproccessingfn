@@ -39,7 +39,7 @@ const SubjectEntry = () => {
       // Attempt to create the subject
       await axios.post(`${url}/create-subject`, data);
       toast.success("Subject created successfully");
-      reset();
+      // reset();
     } catch (error) {
       if (
         error.response?.data?.message ===

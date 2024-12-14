@@ -71,7 +71,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
       links: [
         { to: "/add-result", label: "Add Result" },
         { to: "/add-result-bulk", label: "Add Result Bulk" },
-        // { to: "/result-list", label: "Result List" },
+        { to: "/result-list", label: "Result List" },
       ],
       activeCondition:
         pathname.includes === "result" || pathname.includes("dashboard"),
@@ -94,9 +94,23 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
         { to: "/subject-entry", label: "Subject Entry" },
         { to: "/subject-List", label: "Subject List" },
         { to: "/teachers", label: "Assign Subject" },
+        { to: "/teachers-subjects", label: "Subject Assign List" },
       ],
       activeCondition:
         pathname.includes === "settings" || pathname.includes("dashboard"),
+    },
+    {
+      label: "Reports",
+      icon: "/users.svg",
+      links: [
+        { to: "/tabulation-sheet", label: "Tabulation Sheet" },
+        { to: "/mark-sheet", label: "Mark Sheet" },
+        { to: "/merit-list", label: "Merit List" },
+        { to: "/fail-list", label: "Fail List" },
+        { to: "/result-summary", label: "Result Summary" },
+      ],
+      activeCondition:
+        pathname.includes === "report" || pathname.includes("dashboard"),
     },
   ];
 
@@ -136,17 +150,17 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
       activeCondition:
         pathname.includes === "report" || pathname.includes("dashboard"),
     },
-    {
-      label: "Settings",
-      icon: "/users.svg",
-      links: [
-        { to: "/subject-entry", label: "Subject Entry" },
-        { to: "/subject-List", label: "Subject List" },
-        { to: "/teachers", label: "Assign Subject" },
-      ],
-      activeCondition:
-        pathname.includes === "settings" || pathname.includes("dashboard"),
-    },
+    // {
+    //   label: "Settings",
+    //   icon: "/users.svg",
+    //   links: [
+    //     { to: "/subject-entry", label: "Subject Entry" },
+    //     { to: "/subject-List", label: "Subject List" },
+    //     { to: "/teachers", label: "Assign Subject" },
+    //   ],
+    //   activeCondition:
+    //     pathname.includes === "settings" || pathname.includes("dashboard"),
+    // },
   ];
 
   const studentMenuItems = [
@@ -169,7 +183,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
       case "superadmin":
         return adminMenuItems;
       // UserType: "teacher"
-      case "classadmin":
+      case "teacher":
         return teacherMenuItems;
       // userType: "student"
       case "student":
