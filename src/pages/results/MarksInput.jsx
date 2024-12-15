@@ -1,23 +1,30 @@
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { useLocation } from 'react-router-dom';
 
 const MarksInput = () => {
+	const location = useLocation()
+	console.log(location.state.students);
+	// const {students}= location.state
+	// console.log(students);
+	
+	
 	// Sample student data - you can replace this with your actual data
-	const initialStudents = [
-		{ id: 1, roll: '001', name: 'John Doe' },
-		{ id: 2, roll: '002', name: 'Jane Smith' },
-		{ id: 3, roll: '003', name: 'Mike Johnson' },
-	];
+	// const initialStudents = [
+	// 	{ id: 1, roll: '001', name: 'John Doe' },
+	// 	{ id: 2, roll: '002', name: 'Jane Smith' },
+	// 	{ id: 3, roll: '003', name: 'Mike Johnson' },
+	// ];
 
 	const { control, handleSubmit, setError, getValues } = useForm();
-	const [students] = useState(initialStudents);
+	const [students] = useState(location.state.students);
 
 	// Handle form submission
-	const onSubmit = (data) => {
+	const onSubmit = async (data) => {
 		// Transform the data into an array of objects
 		const results = students.map((student) => ({
 			roll: student.roll,
-			name: student.name,
+			name:student.studentName,
 			subjective: parseInt(data[`subjective_${student.id}`], 10) || 0,
 			objective: parseInt(data[`objective_${student.id}`], 10) || 0,
 			practical: parseInt(data[`practical_${student.id}`], 10) || 0,
@@ -73,7 +80,7 @@ const MarksInput = () => {
 											{student.roll}
 										</td>
 										<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-											{student.name}
+											{student.studentName}
 										</td>
 										<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
 											<Controller
