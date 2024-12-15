@@ -8,11 +8,13 @@ const TeacherSubjectList = () => {
   const [deleteId, setDeleteId] = useState(null); // Track the ID being deleted
   const [isModalOpen, setIsModalOpen] = useState(false); // Modal open state
   const url = import.meta.env.VITE_SERVER_BASE_URL;
-
+  const teacher = JSON.parse(localStorage.getItem("auth"));
   useEffect(() => {
     const fetchTeacherSubjects = async () => {
       try {
-        const response = await axios.get(`${url}/teacher-subjects`);
+        const response = await axios.get(
+          `${url}/teacher-subjects/${teacher._id}`
+        );
         setTeacherSubjects(response.data.data);
         console.log("teacherSubjects", response.data.data);
       } catch (error) {
