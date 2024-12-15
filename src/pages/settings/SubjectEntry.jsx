@@ -125,6 +125,12 @@ const SubjectEntry = () => {
           name="subjectCode"
           placeholder="Enter subject code"
         />
+         <FormInput
+          label="Year"
+          name="year"
+          //type="number"
+          placeholder="Enter year"
+        />
         <FormInput
           label="Marks"
           name="marks"
