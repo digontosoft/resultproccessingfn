@@ -32,6 +32,7 @@ import PrivateRoute from "./PrivateRoute";
 import SubjectList from "../pages/settings/SubjectList";
 import SubjectEntry from "../pages/settings/SubjectEntry";
 import TeacherSubjectList from "../pages/settings/TeacherSubjectList";
+import TeacherSubjectListAdmin from "../pages/settings/TeacherSubjectListAdmin";
 
 const AppRoutes = () => {
   const { auth } = useAuth();
@@ -54,7 +55,7 @@ const AppRoutes = () => {
     { path: "/teachers", element: <TeacherList /> },
     { path: "/subject-entry", element: <SubjectEntry /> },
     { path: "/subject-list", element: <SubjectList /> },
-    { path: "/teachers-subjects", element: <TeacherSubjectList /> },
+    { path: "/teachers-subjects", element: <TeacherSubjectListAdmin /> },
   ];
 
   // Admin routes
@@ -90,7 +91,7 @@ const AppRoutes = () => {
         );
 
       // userType: 'teacher'
-      case "classadmin":
+      case "teacher":
         return (
           <>
             {commonAdminTeacherRoutes.map((route) => (

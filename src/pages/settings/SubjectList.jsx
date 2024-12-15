@@ -13,11 +13,13 @@ const SubjectList = () => {
   });
   const [classes, setClasses] = useState([]);
   const [subjects, setSubjects] = useState([]);
-  const [filteredSubjects, setFilteredSubjects] = useState([]);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editingSubject, setEditingSubject] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [subjectToDelete, setSubjectToDelete] = useState(null);
+  const [teacherAccess, setTeacherAccess] = useState([]);
+  const [teacherSubjects, setTeacherSubjects] = useState([]);
+  const [filteredSubjects, setFilteredSubjects] = useState([]);
   const url = import.meta.env.VITE_SERVER_BASE_URL;
 
   const {
@@ -33,14 +35,34 @@ const SubjectList = () => {
     },
   });
 
-  // Fetch subjects
+  const teacher = JSON.parse(localStorage.getItem("auth"));
+  // console.log("teacher", teacher);
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get(
+          `${url}/teacher-subjects/${teacher._id}`
+        );
+        const teacherData = response.data.data;
+        console.log("teacherData:", teacherData);
+        setTeacherAccess(teacherData);
+      } catch (error) {
+        toast.error("Failed to fetch users");
+        console.error(error);
+      }
+    };
+
+    fetchUsers();
+  }, [url, teacher._id]);
+
   useEffect(() => {
     const fetchSubjects = async () => {
       try {
         const response = await axios.get(`${url}/subjects`);
         const data = response.data.subjects;
-        setSubjects(data);
+        setTeacherSubjects(data);
         setFilteredSubjects(data); // Initially set all subjects
+        console.log("teacherSubjects", data);
       } catch (error) {
         toast.error("Failed to fetch subjects");
         console.error(error);
@@ -50,39 +72,23 @@ const SubjectList = () => {
     fetchSubjects();
   }, [url]);
 
-  // Fetch classes
-  useEffect(() => {
-    const fetchClasses = async () => {
-      try {
-        const response = await axios.get(`${url}/class`);
-        const data = response.data.classes;
-        setClasses(data);
-      } catch (error) {
-        toast.error("Failed to fetch classes");
-        console.error(error);
-      }
-    };
+  const handleFilterChange = (classId) => {
+    console.log("Selected classId:", classId);
 
-    fetchClasses();
-  }, [url]);
+    // Filter the subjects based on the selected classId
+    const filtered = teacherSubjects.filter(
+      (subject) => subject.class._id === classId
+    );
 
-  // Handle filter change
-  const handleFilterChange = (e) => {
-    const { name, value } = e.target;
-    const updatedFilters = { ...filters, [name]: value };
-    setFilters(updatedFilters);
-
-    // Filter subjects based on class and group
-    const filtered = subjects.filter((subject) => {
-      return (
-        (!updatedFilters.className ||
-          subject.class?.name === updatedFilters.className) &&
-        (!updatedFilters.group || subject.group === updatedFilters.group)
-      );
-    });
-
+    // Update the state with the filtered subjects
     setFilteredSubjects(filtered);
+    console.log("Filtered subjects:", filtered);
   };
+
+  const teacher_class = teacherAccess.flatMap((cls) =>
+    cls.ClassVsSubject.map((cl) => cl.class_id)
+  );
+  // Handle filter chang
 
   // Open edit modal
   const openEditModal = (subject) => {
@@ -170,12 +176,12 @@ const SubjectList = () => {
           <select
             name="className"
             value={filters.className}
-            onChange={handleFilterChange}
+            onChange={(e) => handleFilterChange(e.target.value)}
             className="w-full rounded-lg border border-stroke py-2 px-4 text-black bg-white dark:bg-boxdark dark:text-white"
           >
             <option value="">Select Class</option>
-            {classes.map((cls) => (
-              <option key={cls._id} value={cls.name}>
+            {teacher_class.map((cls) => (
+              <option key={cls._id} value={cls._id}>
                 {cls.name}
               </option>
             ))}
@@ -194,7 +200,6 @@ const SubjectList = () => {
             ))}
           </select>
         </div>
-
         {/* Subject Table */}
         <div className="overflow-x-auto">
           <table className="w-full table-auto border-collapse border border-stroke">
