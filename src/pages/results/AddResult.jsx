@@ -58,15 +58,15 @@ const SUBJECTS = {
 };
 
 const AddResult = () => {
-	const { gurdedApi } = useAxios();
+  const { gurdedApi } = useAxios();
   const [selectedClass, setSelectedClass] = useState("");
   const [selectedGroup, setSelectedGroup] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const [classes, setClasses] = useState([]);
   const url = import.meta.env.VITE_SERVER_BASE_URL;
-  const [subjects,setSubjects] = useState([])
-  const [classSub,setClassSub] = useState([])
+  const [subjects, setSubjects] = useState([]);
+  const [classSub, setClassSub] = useState([]);
 
   useEffect(() => {
     const fetchClasses = async () => {
@@ -85,30 +85,26 @@ const AddResult = () => {
     fetchClasses();
   }, [url]);
 
-  useEffect(()=>{
-	const subject = async() =>{
-		const response = await axios.get(`${url}/subjects`);
-		setSubjects(response.data.subjects)
-		
-	}
-	subject()
-},[url])
-//console.log(subjects);
+  useEffect(() => {
+    const subject = async () => {
+      const response = await axios.get(`${url}/subjects`);
+      setSubjects(response.data.subjects);
+    };
+    subject();
+  }, [url]);
+  //console.log(subjects);
 
+  useEffect(() => {
+    const filter = subjects.filter((item) => {
+      // Ensure class exists and has a value property
+      return item.class && item.class.value === selectedClass;
+    });
+    const sub = filter.map((item) => item.name);
+    console.log(sub);
+    setClassSub(sub);
+  }, [selectedClass]);
 
-useEffect(()=>{
-	const filter = subjects.filter((item) => {
-		// Ensure class exists and has a value property
-		return item.class && item.class.value === selectedClass;
-	  });
-	  const sub = filter.map((item) => item.name );
-	  console.log(sub);
-	  setClassSub(sub)
-},[selectedClass])
-  
-console.log(classSub);
-
-
+  console.log(classSub);
 
   const {
     control,
@@ -133,7 +129,7 @@ console.log(classSub);
   const handleClassChange = (value) => {
     setSelectedClass(value);
     setSelectedGroup("");
-	
+
     reset({
       ...control._defaultValues,
       class: value,
@@ -174,60 +170,62 @@ console.log(classSub);
     return [];
   };
 
-//   const onSubmit = async (data) => {
+  //   const onSubmit = async (data) => {
 
-//     console.log("Form submitted:", data);
-//     setIsLoading(true);
-//     navigate("/add-result/marks-input");
+  //     console.log("Form submitted:", data);
+  //     setIsLoading(true);
+  //     navigate("/add-result/marks-input");
 
-//     // try {
-//     // 	const response = await api.post('/result/create', data);
-//     // 	if (response.status === 201) {
-//     // 		toast.success('Result uploaded');
-//     // 		reset({
-//     // 			section: '',
-//     // 			shift: '',
-//     // 			session: '',
-//     // 			term: '',
-//     // 			rollFrom: '',
-//     // 			rollTo: '',
-//     // 			class: '',
-//     // 			group: '',
-//     // 			subject: '',
-//     // 			marks: '',
-//     // 		});
-//     // 		setSelectedClass('');
-//     // 		setSelectedGroup('');
-//     // 	} else {
-//     // 		throw new Error('Result Upload failed');
-//     // 	}
-//     // } catch (error) {
-//     // 	toast.error('Failed to upload results: ' + error.message);
-//     // } finally {
-//     // 	setIsLoading(false);
-//     // }
-//   };
+  //     // try {
+  //     // 	const response = await api.post('/result/create', data);
+  //     // 	if (response.status === 201) {
+  //     // 		toast.success('Result uploaded');
+  //     // 		reset({
+  //     // 			section: '',
+  //     // 			shift: '',
+  //     // 			session: '',
+  //     // 			term: '',
+  //     // 			rollFrom: '',
+  //     // 			rollTo: '',
+  //     // 			class: '',
+  //     // 			group: '',
+  //     // 			subject: '',
+  //     // 			marks: '',
+  //     // 		});
+  //     // 		setSelectedClass('');
+  //     // 		setSelectedGroup('');
+  //     // 	} else {
+  //     // 		throw new Error('Result Upload failed');
+  //     // 	}
+  //     // } catch (error) {
+  //     // 	toast.error('Failed to upload results: ' + error.message);
+  //     // } finally {
+  //     // 	setIsLoading(false);
+  //     // }
+  //   };
 
-const onSubmit = async (data) =>{
-	console.log(data);
-	
-	setIsLoading(true)
-	try {
-	const response = await gurdedApi.post(`${url}/get-student-by-roll-range`,data)
-		//toast.success("Subject created successfully");
-		console.log(response.data.data.length);
-		if(response.data.data.length>0) {
-			navigate("/add-result/marks-input",{state:{ students: response.data.data }})
-		}
-		
-	} catch (error) {
-		toast.error(
-			error.response?.data?.message || "Failed to create subject"
-		  );
-	} finally {
-		setIsLoading(false)
-	}
-}
+  const onSubmit = async (data) => {
+    console.log(data);
+
+    setIsLoading(true);
+    try {
+      const response = await gurdedApi.post(
+        `${url}/get-student-by-roll-range`,
+        data
+      );
+      //toast.success("Subject created successfully");
+      console.log(response.data.data.length);
+      if (response.data.data.length > 0) {
+        navigate("/add-result/marks-input", {
+          state: { students: response.data.data },
+        });
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to create subject");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const FormSelect = ({ label, name, options, onChange }) => (
     <div className="mb-4.5">
@@ -367,7 +365,7 @@ const onSubmit = async (data) =>{
                   />
                 </div>
               )}
-			   {/* <FormSelect
+            {/* <FormSelect
                     label="Select Subject"
                     name="subject"
                     options={classSub}

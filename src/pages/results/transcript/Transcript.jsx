@@ -64,11 +64,11 @@ const Transcript = () => {
           <div>
             <p>
               <span className="font-semibold">Student ID:</span>{" "}
-              {studentInfo.studentId}
+              {studentInfo?.studentId}
             </p>
             <p>
               <span className="font-semibold">Name:</span>{" "}
-              {studentInfo.firstName} {studentInfo.lastName}
+              {studentInfo.studentName}
             </p>
           </div>
 

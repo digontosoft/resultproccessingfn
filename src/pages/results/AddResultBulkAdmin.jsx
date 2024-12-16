@@ -316,7 +316,7 @@ const AddResultBulkAdmin = () => {
     register,
   } = useForm();
 
-  const shifts = ["morning", "day"];
+  const shifts = ["Morning", "Day"];
   const sessions = [currentYear, currentYear - 1, currentYear - 2];
   const terms = ["Final", "Half Yearly", "Pre Test", "Test"];
   const groups = ["General", "Science", "Humanities", "Business"];
@@ -331,24 +331,24 @@ const AddResultBulkAdmin = () => {
   };
 
   useEffect(() => {
-    const fetchSubjects = async () => {
-      try {
-        const response = await axios.get(`${url}/subjects`);
-        const data = response.data.subjects;
-        setTeacherSubjects(data);
-        setFilteredSubjects(data);
-      } catch (error) {
-        toast.error("Failed to fetch subjects");
-      }
-    };
-
     const fetchClasses = async () => {
       try {
         const response = await axios.get(`${url}/class`);
         const data = response.data.classes;
         setAllClass(data);
+        console.log("first", data);
       } catch (error) {
         toast.error("Failed to fetch classes");
+      }
+    };
+    const fetchSubjects = async () => {
+      try {
+        const response = await axios.get(`${url}/subjects`);
+        const data = response.data.subjects;
+        console.log("teacherSubjects", data);
+        setTeacherSubjects(data);
+      } catch (error) {
+        toast.error("Failed to fetch subjects");
       }
     };
 
@@ -357,6 +357,7 @@ const AddResultBulkAdmin = () => {
   }, [url]);
 
   const handleFilterChange = (classId) => {
+    console.log("first", classId);
     const filtered = teacherSubjects.filter(
       (subject) => subject.class._id === classId
     );
@@ -374,6 +375,7 @@ const AddResultBulkAdmin = () => {
       formData.append("shift", data.shift);
       formData.append("session", data.session);
       formData.append("term", data.term);
+      formData.append("group", data.group);
 
       const response = await fetch(`${url}/result/bulk-upload`, {
         method: "POST",
@@ -440,7 +442,6 @@ const AddResultBulkAdmin = () => {
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-8">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <FormSelect label="Section" name="section" options={["A", "B"]} />
               <div className="mb-4.5">
                 <label className="mb-3 block text-black dark:text-white">
                   Select Class
@@ -465,6 +466,12 @@ const AddResultBulkAdmin = () => {
                   </span>
                 )}
               </div>
+              <FormSelect label="Section" name="section" options={["A", "B"]} />
+
+              <FormSelect label="Shift" name="shift" options={shifts} />
+              <FormSelect label="Session" name="session" options={sessions} />
+              <FormSelect label="Term" name="term" options={terms} />
+              <FormSelect label="Group" name="group" options={groups} />
               <div className="mb-4.5">
                 <label className="mb-3 block text-black dark:text-white">
                   Select Subject
@@ -488,10 +495,6 @@ const AddResultBulkAdmin = () => {
                   </span>
                 )}
               </div>
-              <FormSelect label="Shift" name="shift" options={shifts} />
-              <FormSelect label="Session" name="session" options={sessions} />
-              <FormSelect label="Term" name="term" options={terms} />
-              <FormSelect label="Group" name="group" options={groups} />
             </div>
 
             <div className="mt-4">

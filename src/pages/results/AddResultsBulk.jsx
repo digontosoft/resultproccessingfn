@@ -38,9 +38,10 @@ const AddResultsBulk = () => {
     "Bangladesh and Global Studies",
     "Information and Communication Technology",
   ];
-  const shifts = ["morning", "day"];
+  const shifts = ["Morning", "Day"];
   const sessions = [currentYear, currentYear - 1, currentYear - 2];
   const terms = ["Final", "Half Yearly"];
+  const groups = ["General", "Science", "Humanities", "Business"];
 
   // Create sample data for Excel template
   const handleDownloadTemplate = () => {
@@ -128,6 +129,7 @@ const AddResultsBulk = () => {
       formData.append("shift", data.shift);
       formData.append("session", data.session);
       formData.append("term", data.term);
+      formData.append("group", data.group);
 
       const response = await fetch(`${url}/result/bulk-upload`, {
         method: "POST",
@@ -214,7 +216,6 @@ const AddResultsBulk = () => {
                   name="section"
                   options={["A", "B"]}
                 />
-                {/* <FormSelect label="Class" name="class" options={teacher_class} /> */}
                 <div className="mb-4.5">
                   <label className="mb-3 block text-black dark:text-white">
                     Select Class
@@ -265,6 +266,7 @@ const AddResultsBulk = () => {
                 <FormSelect label="Shift" name="shift" options={shifts} />
                 <FormSelect label="Session" name="session" options={sessions} />
                 <FormSelect label="Term" name="term" options={terms} />
+                <FormSelect label="Group" name="group" options={groups} />
               </div>
 
               <div className="mt-4">
