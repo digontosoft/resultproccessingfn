@@ -3,6 +3,7 @@ import useAuth from "../hooks/useAuth";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { gurdedApi } from "../api";
 
 const Profile = () => {
   const { auth } = useAuth();
@@ -38,26 +39,42 @@ const Profile = () => {
 
     fetchUser();
   }, [baseUrl, auth._id, reset]);
-
   const onSubmit = async (data) => {
     try {
-      const response = await axios.post(
-        `${baseUrl}/teacher-reg`,
-        { ...data },
-        {
-          headers: {
-            Authorization: `Bearer ${auth.authToken}`,
-          },
-        }
-      );
-      if (response.status === 200) {
-        toast.success("Profile updated successfully");
-        setIsEditing(false);
-      }
+      //console.log(`${baseUrl}/teacher/${auth._id}`);
+      const response = await gurdedApi.put(`${baseUrl}/teacher/${auth._id}`, data);
+     if(response.status===200) {
+      toast.success("Profile updated successfully");
+         setIsEditing(false);
+     }
     } catch (error) {
       console.error("Error updating profile:", error);
     }
   };
+
+  // const onSubmit = async (data) => {
+  //   console.log(baseUrl);
+
+  //   try {
+  //     const response = await axios.post(
+  //       `${baseUrl}/teacher/${auth._id}`,
+  //       data ,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${auth.authToken}`,
+  //         },
+  //       }
+  //     );
+  //     console.log(response);
+
+  //     if (response.status === 200) {
+  //       toast.success("Profile updated successfully");
+  //       setIsEditing(false);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error updating profile:", error);
+  //   }
+  // };
 
   const handleCancel = () => {
     reset(profile); // Reset form to original values
@@ -66,17 +83,17 @@ const Profile = () => {
 
   const handleResetPassword = async (data) => {
     try {
-      const response = await axios.post(`${baseUrl}/reset-password`, data, {
-        headers: {
-          Authorization: `Bearer ${auth.authToken}`,
-        },
-      });
+      const response = await axios.put(`${baseUrl}/change-password/${auth._id}`, data
+      );
       if (response.status === 200) {
         toast.success("Password reset successfully");
         setShowResetPassword(false);
         resetResetForm(); // Clear reset password form
       }
     } catch (error) {
+      if(error.status===400){
+        toast.error("Current password is incorrect")
+      }
       console.error("Error resetting password:", error);
     }
   };
@@ -100,7 +117,7 @@ const Profile = () => {
             {/* First Name and Position */}
             <div className="w-full">
               <label className="block text-sm font-medium mb-2 text-gray-700">
-                First Name
+                Name
               </label>
               <input
                 type="text"
@@ -140,20 +157,20 @@ const Profile = () => {
             {/* Last Name and Subject */}
             <div className="w-full">
               <label className="block text-sm font-medium mb-2 text-gray-700">
-                Last Name
+                User Name
               </label>
               <input
                 type="text"
-                {...register("lastName", { required: "Last name is required" })}
+                {...register("username", { required: "Last name is required" })}
                 disabled={!isEditing}
                 className={`w-full border p-2 rounded-md ${
                   isEditing ? "bg-white" : "bg-gray-3"
                 }`}
-                placeholder="Enter Last Name"
+                placeholder="Enter User name"
               />
               {errors.lastName && (
                 <p className="text-red-500 text-sm mt-1">
-                  {errors.lastName.message}
+                  {errors.username.message}
                 </p>
               )}
               <label className="block text-sm font-medium mb-2 mt-4 text-gray-700">
@@ -262,6 +279,24 @@ const Profile = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div>
                   <label className="block text-sm font-medium mb-2 text-gray-700">
+                  Current Password
+                  </label>
+                  <input
+                    type="password"
+                    {...resetRegister("currentPassword", {
+                      required: "Current Password is required",
+                    })}
+                    className="w-full border p-2 rounded-md"
+                    placeholder="Enter current Password Password"
+                  />
+                  {resetErrors.currentPassword && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {resetErrors.currentPassword.message}
+                    </p>
+                  )}
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-2 text-gray-700">
                     New Password
                   </label>
                   <input
@@ -278,7 +313,7 @@ const Profile = () => {
                     </p>
                   )}
                 </div>
-                <div>
+                 {/* <div>
                   <label className="block text-sm font-medium mb-2 text-gray-700">
                     Confirm Password
                   </label>
@@ -298,7 +333,7 @@ const Profile = () => {
                       {resetErrors.confirmPassword.message}
                     </p>
                   )}
-                </div>
+                </div>  */}
               </div>
               <div className="flex justify-end gap-4 mt-4">
                 <button
