@@ -10,53 +10,6 @@ const currentYear = new Date().getFullYear();
 const sessions = [currentYear, currentYear - 1, currentYear - 2];
 const terms = ["Half Yearly", "Annual", "Pretest", "Test", "Model Test"];
 
-const SUBJECTS = {
-  JUNIOR: [
-    "Bangla",
-    "English",
-    "Mathematics",
-    "Science",
-    "Bangladesh and Global Studies",
-    "Islam and moral education",
-  ],
-  COMMON_9_10: [
-    "Bangla 1st",
-    "Bangla 2nd",
-    "English 1st",
-    "English 2nd",
-    "Mathematics",
-    "Islam and moral education",
-    "Bangladesh and Global studies",
-    "Information and communication technology",
-  ],
-  COMMON_6_8: [
-    "Bangla 1st",
-    "Bangla 2nd",
-    "English 1st",
-    "English 2nd",
-    "Mathematics",
-    "Islam and moral education",
-    "Bangladesh and Global studies",
-    "Information and communication technology",
-  ],
-  SCIENCE: ["Physics", "Chemistry", "Biology", "Higher Mathematics"],
-  ARTS: [
-    "Geography",
-    "Civic & Citizenship",
-    "Economics",
-    "General Science",
-    "History of Bangladesh",
-    "Agriculture studies",
-  ],
-  COMMERCE: [
-    "Finance and banking",
-    "Accounting",
-    "Business Ent.",
-    "General Science",
-    "Agriculture studies",
-  ],
-};
-
 const AddResult = () => {
   const { gurdedApi } = useAxios();
   const [selectedClass, setSelectedClass] = useState("");
@@ -67,6 +20,7 @@ const AddResult = () => {
   const url = import.meta.env.VITE_SERVER_BASE_URL;
   const [subjects, setSubjects] = useState([]);
   const [classSub, setClassSub] = useState([]);
+  const [filteredSubjects, setFilteredSubjects] = useState([]);
 
   const { register } = useForm();
 
@@ -88,10 +42,24 @@ const AddResult = () => {
     const subject = async () => {
       const response = await axios.get(`${url}/subjects`);
       setSubjects(response.data.subjects);
+      console.log("subjects:", response.data.subjects);
     };
     subject();
   }, [url]);
   //console.log(subjects);
+
+  const handleFilterChange = (classId) => {
+    console.log("Selected classId:", classId);
+
+    // Filter the subjects based on the selected classId
+    const filtered = subjects.filter(
+      (subject) => subject.class._id === classId
+    );
+
+    // Update the state with the filtered subjects
+    setFilteredSubjects(filtered);
+    console.log("Filtered subjects:", filtered);
+  };
 
   useEffect(() => {
     const filter = subjects.filter((item) => {
@@ -168,40 +136,6 @@ const AddResult = () => {
     }
     return [];
   };
-
-  //   const onSubmit = async (data) => {
-
-  //     console.log("Form submitted:", data);
-  //     setIsLoading(true);
-  //     navigate("/add-result/marks-input");
-
-  //     // try {
-  //     // 	const response = await api.post('/result/create', data);
-  //     // 	if (response.status === 201) {
-  //     // 		toast.success('Result uploaded');
-  //     // 		reset({
-  //     // 			section: '',
-  //     // 			shift: '',
-  //     // 			session: '',
-  //     // 			term: '',
-  //     // 			rollFrom: '',
-  //     // 			rollTo: '',
-  //     // 			class: '',
-  //     // 			group: '',
-  //     // 			subject: '',
-  //     // 			marks: '',
-  //     // 		});
-  //     // 		setSelectedClass('');
-  //     // 		setSelectedGroup('');
-  //     // 	} else {
-  //     // 		throw new Error('Result Upload failed');
-  //     // 	}
-  //     // } catch (error) {
-  //     // 	toast.error('Failed to upload results: ' + error.message);
-  //     // } finally {
-  //     // 	setIsLoading(false);
-  //     // }
-  //   };
 
   const onSubmit = async (data) => {
     console.log(data);
@@ -284,7 +218,7 @@ const AddResult = () => {
                 </label>
                 <select
                   {...register("class", { required: "Please select a class" })}
-                  // onChange={(e) => handleFilterChange(e.target.value)}
+                  onChange={(e) => handleFilterChange(e.target.value)}
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 >
                   <option value="" hidden>
@@ -317,11 +251,33 @@ const AddResult = () => {
               <FormSelect label="Shift" name="shift" options={shifts} />
               <FormSelect label="Session" name="session" options={sessions} />
               <FormSelect label="Term" name="term" options={terms} />
-              <FormSelect
-                label="Select Subject"
-                name="subject"
-                options={classSub}
-              />
+              <div className="mt-4.5">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Select Subject
+                </label>
+                <select
+                  {...register("subject", {
+                    required: "Subject is required",
+                  })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md  focus:outline-none focus:ring-1 focus:ring-blue-500"
+                >
+                  <option value="" disabled>
+                    Select Subject
+                  </option>
+                  {filteredSubjects.map((subject) => (
+                    <>
+                      <option key={subject._id} value={subject._id}>
+                        {subject.name}
+                      </option>
+                    </>
+                  ))}
+                </select>
+                {errors.userType && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.userType.message}
+                  </p>
+                )}
+              </div>
 
               <div className="">
                 <label className="mb-3 block text-black dark:text-white">
