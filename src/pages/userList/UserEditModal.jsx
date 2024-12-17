@@ -14,7 +14,7 @@ const UserEditModal = ({ profile, onClose, onSubmit, onChange }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Personal Information */}
           <div>
-            <label className="block mb-2 text-sm font-medium">First Name</label>
+            <label className="block mb-2 text-sm font-medium">Name</label>
             <input
               type="text"
               value={profile?.firstName}
@@ -25,39 +25,26 @@ const UserEditModal = ({ profile, onClose, onSubmit, onChange }) => {
             />
           </div>
           <div>
-            <label className="block mb-2 text-sm font-medium">Last Name</label>
+            <label className="block mb-2 text-sm font-medium">Permission</label>
             <input
               type="text"
-              value={profile?.lastName}
-              onChange={(e) =>
-                onChange({ ...profile, lastName: e.target.value })
-              }
+              value={profile?.class_id?.name}
+              // onChange={(e) =>
+              //   onChange({ ...profile, designation: e.target.value })
+              // }
               className="border rounded p-2 w-full mb-4"
-            />
-          </div>
-
-          <div>
-            <label className="block mb-2 text-sm font-medium">
-              Designation
-            </label>
-            <input
-              type="text"
-              value={profile?.designation}
-              onChange={(e) =>
-                onChange({ ...profile, designation: e.target.value })
-              }
-              className="border rounded p-2 w-full mb-4"
+              disabled
             />
           </div>
           <div>
-            <label className="block mb-2 text-sm font-medium">position</label>
+            <label className="block mb-2 text-sm font-medium">Role</label>
             <input
               type="text"
-              value={profile?.position}
+              value={profile?.userType}
               onChange={(e) =>
                 onChange({ ...profile, position: e.target.value })
               }
-              className="border rounded p-2 w-full mb-4"
+              className="border rounded p-2 w-full mb-4 capitalize"
             />
           </div>
 
@@ -68,18 +55,6 @@ const UserEditModal = ({ profile, onClose, onSubmit, onChange }) => {
               value={profile?.phoneNumber}
               onChange={(e) =>
                 onChange({ ...profile, phoneNumber: e.target.value })
-              }
-              className="border rounded p-2 w-full mb-4"
-            />
-          </div>
-
-          <div>
-            <label className="block mb-2 text-sm font-medium">Subject</label>
-            <input
-              type="text"
-              value={profile?.subject}
-              onChange={(e) =>
-                onChange({ ...profile, subject: e.target.value })
               }
               className="border rounded p-2 w-full mb-4"
             />

@@ -80,9 +80,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
       label: "Manage Users",
       icon: "/users.svg",
       links: [
-        { to: "/add-user", label: "Add User" },
+        // { to: "/add-user", label: "Add User" },
         { to: "/user-list", label: "User List" },
-        { to: "/manage-users", label: "Manage Users" },
+        // { to: "/manage-users", label: "Manage Users" },
       ],
       activeCondition:
         pathname.includes === "user" || pathname.includes("dashboard"),
@@ -93,8 +93,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
       links: [
         { to: "/subject-entry", label: "Subject Entry" },
         { to: "/subject-List", label: "Subject List" },
-        { to: "/teachers", label: "Assign Subject" },
-        { to: "/teachers-subjects", label: "Subject Assign List" },
+        // { to: "/teachers", label: "Assign Subject" },
+        // { to: "/teachers-subjects", label: "Subject Assign List" },
       ],
       activeCondition:
         pathname.includes === "settings" || pathname.includes("dashboard"),

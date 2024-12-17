@@ -16,6 +16,7 @@ const UserList = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [openModal, setOpenModal] = useState(false);
+  const [classes, setClasses] = useState([]);
   const [selectedProfile, setSelectedProfile] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -27,7 +28,7 @@ const UserList = () => {
       setIsLoading(true);
       setError(null);
       // const response = await gurdedApi.get("/users");
-      const response = await axios.get(`${baseUrl}/users?userType=teacher`, {
+      const response = await axios.get(`${baseUrl}/users`, {
         headers: {
           Authorization: `Bearer ${authToken}`,
         },
@@ -47,6 +48,20 @@ const UserList = () => {
   useEffect(() => {
     getUsers();
   }, []);
+
+  useEffect(() => {
+    const fetchClasses = async () => {
+      try {
+        const response = await axios.get(`${baseUrl}/class`);
+        const classNames = response.data.classes;
+        setClasses(classNames);
+      } catch (error) {
+        toast.error("Failed to fetch classes");
+      }
+    };
+
+    fetchClasses();
+  }, [baseUrl]);
 
   const handleView = (profile) => {
     setSelectedProfile(profile);

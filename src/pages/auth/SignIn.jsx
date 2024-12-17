@@ -86,7 +86,7 @@ const SignIn = () => {
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="mb-4">
                 <label className="mb-2.5 block font-medium text-black">
-                Email or Username
+                  Phone Number or Username
                 </label>
                 <div className="relative">
                   <input
@@ -167,14 +167,14 @@ const SignIn = () => {
 							Sign in with Google
 						</button> */}
 
-            <div className="mt-6 text-center">
+            {/* <div className="mt-6 text-center">
               <p>
                 Don’t have any account?{" "}
                 <Link to="/auth/signup" className="text-primary">
                   Sign Up
                 </Link>
               </p>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
