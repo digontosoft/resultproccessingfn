@@ -30,6 +30,8 @@ const AddUser = () => {
     fetchClasses();
   }, [baseUrl]);
 
+  //console.log(classes);
+  
   const onSubmit = async (data) => {
     setIsLoading(true);
     try {
@@ -79,21 +81,21 @@ const AddUser = () => {
                 </div>
                 <div className="mb-4">
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    User Name
+                  phoneNumber
                   </label>
                   <input
                     type="text"
-                    {...register("username", {
-                      required: "User Name is required",
+                    {...register("phoneNumber", {
+                      required: "Phone Number is required",
                     })}
                     className={`w-full px-3 py-2 border ${
-                      errors.userame ? "border-red-500" : "border-gray-300"
+                      errors.phoneNumber ? "border-red-500" : "border-gray-300"
                     } rounded-md  focus:outline-none focus:ring-1 focus:ring-blue-500`}
                     placeholder="Enter username"
                   />
-                  {errors.username && (
+                  {errors.phoneNumber && (
                     <p className="text-red-500 text-sm mt-1">
-                      {errors.username.message}
+                      {errors.phoneNumber.message}
                     </p>
                   )}
                 </div>
