@@ -3,12 +3,15 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import useAxios from "../../hooks/useAxios";
+import axios from "axios";
 
 const AddStudents = () => {
   const { gurdedApi } = useAxios();
   const [configs, setConfigs] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const [classes, setClasses] = useState([]);
+  const url = import.meta.env.VITE_SERVER_BASE_URL;
   const {
     register,
     handleSubmit,
@@ -32,23 +35,19 @@ const AddStudents = () => {
 
     fetchConfigs();
   }, [gurdedApi]);
+  useEffect(() => {
+    const fetchClasses = async () => {
+      try {
+        const response = await axios.get(`${url}/class`);
+        const classNames = response.data.classes;
+        setClasses(classNames);
+      } catch (error) {
+        toast.error("Failed to fetch classes");
+      }
+    };
 
-  // const onSubmit = async (data) => {
-  //   // console.log(data);
-
-  //   try {
-  //     const response = await gurdedApi.post("/addStudentData", { ...data });
-  //     console.log({ response });
-
-  //     if (response.status === 200) {
-  //       toast.success("Student added successfully");
-  //       reset();
-  //     }
-  //   } catch (error) {
-  //     console.error(error.response.data.message);
-  //     toast.error(`Error: ${error.response.data.message}`);
-  //   }
-  // };
+    fetchClasses();
+  }, [url]);
 
   const onSubmit = async (data) => {
     console.log("first:", data);
@@ -165,11 +164,30 @@ const AddStudents = () => {
               name="mobile"
               placeholder="Enter Phone Number"
             />
-            <SelectField
-              label="Class"
-              name="class"
-              options={dropdownOptions.class}
-            />
+            <div>
+              <label className="mb-3 block text-black dark:text-white">
+                Select Class
+              </label>
+              <select
+                {...register("class", { required: "Please select a class" })}
+                // onChange={(e) => handleFilterChange(e.target.value)}
+                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+              >
+                <option value="" hidden>
+                  Select Class
+                </option>
+                {classes.map((option) => (
+                  <option key={option._id} value={option._id}>
+                    {option.name}
+                  </option>
+                ))}
+              </select>
+              {errors.class && (
+                <span className="text-red-500 text-sm mt-1">
+                  {errors.class.message}
+                </span>
+              )}
+            </div>
             <SelectField
               label="Section"
               name="section"

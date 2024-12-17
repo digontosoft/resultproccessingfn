@@ -55,11 +55,12 @@ const AppRoutes = () => {
     { path: "/subject-entry", element: <SubjectEntry /> },
     { path: "/subject-list", element: <SubjectList /> },
     { path: "/teachers-subjects", element: <TeacherSubjectListAdmin /> },
+    { path: "/add-user", element: <AddUser /> },
   ];
 
   // Admin routes
   const adminOnlyRoutes = [
-    { path: "/add-user", element: <AddUser /> },
+    // { path: "/add-user", element: <AddUser /> },
     { path: "/user-list", element: <UserList /> },
     { path: "/manage-users", element: <ManageUsers /> },
   ];

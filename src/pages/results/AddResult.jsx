@@ -278,12 +278,6 @@ const AddResult = () => {
         <div className="p-6.5">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {/* <FormSelect
-                label="Select Class"
-                name="class"
-                onChange={handleClassChange}
-                options={classes}
-              /> */}
               <div className="mb-4.5">
                 <label className="mb-3 block text-black dark:text-white">
                   Select Class
@@ -323,6 +317,11 @@ const AddResult = () => {
               <FormSelect label="Shift" name="shift" options={shifts} />
               <FormSelect label="Session" name="session" options={sessions} />
               <FormSelect label="Term" name="term" options={terms} />
+              <FormSelect
+                label="Select Subject"
+                name="subject"
+                options={classSub}
+              />
 
               <div className="">
                 <label className="mb-3 block text-black dark:text-white">
@@ -372,35 +371,15 @@ const AddResult = () => {
                 )}
               </div>
             </div>
-
-            {selectedClass &&
-              (selectedGroup || ["4", "5"].includes(selectedClass)) && (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <FormSelect
-                    label="Select Subject"
-                    name="subject"
-                    options={classSub}
-                  />
-                </div>
-              )}
-            {/* <FormSelect
-                    label="Select Subject"
-                    name="subject"
-                    options={classSub}
-                  /> */}
-
-            {selectedClass &&
-              (selectedGroup || ["4", "5"].includes(selectedClass)) && (
-                <button
-                  type="submit"
-                  disabled={isLoading}
-                  className={`inline-flex items-center justify-center bg-primary py-3 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 ${
-                    isLoading ? "opacity-50 cursor-not-allowed" : ""
-                  }`}
-                >
-                  {isLoading ? "Submitting..." : "Submit Result"}
-                </button>
-              )}
+            <button
+              type="submit"
+              disabled={isLoading}
+              className={`inline-flex items-center justify-center bg-primary py-3 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 ${
+                isLoading ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+            >
+              {isLoading ? "Submitting..." : "Submit Result"}
+            </button>
           </form>
         </div>
       </div>
