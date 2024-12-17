@@ -86,20 +86,20 @@ const SignIn = () => {
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="mb-4">
                 <label className="mb-2.5 block font-medium text-black">
-                  Email
+                Email or Username
                 </label>
                 <div className="relative">
                   <input
-                    {...register("email", {
-                      required: "Email is required",
-                      pattern: {
-                        value:
-                          /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-                        message: "Enter a valid email address",
-                      },
+                    {...register("emailOrUsername", {
+                      required: "Email or Username is required",
+                      // pattern: {
+                      //   value:
+                      //     /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+                      //   message: "Enter a valid email address",
+                      // },
                     })}
-                    type="email"
-                    placeholder="Enter your email"
+                    type="text"
+                    placeholder="Enter your email Or Username"
                     className={`w-full rounded-lg border ${
                       errors.email ? "border-red-500" : "border-stroke"
                     } bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary`}
