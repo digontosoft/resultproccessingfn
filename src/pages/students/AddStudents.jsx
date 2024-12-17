@@ -113,7 +113,9 @@ const AddStudents = () => {
         {...register(name, { required: `${label} is required` })}
         className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
       >
-        <option value="">Select {label}</option>
+        <option value="" disabled>
+          Select {label}
+        </option>
         {options.map((option) => (
           <option key={option.key} value={option.value}>
             {option.key}
@@ -185,13 +187,15 @@ const AddStudents = () => {
             /> */}
             <div>
               <label className="mb-3 block text-black dark:text-white">
-                Gender
+                Group
               </label>
               <select
-                {...register("group", { required: "Gender is required" })}
+                {...register("group", { required: "Group is required" })}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               >
-                <option value="">Select Gender</option>
+                <option value="" disabled>
+                  Select Group
+                </option>
                 <option value="General">General</option>
                 <option value="Science">Science</option>
                 <option value="Commerce">Bussines</option>
@@ -211,19 +215,9 @@ const AddStudents = () => {
                 {...register("gender", { required: "Gender is required" })}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               >
-                <option value="">Select Gender</option>
-                <option value="Female">Female</option>
-              </select>
-            </div>
-            <div>
-              <label className="mb-3 block text-black dark:text-white">
-                Gender
-              </label>
-              <select
-                {...register("gender", { required: "Gender is required" })}
-                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-              >
-                <option value="">Select Gender</option>
+                <option value="" disabled>
+                  Select Gender
+                </option>
                 <option value="Female">Female</option>
               </select>
             </div>
