@@ -90,8 +90,8 @@ const SignIn = () => {
                 </label>
                 <div className="relative">
                   <input
-                    {...register("emailOrUsername", {
-                      required: "Email or Username is required",
+                    {...register("phoneNumber", {
+                      required: "phone Number is required",
                       // pattern: {
                       //   value:
                       //     /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
@@ -99,18 +99,18 @@ const SignIn = () => {
                       // },
                     })}
                     type="text"
-                    placeholder="Enter your email Or Username"
+                    placeholder="Enter your phoneNumber"
                     className={`w-full rounded-lg border ${
-                      errors.email ? "border-red-500" : "border-stroke"
+                      errors.phoneNumber ? "border-red-500" : "border-stroke"
                     } bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary`}
                   />
                   {/* <span className="absolute right-4 top-4">
 										<img src="/mail.svg" stroke={1.25} />
 									</span> */}
                 </div>
-                {errors.email && (
+                {errors.phoneNumber && (
                   <p className="mt-1 text-red-500 text-sm">
-                    {errors.email.message}
+                    {errors.phoneNumber.message}
                   </p>
                 )}
               </div>
