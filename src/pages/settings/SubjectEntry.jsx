@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { GridLoader } from "react-spinners";
 import { toast } from "react-toastify";
 
 const groups = ["general", "science", "humanities", "business"];
@@ -9,6 +10,7 @@ const SubjectEntry = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [classes, setClasses] = useState([]);
   const url = import.meta.env.VITE_SERVER_BASE_URL;
+
   const {
     control,
     handleSubmit,
@@ -20,9 +22,8 @@ const SubjectEntry = () => {
     const fetchClasses = async () => {
       try {
         const response = await axios.get(`${url}/class`);
-        console.log("classes:", response.data.classes);
-        const classNames = response.data.classes.map(
-          (item) => (typeof item === "string" ? item : item.name) // Adjust as per API data structure
+        const classNames = response.data.classes.map((item) =>
+          typeof item === "string" ? item : item.name
         );
         setClasses(classNames);
       } catch (error) {
@@ -36,23 +37,12 @@ const SubjectEntry = () => {
   const onSubmit = async (data) => {
     setIsLoading(true);
     try {
-      // Attempt to create the subject
+      // Simulated API call
       await axios.post(`${url}/create-subject`, data);
       toast.success("Subject created successfully");
-      // reset();
+      reset();
     } catch (error) {
-      if (
-        error.response?.data?.message ===
-        "Subject with the same name and code already exists"
-      ) {
-        // Show a toast if the backend returns a duplicate error
-        toast.error("This subject already exists in the selected class.");
-      } else {
-        // Handle other errors
-        toast.error(
-          error.response?.data?.message || "Failed to create subject"
-        );
-      }
+      toast.error("Failed to create subject");
     } finally {
       setIsLoading(false);
     }
@@ -109,46 +99,68 @@ const SubjectEntry = () => {
     </div>
   );
 
+  const FormCheckbox = ({ label, name }) => (
+    <div className="mb-4 flex items-center">
+      <Controller
+        name={name}
+        control={control}
+        render={({ field }) => (
+          <input
+            {...field}
+            type="checkbox"
+            checked={field.value || false}
+            onChange={(e) => field.onChange(e.target.checked)}
+            className="mr-2 w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+          />
+        )}
+      />
+      <label className="text-black dark:text-white">{label}</label>
+    </div>
+  );
+
   return (
-    <div className="p-6 bg-white border rounded shadow dark:bg-gray-900 dark:border-gray-700">
-      <h3 className="text-lg font-bold mb-4 text-black dark:text-white">
-        Create Subject
-      </h3>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <FormInput
-          label="Subject Name"
-          name="name"
-          placeholder="Enter subject name"
-        />
-        <FormInput
-          label="Subject Code"
-          name="subjectCode"
-          placeholder="Enter subject code"
-        />
-         <FormInput
-          label="Year"
-          name="year"
-          //type="number"
-          placeholder="Enter year"
-        />
-        <FormInput
-          label="Marks"
-          name="marks"
-          type="number"
-          placeholder="Enter marks"
-        />
-        <FormSelect label="Class" name="class" options={classes} />
-        <FormSelect label="Group" name="group" options={groups} />
-        <button
-          type="submit"
-          disabled={isLoading}
-          className={`w-full py-2 mt-4 text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none ${
-            isLoading ? "opacity-50 cursor-not-allowed" : ""
-          }`}
-        >
-          {isLoading ? "Submitting..." : "Submit"}
-        </button>
-      </form>
+    <div className="relative">
+      {isLoading && (
+        <div className="fixed top-[40%] left-[50%] h-40 w-40 rounded-md bg-gray-200 bg-opacity-50 flex justify-center items-center z-50 backdrop-blur-sm">
+          <GridLoader color="#3B82F6" />
+        </div>
+      )}
+      <div className="p-6 bg-white border rounded shadow dark:bg-gray-900 dark:border-gray-700">
+        <h3 className="text-lg font-bold mb-4 text-black dark:text-white">
+          Create Subject
+        </h3>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <FormInput
+            label="Subject Name"
+            name="name"
+            placeholder="Enter subject name"
+          />
+          <FormInput
+            label="Subject Code"
+            name="subjectCode"
+            placeholder="Enter subject code"
+          />
+          <FormInput label="Year" name="year" placeholder="Enter year" />
+          <FormInput
+            label="Marks"
+            name="marks"
+            type="number"
+            placeholder="Enter marks"
+          />
+          <FormSelect label="Class" name="class" options={classes} />
+          <FormSelect label="Group" name="group" options={groups} />
+          <FormCheckbox label="Is 4th Subject?" name="isFourthSubject" />
+          <button
+            type="submit"
+            disabled={isLoading}
+            className={`w-full py-2 mt-4 text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none ${
+              isLoading ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+          >
+            {isLoading ? "Submitting..." : "Submit"}
+          </button>
+        </form>
+      </div>
     </div>
   );
 };
