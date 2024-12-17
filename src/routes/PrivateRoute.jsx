@@ -6,7 +6,7 @@ const PrivateRoutes = () => {
 
 	return (
 		<>
-			{auth?.email ? (
+			{auth?.phoneNumber ? (
 				<>
 					<Outlet />
 				</>
