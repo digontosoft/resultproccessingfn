@@ -31,7 +31,7 @@ const AddUser = () => {
   }, [baseUrl]);
 
   //console.log(classes);
-  
+
   const onSubmit = async (data) => {
     setIsLoading(true);
     try {
@@ -86,18 +86,15 @@ const AddUser = () => {
                   <input
                     type="text"
                     {...register("phoneNumber", {
-                      required: "User Name is required",
+                      required: "Phone Number is required",
                     })}
                     className={`w-full px-3 py-2 border ${
                       errors.phoneNumber ? "border-red-500" : "border-gray-300"
-                      errors.phoneNumber ? "border-red-500" : "border-gray-300"
-                    } rounded-md  focus:outline-none focus:ring-1 focus:ring-blue-500`}
+                    } rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500`}
                     placeholder="Enter Phone Number"
                   />
                   {errors.phoneNumber && (
-                  {errors.phoneNumber && (
                     <p className="text-red-500 text-sm mt-1">
-                      {errors.phoneNumber.message}
                       {errors.phoneNumber.message}
                     </p>
                   )}
