@@ -26,13 +26,12 @@ import GetResult from "../pages/results/GetResult/GetResult";
 import MarksInput from "../pages/results/MarksInput";
 import Transcript from "../pages/results/transcript/Transcript";
 import ResultSummary from "../pages/ResultSummary/ResultSummary";
+import SubjectEntry from "../pages/settings/SubjectEntry";
+import SubjectList from "../pages/settings/SubjectList";
+import TeacherSubjectListAdmin from "../pages/settings/TeacherSubjectListAdmin";
 import TabulationSheet from "../pages/TabulationSheet/TabulationSheet";
 import TeacherList from "../pages/Teachers/TeacherList";
 import PrivateRoute from "./PrivateRoute";
-import SubjectList from "../pages/settings/SubjectList";
-import SubjectEntry from "../pages/settings/SubjectEntry";
-import TeacherSubjectList from "../pages/settings/TeacherSubjectList";
-import TeacherSubjectListAdmin from "../pages/settings/TeacherSubjectListAdmin";
 
 const AppRoutes = () => {
   const { auth } = useAuth();

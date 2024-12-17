@@ -1,10 +1,10 @@
-import Transcript from './transcript/Transcript';
+import Transcript from "./transcript/Transcript";
 
 const ResultList = () => {
-	return (
-		<div>
-			<Transcript />
-		</div>
-	);
+  return (
+    <div>
+      <Transcript />
+    </div>
+  );
 };
 export default ResultList;

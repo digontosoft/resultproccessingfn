@@ -5,10 +5,10 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import useAxios from "../../hooks/useAxios";
 
-const shifts = ["morning", "day"];
+const shifts = ["Morning", "Day"];
 const currentYear = new Date().getFullYear();
 const sessions = [currentYear, currentYear - 1, currentYear - 2];
-const terms = ["Final", "Half Yearly"];
+const terms = ["Half Yearly", "Annual", "Pretest", "Test", "Model Test"];
 
 const SUBJECTS = {
   JUNIOR: [
@@ -68,14 +68,13 @@ const AddResult = () => {
   const [subjects, setSubjects] = useState([]);
   const [classSub, setClassSub] = useState([]);
 
+  const { register } = useForm();
+
   useEffect(() => {
     const fetchClasses = async () => {
       try {
         const response = await axios.get(`${url}/class`);
-        //console.log("classes:", response.data.classes);
-        const classNames = response.data.classes.map(
-          (item) => (typeof item === "string" ? item : item.value) // Adjust as per API data structure
-        );
+        const classNames = response.data.classes;
         setClasses(classNames);
       } catch (error) {
         toast.error("Failed to fetch classes");
@@ -278,29 +277,48 @@ const AddResult = () => {
 
         <div className="p-6.5">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <FormSelect
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {/* <FormSelect
                 label="Select Class"
                 name="class"
                 onChange={handleClassChange}
                 options={classes}
+              /> */}
+              <div className="mb-4.5">
+                <label className="mb-3 block text-black dark:text-white">
+                  Select Class
+                </label>
+                <select
+                  {...register("class", { required: "Please select a class" })}
+                  // onChange={(e) => handleFilterChange(e.target.value)}
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                >
+                  <option value="" hidden>
+                    Select Class
+                  </option>
+                  {classes.map((option) => (
+                    <option key={option._id} value={option._id}>
+                      {option.name}
+                    </option>
+                  ))}
+                </select>
+                {errors.class && (
+                  <span className="text-red-500 text-sm mt-1">
+                    {errors.class.message}
+                  </span>
+                )}
+              </div>
+              <FormSelect
+                label="Select Group"
+                name="group"
+                onChange={handleGroupChange}
+                options={[
+                  { value: "General", label: "General" },
+                  { value: "Science", label: "Science" },
+                  { value: "Humanities", label: "Humanities" },
+                  { value: "Commerce", label: "Commerce" },
+                ]}
               />
-
-              {["9", "10"].includes(selectedClass) && (
-                <FormSelect
-                  label="Select Group"
-                  name="group"
-                  onChange={handleGroupChange}
-                  options={[
-                    { value: "science", label: "Science" },
-                    { value: "arts", label: "Arts" },
-                    { value: "commerce", label: "Commerce" },
-                  ]}
-                />
-              )}
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               <FormSelect label="Section" name="section" options={["A", "B"]} />
               <FormSelect label="Shift" name="shift" options={shifts} />
               <FormSelect label="Session" name="session" options={sessions} />
