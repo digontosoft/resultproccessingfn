@@ -4,6 +4,7 @@ import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import useAxios from "../../hooks/useAxios";
+import useSingleUser from "../../hooks/useSingleUser";
 
 const shifts = ["Morning", "Day"];
 const currentYear = new Date().getFullYear();
@@ -21,7 +22,7 @@ const AddResult = () => {
   const [subjects, setSubjects] = useState([]);
   const [classSub, setClassSub] = useState([]);
   const [filteredSubjects, setFilteredSubjects] = useState([]);
-
+  const {getUser} = useSingleUser()
   const { register } = useForm();
 
   useEffect(() => {
@@ -29,14 +30,20 @@ const AddResult = () => {
       try {
         const response = await axios.get(`${url}/class`);
         const classNames = response.data.classes;
-        setClasses(classNames);
+        
+          setClasses(classNames);
+
+        
       } catch (error) {
         toast.error("Failed to fetch classes");
       }
     };
 
     fetchClasses();
-  }, [url]);
+  }, [url,getUser]);
+
+  
+  
 
   useEffect(() => {
     const subject = async () => {

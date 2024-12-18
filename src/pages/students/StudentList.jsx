@@ -19,12 +19,10 @@ const StudentList = () => {
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
-  const {getUser,loading} = useSingleUser()
-  const [filterStudent,setFilterStudent] = useState([])
-  
-console.log(getUser);
+  const { getUser, loading } = useSingleUser();
+  const [filterStudent, setFilterStudent] = useState([]);
 
-  
+  console.log(getUser);
 
   const getStudents = async () => {
     try {
@@ -33,7 +31,7 @@ console.log(getUser);
       const response = await gurdedApi.get("/getAllStudent");
 
       if (response.status === 200) {
-        //const data = 
+        //const data =
         setStudents(response.data.data);
         //console.log("students:", response.data.data);
       }
@@ -108,14 +106,17 @@ console.log(getUser);
     }
   };
 
-  useEffect(()=>{
-    if(students) {
-      const data =  students.filter((item)=>item.class===getUser.class_id.name)
-      setFilterStudent(data)
+  useEffect(() => {
+    if (students) {
+      const data = students.filter(
+        (item) =>
+          item.class === getUser.class_id.name &&
+          item.section === getUser.section &&
+          item.shift === getUser.shift
+      );
+      setFilterStudent(data);
     }
-  },[getUser])
-  
-  
+  }, [getUser]);
 
   if (isLoading) return <LoadingState />;
   if (error) return <ErrorState error={error} />;
