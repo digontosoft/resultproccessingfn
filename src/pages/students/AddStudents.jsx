@@ -87,24 +87,24 @@ const AddStudents = () => {
   }, [getUser]);
 
   const onSubmit = async (data) => {
-    // setIsLoading(true);
-    // try {
-    //   const response = await gurdedApi.post("/addStudentData", { ...data });
-    //   if (response.status === 200) {
-    //     toast.success("Student added successfully");
-    //     reset();
-    //     navigate("/student-list");
-    //   }
-    // } catch (error) {
-    //   console.error(error.response?.data?.message || "Something went wrong");
-    //   toast.error(
-    //     `Error: ${error.response?.data?.message || "Submission failed"}`
-    //   );
-    // } finally {
-    //   setIsLoading(false); /
-    // }
+    setIsLoading(true);
+    try {
+      const response = await gurdedApi.post("/addStudentData", { ...data });
+      if (response.status === 200) {
+        toast.success("Student added successfully");
+        reset();
+        navigate("/student-list");
+      }
+    } catch (error) {
+      console.error(error.response?.data?.message || "Something went wrong");
+      toast.error(
+        `Error: ${error.response?.data?.message || "Submission failed"}`
+      );
+    } finally {
+      setIsLoading(false);
+    }
 
-    console.log("data:", data);
+    // console.log("data:", data);
   };
 
   // Reusable input field component
