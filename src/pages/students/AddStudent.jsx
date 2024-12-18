@@ -33,23 +33,6 @@ const AddStudent = () => {
     fetchConfigs();
   }, [gurdedApi]);
 
-  // const onSubmit = async (data) => {
-  //   // console.log(data);
-
-  //   try {
-  //     const response = await gurdedApi.post("/addStudentData", { ...data });
-  //     console.log({ response });
-
-  //     if (response.status === 200) {
-  //       toast.success("Student added successfully");
-  //       reset();
-  //     }
-  //   } catch (error) {
-  //     console.error(error.response.data.message);
-  //     toast.error(`Error: ${error.response.data.message}`);
-  //   }
-  // };
-
   const onSubmit = async (data) => {
     setIsLoading(true); // Start loading state
     try {

@@ -54,7 +54,6 @@ const AddStudents = () => {
     try {
       const response = await gurdedApi.post("/addStudentData", { ...data });
       console.log({ response });
-
       if (response.status === 200) {
         toast.success("Student added successfully");
         reset();
@@ -68,6 +67,8 @@ const AddStudents = () => {
     } finally {
       setIsLoading(false); // End loading state
     }
+
+    console.log("data:", data);
   };
 
   // dropdown option
@@ -176,7 +177,7 @@ const AddStudents = () => {
                   Select Class
                 </option>
                 {classes.map((option) => (
-                  <option key={option._id} value={option._id}>
+                  <option key={option._id} value={option.name}>
                     {option.name}
                   </option>
                 ))}
@@ -211,16 +212,24 @@ const AddStudents = () => {
               name="section"
               options={dropdownOptions.section}
             />
-            <SelectField
-              label="Shift"
-              name="shift"
-              options={dropdownOptions.shift}
-            />
-            {/* <SelectField
-              label="Group"
-              name="group"
-              options={dropdownOptions.group}
-            /> */}
+            <div>
+              <label className="mb-3 block text-black dark:text-white">
+                Select Shift
+              </label>
+              <select
+                {...register("shift", { required: "Please select a shift" })}
+                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+              >
+                <option value="">Select Shift</option>
+                <option value="Day">Morning</option>
+                <option value="Day">Day</option>
+              </select>
+              {errors.shift && (
+                <span className="text-red-500 text-sm mt-1">
+                  {errors.shift.message}
+                </span>
+              )}
+            </div>
             <div>
               <label className="mb-3 block text-black dark:text-white">
                 Group
