@@ -4,14 +4,20 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import useAxios from "../../hooks/useAxios";
 import axios from "axios";
+import useSingleUser from "../../hooks/useSingleUser";
 
 const AddStudents = () => {
+  const shifts = ["Morning", "Day"];
   const { gurdedApi } = useAxios();
   const [configs, setConfigs] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const [classes, setClasses] = useState([]);
   const url = import.meta.env.VITE_SERVER_BASE_URL;
+  const [filterClass,setFilterClass] = useState([])
+  const {getUser} = useSingleUser()
+  const [filterSection,setFilterSection] = useState([])
+  const [filterShift,setFilterShift] = useState([])
   const {
     register,
     handleSubmit,
@@ -48,29 +54,6 @@ const AddStudents = () => {
 
     fetchClasses();
   }, [url]);
-
-  const onSubmit = async (data) => {
-    setIsLoading(true); // Start loading state
-    try {
-      const response = await gurdedApi.post("/addStudentData", { ...data });
-      console.log({ response });
-
-      if (response.status === 200) {
-        toast.success("Student added successfully");
-        reset();
-        navigate("/student-list");
-      }
-    } catch (error) {
-      console.error(error.response?.data?.message || "Something went wrong");
-      toast.error(
-        `Error: ${error.response?.data?.message || "Submission failed"}`
-      );
-    } finally {
-      setIsLoading(false); // End loading state
-    }
-  };
-
-  // dropdown option
   const dropdownOptions = {
     // class: Array.from({ length: 10 }, (_, i) => `Class ${i + 1}`),
     // section: ['Section A', 'Section B'],
@@ -84,6 +67,49 @@ const AddStudents = () => {
     religion: configs.filter((config) => config.slug === "religion"),
     gender: configs.filter((config) => config.slug === "gender"),
   };
+
+    useEffect(()=>{
+      if(classes&&getUser.userType==='teacher') {
+        const data = classes.filter((item)=>item.name===getUser.class_id.name)
+        const sectionData = dropdownOptions.section.filter((item)=>item.value===getUser.section)
+        const shiftData = shifts.filter(item=>item===getUser.shift)
+        setFilterClass(data)
+        setFilterSection(sectionData)
+        setFilterShift(shiftData)
+      } else {
+        setFilterClass(classes)
+        setFilterSection(dropdownOptions.section)
+        setFilterShift(shifts)
+      }
+    },[getUser])
+//console.log("check:",dropdownOptions.shift);
+
+//console.log(filterSection);
+
+
+  const onSubmit = async (data) => {
+    setIsLoading(true); // Start loading state
+    try {
+      const response = await gurdedApi.post("/addStudentData", { ...data });
+      //console.log({ response });
+      if (response.status === 200) {
+        toast.success("Student added successfully");
+        reset();
+        navigate("/student-list");
+      }
+    } catch (error) {
+      console.error(error.response?.data?.message || "Something went wrong");
+      toast.error(
+        `Error: ${error.response?.data?.message || "Submission failed"}`
+      );
+    } finally {
+      setIsLoading(false); // End loading state
+    }
+
+    //console.log("data:", data);
+  };
+
+  
 
   // Reusable input field component
   const InputField = ({ label, name, type = "text", placeholder }) => (
@@ -175,8 +201,8 @@ const AddStudents = () => {
                 <option value="" hidden>
                   Select Class
                 </option>
-                {classes.map((option) => (
-                  <option key={option._id} value={option._id}>
+                {filterClass.map((option) => (
+                  <option key={option._id} value={option.name}>
                     {option.name}
                   </option>
                 ))}
@@ -209,18 +235,26 @@ const AddStudents = () => {
             <SelectField
               label="Section"
               name="section"
-              options={dropdownOptions.section}
+              options={filterSection}
             />
-            <SelectField
-              label="Shift"
-              name="shift"
-              options={dropdownOptions.shift}
-            />
-            {/* <SelectField
-              label="Group"
-              name="group"
-              options={dropdownOptions.group}
-            /> */}
+            <div>
+              <label className="mb-3 block text-black dark:text-white">
+                Select Shift
+              </label>
+              <select
+                {...register("shift", { required: "Please select a shift" })}
+                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+              >
+                <option value="">Select Shift</option>
+                <option value="Morning">Morning</option>
+                <option value="Day">Day</option>
+              </select>
+              {errors.shift && (
+                <span className="text-red-500 text-sm mt-1">
+                  {errors.shift.message}
+                </span>
+              )}
+            </div>
             <div>
               <label className="mb-3 block text-black dark:text-white">
                 Group

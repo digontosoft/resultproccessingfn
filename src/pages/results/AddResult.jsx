@@ -1,3 +1,5 @@
+
+
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -7,6 +9,7 @@ import useAxios from "../../hooks/useAxios";
 import useSingleUser from "../../hooks/useSingleUser";
 
 const shifts = ["Morning", "Day"];
+const section = ["A", "B"]
 const currentYear = new Date().getFullYear();
 const sessions = [currentYear, currentYear - 1, currentYear - 2];
 const terms = ["Half Yearly", "Annual", "Pretest", "Test", "Model Test"];
@@ -14,16 +17,24 @@ const terms = ["Half Yearly", "Annual", "Pretest", "Test", "Model Test"];
 const AddResult = () => {
   const { gurdedApi } = useAxios();
   const [selectedClass, setSelectedClass] = useState("");
-  const [selectedGroup, setSelectedGroup] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const [classes, setClasses] = useState([]);
   const url = import.meta.env.VITE_SERVER_BASE_URL;
   const [subjects, setSubjects] = useState([]);
-  const [classSub, setClassSub] = useState([]);
   const [filteredSubjects, setFilteredSubjects] = useState([]);
+  const [filterClass,setFilterClass] = useState([])
   const {getUser} = useSingleUser()
-  const { register } = useForm();
+  const [filterSection,setFilterSection] = useState([])
+  const [filterShift,setFilterShift] = useState([])
+  const {
+    control,
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
+
 
   useEffect(() => {
     const fetchClasses = async () => {
@@ -42,129 +53,67 @@ const AddResult = () => {
     fetchClasses();
   }, [url,getUser]);
 
+  useEffect(()=>{
+    if(getUser.userType==='teacher') {
+      const data = classes.filter((item)=>item.name===getUser.class_id.name)
+      const sectionData = section.filter((item)=>item===getUser.section)
+      const shiftData = shifts.filter(item=>item===getUser.shift)
+      setFilterClass(data)
+      setFilterSection(sectionData)
+      setFilterShift(shiftData)
+    } else {
+      setFilterClass(classes)
+      setFilterSection(section)
+      setFilterShift(shifts)
+    }
+  },[getUser])
+
+  //console.log(singleClass);
   
   
 
   useEffect(() => {
-    const subject = async () => {
-      const response = await axios.get(`${url}/subjects`);
-      setSubjects(response.data.subjects);
-      console.log("subjects:", response.data.subjects);
+    const fetchSubjects = async () => {
+      try {
+        const response = await axios.get(`${url}/subjects`);
+        setSubjects(response.data.subjects);
+      } catch (error) {
+        toast.error("Failed to fetch subjects");
+      }
     };
-    subject();
+
+    fetchSubjects();
   }, [url]);
-  //console.log(subjects);
 
   const handleFilterChange = (classId) => {
-    console.log("Selected classId:", classId);
-
-    // Filter the subjects based on the selected classId
     const filtered = subjects.filter(
       (subject) => subject.class._id === classId
     );
 
-    // Update the state with the filtered subjects
     setFilteredSubjects(filtered);
-    console.log("Filtered subjects:", filtered);
-  };
-
-  useEffect(() => {
-    const filter = subjects.filter((item) => {
-      // Ensure class exists and has a value property
-      return item.class && item.class.value === selectedClass;
-    });
-    const sub = filter.map((item) => item.name);
-    console.log(sub);
-    setClassSub(sub);
-  }, [selectedClass]);
-
-  console.log(classSub);
-
-  const {
-    control,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm({
-    defaultValues: {
-      section: "",
-      shift: "",
-      session: "",
-      term: "",
-      rollFrom: "",
-      rollTo: "",
-      class: "",
-      group: "",
-      subject: "",
-      marks: "",
-    },
-  });
-
-  const handleClassChange = (value) => {
-    setSelectedClass(value);
-    setSelectedGroup("");
-
-    reset({
-      ...control._defaultValues,
-      class: value,
-      subject: "",
-      marks: "",
-    });
-  };
-
-  const handleGroupChange = (value) => {
-    setSelectedGroup(value);
-    reset({
-      ...control._defaultValues,
-      group: value,
-      subject: "",
-      marks: "",
-    });
-  };
-
-  const getSubjects = () => {
-    if (["4", "5"].includes(selectedClass)) {
-      return SUBJECTS.JUNIOR;
-    }
-    if (["9", "10"].includes(selectedClass)) {
-      const commonSubjects = SUBJECTS.COMMON_9_10;
-      if (selectedGroup === "science") {
-        return [...commonSubjects, ...SUBJECTS.SCIENCE];
-      }
-      if (selectedGroup === "arts") {
-        return [...commonSubjects, ...SUBJECTS.ARTS];
-      }
-      if (selectedGroup === "commerce") {
-        return [...commonSubjects, ...SUBJECTS.COMMERCE];
-      }
-    }
-    if (["6", "7", "8"].includes(selectedClass)) {
-      return [];
-    }
-    return [];
   };
 
   const onSubmit = async (data) => {
-    console.log(data);
+    console.log("Form Data:", data);
+    // setIsLoading(true);
 
-    setIsLoading(true);
-    try {
-      const response = await gurdedApi.post(
-        `${url}/get-student-by-roll-range`,
-        data
-      );
-      //toast.success("Subject created successfully");
-      console.log(response.data.data.length);
-      if (response.data.data.length > 0) {
-        navigate("/add-result/marks-input", {
-          state: { students: response.data.data },
-        });
-      }
-    } catch (error) {
-      toast.error(error.response?.data?.message || "Failed to create subject");
-    } finally {
-      setIsLoading(false);
-    }
+    // try {
+    //   const response = await gurdedApi.post(
+    //     `${url}/get-student-by-roll-range`,
+    //     data
+    //   );
+    //   if (response.data.data.length > 0) {
+    //     navigate("/add-result/marks-input", {
+    //       state: { students: response.data.data },
+    //     });
+    //   }
+    // } catch (error) {
+    //   toast.error(
+    //     error.response?.data?.message || "Failed to fetch student data"
+    //   );
+    // } finally {
+    //   setIsLoading(false);
+    // }
   };
 
   const FormSelect = ({ label, name, options, onChange }) => (
@@ -231,7 +180,7 @@ const AddResult = () => {
                   <option value="" hidden>
                     Select Class
                   </option>
-                  {classes.map((option) => (
+                  {filterClass.map((option) => (
                     <option key={option._id} value={option._id}>
                       {option.name}
                     </option>
@@ -246,7 +195,6 @@ const AddResult = () => {
               <FormSelect
                 label="Select Group"
                 name="group"
-                onChange={handleGroupChange}
                 options={[
                   { value: "General", label: "General" },
                   { value: "Science", label: "Science" },
@@ -254,82 +202,67 @@ const AddResult = () => {
                   { value: "Commerce", label: "Commerce" },
                 ]}
               />
-              <FormSelect label="Section" name="section" options={["A", "B"]} />
-              <FormSelect label="Shift" name="shift" options={shifts} />
+              <FormSelect label="Section" name="section" options={filterSection} />
+              <FormSelect label="Shift" name="shift" options={filterShift} />
               <FormSelect label="Session" name="session" options={sessions} />
               <FormSelect label="Term" name="term" options={terms} />
-              <div className="mt-4.5">
+              <div className="mb-4.5">
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Select Subject
                 </label>
                 <select
-                  {...register("subject", {
-                    required: "Subject is required",
-                  })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md  focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  {...register("subject", { required: "Subject is required" })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
                 >
                   <option value="" disabled>
                     Select Subject
                   </option>
-                  {filteredSubjects.map((subject) => (
-                    <>
-                      <option key={subject._id} value={subject._id}>
-                        {subject.name}
-                      </option>
-                    </>
-                  ))}
+                  <option value="Bangla">Bangla</option>
+                  {/* {filteredSubjects.map((subject) => (
+                    <option key={subject._id} value={subject.name}>
+                      {subject.name}
+                    </option>
+                  ))} */}
                 </select>
-                {errors.userType && (
+                {errors.subject && (
                   <p className="text-red-500 text-sm mt-1">
-                    {errors.userType.message}
+                    {errors.subject.message}
                   </p>
                 )}
               </div>
-
               <div className="">
                 <label className="mb-3 block text-black dark:text-white">
                   Roll From
                 </label>
-                <Controller
-                  name="startRoll"
-                  control={control}
-                  rules={{ required: "Roll number is required" }}
-                  render={({ field }) => (
-                    <input
-                      {...field}
-                      type="number"
-                      min="0"
-                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    />
-                  )}
+                <input
+                  type="number"
+                  min="0"
+                  {...register("startRoll", {
+                    required: "Roll number is required",
+                  })}
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 />
-                {errors.rollFrom && (
+                {errors.startRoll && (
                   <span className="text-red-500 text-sm mt-1">
-                    {errors.rollFrom.message}
+                    {errors.startRoll.message}
                   </span>
                 )}
               </div>
-
               <div className="">
                 <label className="mb-3 block text-black dark:text-white">
                   Roll To
                 </label>
-                <Controller
-                  name="endRoll"
-                  control={control}
-                  rules={{ required: "Roll number is required" }}
-                  render={({ field }) => (
-                    <input
-                      {...field}
-                      type="number"
-                      min="0"
-                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    />
-                  )}
+                <input
+                  type="number"
+                  min="0"
+                  {...register("endRoll", {
+                    required: "Roll number is required",
+                  })}
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 />
-                {errors.rollTo && (
+                {errors.endRoll && (
                   <span className="text-red-500 text-sm mt-1">
-                    {errors.rollTo.message}
+                    {errors.endRoll.message}
                   </span>
                 )}
               </div>
