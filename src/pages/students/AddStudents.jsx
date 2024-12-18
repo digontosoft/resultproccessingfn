@@ -22,6 +22,7 @@ const AddStudents = () => {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm();
 
   useEffect(() => {
