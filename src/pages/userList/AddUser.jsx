@@ -31,7 +31,7 @@ const AddUser = () => {
   }, [baseUrl]);
 
   //console.log(classes);
-  
+
   const onSubmit = async (data) => {
     setIsLoading(true);
     try {
@@ -81,7 +81,7 @@ const AddUser = () => {
                 </div>
                 <div className="mb-4">
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                  phoneNumber
+                    Phone
                   </label>
                   <input
                     type="text"
@@ -90,8 +90,8 @@ const AddUser = () => {
                     })}
                     className={`w-full px-3 py-2 border ${
                       errors.phoneNumber ? "border-red-500" : "border-gray-300"
-                    } rounded-md  focus:outline-none focus:ring-1 focus:ring-blue-500`}
-                    placeholder="Enter username"
+                    } rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500`}
+                    placeholder="Enter Phone Number"
                   />
                   {errors.phoneNumber && (
                     <p className="text-red-500 text-sm mt-1">
@@ -133,8 +133,8 @@ const AddUser = () => {
                     className="w-full px-3 py-2 border border-gray-300 rounded-md  focus:outline-none focus:ring-1 focus:ring-blue-500"
                   >
                     <option value="">Select Shift</option>
-                    <option value="morning">Morning</option>
-                    <option value="evening">Day</option>
+                    <option value="Morning">Morning</option>
+                    <option value="Day">Day</option>
                   </select>
                   {errors.shift && (
                     <p className="text-red-500 text-sm mt-1">

@@ -18,22 +18,19 @@ const ProfileTable = ({ profile, onView, onEdit, onDelete }) => {
                 SI No
               </th>
               <th className="py-4 px-4 font-medium text-black dark:text-white ">
-                position
+                Role
               </th>
               <th className="py-4 px-4 font-medium text-black dark:text-white">
                 Name
               </th>
               <th className="py-4 px-4 font-medium text-black dark:text-white">
-                Designation
+                Permission
               </th>
               <th className="py-4 px-4 font-medium text-black dark:text-white">
-                Image
+                Phone Number
               </th>
               <th className="py-4 px-4 font-medium text-black dark:text-white">
-                Mobile
-              </th>
-              <th className="py-4 px-4 font-medium text-black dark:text-white">
-                Subject
+                Status
               </th>
               <th className="py-4 px-4 font-medium text-black dark:text-white">
                 action

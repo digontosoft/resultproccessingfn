@@ -50,7 +50,6 @@ const AddStudents = () => {
   }, [url]);
 
   const onSubmit = async (data) => {
-    console.log("first:", data);
     setIsLoading(true); // Start loading state
     try {
       const response = await gurdedApi.post("/addStudentData", { ...data });
@@ -188,6 +187,25 @@ const AddStudents = () => {
                 </span>
               )}
             </div>
+            <div>
+              <label className="mb-3 block text-black dark:text-white">
+                Select Year
+              </label>
+              <select
+                {...register("year", { required: "Please select a year" })}
+                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+              >
+                <option value="">Select Year</option>
+                <option value="2022">2022</option>
+                <option value="2023">2023</option>
+                <option value="2024">2024</option>
+              </select>
+              {errors.year && (
+                <span className="text-red-500 text-sm mt-1">
+                  {errors.year.message}
+                </span>
+              )}
+            </div>
             <SelectField
               label="Section"
               name="section"
@@ -211,14 +229,17 @@ const AddStudents = () => {
                 {...register("group", { required: "Group is required" })}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               >
-                <option value="" disabled>
-                  Select Group
-                </option>
+                <option value="">Select Group</option>
                 <option value="General">General</option>
                 <option value="Science">Science</option>
                 <option value="Commerce">Bussines</option>
                 <option value="Arts">Humanities</option>
               </select>
+              {errors.group && (
+                <span className="text-red-500 text-sm mt-1">
+                  {errors.group.message}
+                </span>
+              )}
             </div>
             <SelectField
               label="Religion"
@@ -233,10 +254,13 @@ const AddStudents = () => {
                 {...register("gender", { required: "Gender is required" })}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               >
-                <option value="" disabled>
-                  Select Gender
-                </option>
+                <option value="">Select Gender</option>
                 <option value="Female">Female</option>
+                {errors.gender && (
+                  <span className="text-red-500 text-sm mt-1">
+                    {errors.gender.message}
+                  </span>
+                )}
               </select>
             </div>
           </div>

@@ -18,20 +18,6 @@ const UserViewModal = ({ profile, onClose }) => {
             </span>
             <span className="text-gray-600">{profile?.designation}</span>
           </div>
-
-          <div className="flex items-center">
-            <span className="font-medium text-gray-800 w-1/4">Image:</span>
-            {profile?.image ? (
-              <img
-                src={profile?.image}
-                alt="Profile Image"
-                className="w-16 h-16 rounded-full object-cover"
-              />
-            ) : (
-              <span className="text-gray-600">No Image Available</span>
-            )}
-          </div>
-
           <div className="flex items-center">
             <span className="font-medium text-gray-800 w-1/4">Mobile:</span>
             <span className="text-gray-600">{profile?.phoneNumber}</span>
