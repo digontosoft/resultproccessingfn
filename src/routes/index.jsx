@@ -6,7 +6,7 @@ import {
   AddResultsBulk,
   AddStudents,
   AddStudentsBulk,
-  AddUser,
+  // AddUser,
   Home,
   ManageUsers,
   NotFound,
@@ -32,6 +32,7 @@ import TeacherSubjectListAdmin from "../pages/settings/TeacherSubjectListAdmin";
 import TabulationSheet from "../pages/TabulationSheet/TabulationSheet";
 import TeacherList from "../pages/Teachers/TeacherList";
 import PrivateRoute from "./PrivateRoute";
+import AddUser from "../pages/userList/AddUser";
 
 const AppRoutes = () => {
   const { auth } = useAuth();

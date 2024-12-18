@@ -5,8 +5,10 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import useAxios from "../../hooks/useAxios";
 import MarksInput from "./MarksInput";
+import useSingleUser from "../../hooks/useSingleUser";
 
 const shifts = ["Morning", "Day"];
+const section = ["A", "B"];
 const currentYear = new Date().getFullYear();
 const sessions = [currentYear, currentYear - 1, currentYear - 2];
 const terms = ["Half Yearly", "Annual", "Pretest", "Test", "Model Test"];
@@ -22,6 +24,10 @@ const AddResult = () => {
   const [filteredSubjects, setFilteredSubjects] = useState([]);
   const [rollRangeStudent, setRollRangeStudent] = useState([]);
   const [rollRangeStudentData, setRollRangeStudentData] = useState({});
+  const [filterClass, setFilterClass] = useState([]);
+  const { getUser } = useSingleUser();
+  const [filterSection, setFilterSection] = useState([]);
+  const [filterShift, setFilterShift] = useState([]);
   const {
     control,
     register,
@@ -36,6 +42,7 @@ const AddResult = () => {
       try {
         const response = await axios.get(`${url}/class`);
         const classNames = response.data.classes;
+
         setClasses(classNames);
       } catch (error) {
         toast.error("Failed to fetch classes");
@@ -43,7 +50,26 @@ const AddResult = () => {
     };
 
     fetchClasses();
-  }, [url]);
+  }, [url, getUser]);
+
+  useEffect(() => {
+    if (getUser.userType === "teacher") {
+      const data = classes.filter(
+        (item) => item.name === getUser.class_id.name
+      );
+      const sectionData = section.filter((item) => item === getUser.section);
+      const shiftData = shifts.filter((item) => item === getUser.shift);
+      setFilterClass(data);
+      setFilterSection(sectionData);
+      setFilterShift(shiftData);
+    } else {
+      setFilterClass(classes);
+      setFilterSection(section);
+      setFilterShift(shifts);
+    }
+  }, [getUser]);
+
+  //console.log(singleClass);
 
   useEffect(() => {
     const fetchSubjects = async () => {
@@ -66,6 +92,7 @@ const AddResult = () => {
     const filtered = subjects.filter(
       (subject) => subject.class._id === selectedOption._id
     );
+
     setFilteredSubjects(filtered);
     setClassData(selectedOption.value);
   };
@@ -160,8 +187,8 @@ const AddResult = () => {
                   <option value="" hidden>
                     Select Class
                   </option>
-                  {classes.map((option) => (
-                    <option key={option._id} value={option?._id}>
+                  {filterClass.map((option) => (
+                    <option key={option._id} value={option._id}>
                       {option.name}
                     </option>
                   ))}
@@ -182,8 +209,12 @@ const AddResult = () => {
                   { value: "Commerce", label: "Commerce" },
                 ]}
               />
-              <FormSelect label="Section" name="section" options={["A", "B"]} />
-              <FormSelect label="Shift" name="shift" options={shifts} />
+              <FormSelect
+                label="Section"
+                name="section"
+                options={filterSection}
+              />
+              <FormSelect label="Shift" name="shift" options={filterShift} />
               <FormSelect label="Session" name="session" options={sessions} />
               <FormSelect label="Term" name="term" options={terms} />
               <div className="mb-4.5">

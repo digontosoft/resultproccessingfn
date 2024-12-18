@@ -8,8 +8,12 @@ import LoadingState from "./LoadingState";
 import StudentEditModal from "./StudentEditModal";
 import StudentTable from "./StudentTable";
 import StudentViewModal from "./StudentViewModal";
+
+import useSingleUser from "../../hooks/useSingleUser";
+
 import FilterStudents from "./FilterStudents";
 import GlobalLoadingState from "../../components/GlobalLoadingState/GlobalLoadingState";
+
 
 const StudentList = () => {
   const { gurdedApi } = useAxios();
@@ -21,6 +25,12 @@ const StudentList = () => {
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
+
+  const { getUser, loading } = useSingleUser();
+  const [filterStudent, setFilterStudent] = useState([]);
+
+  console.log(getUser);
+
   const [classes, setClasses] = useState([]);
 
   useEffect(() => {
@@ -37,6 +47,7 @@ const StudentList = () => {
     fetchClasses();
   }, [gurdedApi]);
 
+
   const getStudents = async () => {
     try {
       setIsLoading(true);
@@ -44,11 +55,14 @@ const StudentList = () => {
       const response = await gurdedApi.get("/getAllStudent");
 
       if (response.status === 200) {
+        //const data =
         setStudents(response.data.data);
+
         setFilteredStudents(response.data.data); // Initialize filtered students
+
       }
     } catch (error) {
-      console.error(error);
+      //console.error(error);
       setError(error.response?.data?.message || "Failed to fetch students");
       toast.error(`Error: ${error.response?.data?.message || "Unknown error"}`);
     } finally {
@@ -152,11 +166,40 @@ const StudentList = () => {
     }
   };
 
+
+  useEffect(() => {
+    if (students&&getUser.userType==='teacher') {
+      const data = students.filter(
+        (item) =>
+          item.class === getUser.class_id.name &&
+          item.section === getUser.section &&
+          item.shift === getUser.shift
+      );
+      setFilterStudent(data);
+    }
+  }, [getUser]);
+
+  if (isLoading) return <LoadingState />;
+
   if (isLoading) return <GlobalLoadingState />;
+
   if (error) return <ErrorState error={error} />;
   if (!filteredStudents.length) return <EmptyState />;
 
   return (
+    <>
+      <StudentTable
+        students={filterStudent}
+        onView={handleView}
+        onEdit={handleEdit}
+        onDelete={handleDelete}
+      />
+
+      {selectedStudent && openModal && !isEditing && (
+        <StudentViewModal
+          student={selectedStudent}
+          onClose={handleCloseModal}  />)}
+
     <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
       <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
         <h3 className="font-medium text-black dark:text-white">Student List</h3>
@@ -167,8 +210,9 @@ const StudentList = () => {
           students={filteredStudents}
           onView={handleView}
           onEdit={handleEdit}
-          onDelete={handleDelete}
-        />
+          onDelete={handleDelete}/>
+
+       
 
         {selectedStudent && openModal && !isEditing && (
           <StudentViewModal
@@ -194,6 +238,7 @@ const StudentList = () => {
         )}
       </div>
     </div>
+    </>
   );
 };
 

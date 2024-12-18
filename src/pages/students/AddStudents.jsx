@@ -4,35 +4,25 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import useAxios from "../../hooks/useAxios";
 import axios from "axios";
+import useSingleUser from "../../hooks/useSingleUser";
 
 const AddStudents = () => {
+  const shifts = ["Morning", "Day"];
   const { gurdedApi } = useAxios();
   const [configs, setConfigs] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const [classes, setClasses] = useState([]);
   const url = import.meta.env.VITE_SERVER_BASE_URL;
+  const [filterClass, setFilterClass] = useState([]);
+  const { getUser } = useSingleUser();
+  const [filterSection, setFilterSection] = useState([]);
+  const [filterShift, setFilterShift] = useState([]);
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm();
-
-  useEffect(() => {
-    const fetchConfigs = async () => {
-      try {
-        const response = await gurdedApi.get("/result/get_all");
-
-        console.log("result:", response.data.data);
-      } catch (error) {
-        console.error(error.response.data.message);
-        toast.error(`Error: ${error.response.data.message}`);
-      }
-    };
-
-    fetchConfigs();
-  }, [gurdedApi]);
 
   useEffect(() => {
     const fetchConfigs = async () => {
@@ -63,30 +53,6 @@ const AddStudents = () => {
 
     fetchClasses();
   }, [url]);
-
-  const onSubmit = async (data) => {
-    setIsLoading(true); // Start loading state
-    try {
-      const response = await gurdedApi.post("/addStudentData", { ...data });
-      console.log({ response });
-      if (response.status === 200) {
-        toast.success("Student added successfully");
-        reset();
-        navigate("/student-list");
-      }
-    } catch (error) {
-      console.error(error.response?.data?.message || "Something went wrong");
-      toast.error(
-        `Error: ${error.response?.data?.message || "Submission failed"}`
-      );
-    } finally {
-      setIsLoading(false); // End loading state
-    }
-
-    console.log("data:", data);
-  };
-
-  // dropdown option
   const dropdownOptions = {
     // class: Array.from({ length: 10 }, (_, i) => `Class ${i + 1}`),
     // section: ['Section A', 'Section B'],
@@ -99,6 +65,46 @@ const AddStudents = () => {
     group: configs.filter((config) => config.slug === "group"),
     religion: configs.filter((config) => config.slug === "religion"),
     gender: configs.filter((config) => config.slug === "gender"),
+  };
+
+  useEffect(() => {
+    if (classes && getUser.userType === "teacher") {
+      const data = classes.filter(
+        (item) => item.name === getUser.class_id.name
+      );
+      const sectionData = dropdownOptions.section.filter(
+        (item) => item.value === getUser.section
+      );
+      const shiftData = shifts.filter((item) => item === getUser.shift);
+      setFilterClass(data);
+      setFilterSection(sectionData);
+      setFilterShift(shiftData);
+    } else {
+      setFilterClass(classes);
+      setFilterSection(dropdownOptions.section);
+      setFilterShift(shifts);
+    }
+  }, [getUser]);
+
+  const onSubmit = async (data) => {
+    // setIsLoading(true);
+    // try {
+    //   const response = await gurdedApi.post("/addStudentData", { ...data });
+    //   if (response.status === 200) {
+    //     toast.success("Student added successfully");
+    //     reset();
+    //     navigate("/student-list");
+    //   }
+    // } catch (error) {
+    //   console.error(error.response?.data?.message || "Something went wrong");
+    //   toast.error(
+    //     `Error: ${error.response?.data?.message || "Submission failed"}`
+    //   );
+    // } finally {
+    //   setIsLoading(false); /
+    // }
+
+    console.log("data:", data);
   };
 
   // Reusable input field component
@@ -191,8 +197,8 @@ const AddStudents = () => {
                 <option value="" hidden>
                   Select Class
                 </option>
-                {classes.map((option) => (
-                  <option key={option._id} value={option.value}>
+                {filterClass.map((option) => (
+                  <option key={option._id} value={option.name}>
                     {option.name}
                   </option>
                 ))}
@@ -222,11 +228,6 @@ const AddStudents = () => {
                 </span>
               )}
             </div>
-            {/* <SelectField
-              label="Section"
-              name="section"
-              options={dropdownOptions.section}
-            /> */}
             <div>
               <label className="mb-3 block text-black dark:text-white">
                 Select Section
@@ -237,13 +238,13 @@ const AddStudents = () => {
                 })}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               >
-                <option value="">Select section</option>
+                <option value="">Select Section</option>
                 <option value="A">A</option>
                 <option value="B">B</option>
               </select>
-              {errors.section && (
+              {errors.year && (
                 <span className="text-red-500 text-sm mt-1">
-                  {errors.section.message}
+                  {errors.year.message}
                 </span>
               )}
             </div>
@@ -285,11 +286,6 @@ const AddStudents = () => {
                 </span>
               )}
             </div>
-            {/* <SelectField
-              label="Religion"
-              name="religion"
-              options={dropdownOptions.religion}
-            /> */}
             <div>
               <label className="mb-3 block text-black dark:text-white">
                 Religion

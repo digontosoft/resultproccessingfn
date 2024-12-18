@@ -160,7 +160,7 @@ const FilterStudents = ({ classes, onFilter }) => {
               {...register("shift")}
               className="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              <option value="">Shift</option>
+              <option value=''>Shift</option>
               <option value="Morning">Morning</option>
               <option value="Day">Day</option>
             </select>
@@ -172,7 +172,7 @@ const FilterStudents = ({ classes, onFilter }) => {
               {...register("class")}
               className="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              <option value="">Class</option>
+              <option value=''>Class</option>
               {classes.map((className) => (
                 <option key={className._id} value={className.name}>
                   {className.name}
@@ -187,7 +187,7 @@ const FilterStudents = ({ classes, onFilter }) => {
               {...register("group")}
               className="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              <option value="">Group</option>
+              <option value=''>Group</option>
               <option value="General">General</option>
               <option value="Science">Science</option>
               <option value="Commerce">Commerce</option>
@@ -201,7 +201,7 @@ const FilterStudents = ({ classes, onFilter }) => {
               {...register("section")}
               className="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              <option value="">Section</option>
+              <option value=''>Section</option>
               <option value="A">A</option>
               <option value="B">B</option>
             </select>
