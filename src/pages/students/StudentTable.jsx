@@ -11,6 +11,9 @@ const StudentTable = ({ students, onView, onEdit, onDelete }) => {
                 S.ID
               </th>
               <th className="py-4 px-4 font-medium text-black dark:text-white">
+                Class
+              </th>
+              <th className="py-4 px-4 font-medium text-black dark:text-white">
                 Shift
               </th>
               <th className="py-4 px-4 font-medium text-black dark:text-white">

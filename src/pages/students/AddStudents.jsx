@@ -22,6 +22,21 @@ const AddStudents = () => {
   useEffect(() => {
     const fetchConfigs = async () => {
       try {
+        const response = await gurdedApi.get("/result/get_all");
+
+        console.log("result:", response.data.data);
+      } catch (error) {
+        console.error(error.response.data.message);
+        toast.error(`Error: ${error.response.data.message}`);
+      }
+    };
+
+    fetchConfigs();
+  }, [gurdedApi]);
+
+  useEffect(() => {
+    const fetchConfigs = async () => {
+      try {
         const response = await gurdedApi.get("/configs");
 
         if (response.status === 200) {
@@ -177,7 +192,7 @@ const AddStudents = () => {
                   Select Class
                 </option>
                 {classes.map((option) => (
-                  <option key={option._id} value={option.name}>
+                  <option key={option._id} value={option.value}>
                     {option.name}
                   </option>
                 ))}
@@ -207,11 +222,31 @@ const AddStudents = () => {
                 </span>
               )}
             </div>
-            <SelectField
+            {/* <SelectField
               label="Section"
               name="section"
               options={dropdownOptions.section}
-            />
+            /> */}
+            <div>
+              <label className="mb-3 block text-black dark:text-white">
+                Select Section
+              </label>
+              <select
+                {...register("section", {
+                  required: "Please select a section",
+                })}
+                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+              >
+                <option value="">Select section</option>
+                <option value="A">A</option>
+                <option value="B">B</option>
+              </select>
+              {errors.section && (
+                <span className="text-red-500 text-sm mt-1">
+                  {errors.section.message}
+                </span>
+              )}
+            </div>
             <div>
               <label className="mb-3 block text-black dark:text-white">
                 Select Shift
@@ -221,7 +256,7 @@ const AddStudents = () => {
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               >
                 <option value="">Select Shift</option>
-                <option value="Day">Morning</option>
+                <option value="Morning">Morning</option>
                 <option value="Day">Day</option>
               </select>
               {errors.shift && (
@@ -250,11 +285,31 @@ const AddStudents = () => {
                 </span>
               )}
             </div>
-            <SelectField
+            {/* <SelectField
               label="Religion"
               name="religion"
               options={dropdownOptions.religion}
-            />
+            /> */}
+            <div>
+              <label className="mb-3 block text-black dark:text-white">
+                Religion
+              </label>
+              <select
+                {...register("religion", { required: "Religion is required" })}
+                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+              >
+                <option value="">Select Religion</option>
+                <option value="Islam">Islam</option>
+                <option value="Hindu">Hindu</option>
+                <option value="Christian">Christian</option>
+                <option value="Buddhist">Buddhist</option>
+              </select>
+              {errors.religion && (
+                <span className="text-red-500 text-sm mt-1">
+                  {errors.religion.message}
+                </span>
+              )}
+            </div>
             <div>
               <label className="mb-3 block text-black dark:text-white">
                 Gender
