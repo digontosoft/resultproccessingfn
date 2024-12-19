@@ -28,8 +28,6 @@ const StudentList = () => {
   const { getUser, loading } = useSingleUser();
   const [filterStudent, setFilterStudent] = useState([]);
 
-  console.log(getUser);
-
   const [classes, setClasses] = useState([]);
 
   useEffect(() => {
