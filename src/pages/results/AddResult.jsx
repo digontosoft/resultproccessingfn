@@ -52,22 +52,22 @@ const AddResult = () => {
     fetchClasses();
   }, [url, getUser]);
 
-  useEffect(() => {
-    if (getUser.userType === "teacher") {
-      const data = classes.filter(
-        (item) => item.name === getUser.class_id.name
-      );
-      const sectionData = section.filter((item) => item === getUser.section);
-      const shiftData = shifts.filter((item) => item === getUser.shift);
-      setFilterClass(data);
-      setFilterSection(sectionData);
-      setFilterShift(shiftData);
-    } else {
-      setFilterClass(classes);
-      setFilterSection(section);
-      setFilterShift(shifts);
-    }
-  }, [getUser]);
+  // useEffect(() => {
+  //   if (getUser.userType === "teacher") {
+  //     const data = classes.filter(
+  //       (item) => item.name === getUser.class_id.name
+  //     );
+  //     const sectionData = section.filter((item) => item === getUser.section);
+  //     const shiftData = shifts.filter((item) => item === getUser.shift);
+  //     setFilterClass(data);
+  //     setFilterSection(sectionData);
+  //     setFilterShift(shiftData);
+  //   } else {
+  //     setFilterClass(classes);
+  //     setFilterSection(section);
+  //     setFilterShift(shifts);
+  //   }
+  // }, [getUser]);
 
   //console.log(singleClass);
 
@@ -107,8 +107,8 @@ const AddResult = () => {
     setIsLoading(true);
 
     try {
-      const reseponse = await gurdedApi.post(
-        `${url}/get-student-by-roll-range`,
+      const reseponse = await gurdedApi.get(
+        `/get-student-by-roll-range`,
         payload
       );
       setRollRangeStudent(reseponse.data.data);
@@ -187,7 +187,7 @@ const AddResult = () => {
                   <option value="" hidden>
                     Select Class
                   </option>
-                  {filterClass.map((option) => (
+                  {classes.map((option) => (
                     <option key={option._id} value={option._id}>
                       {option.name}
                     </option>
@@ -209,12 +209,8 @@ const AddResult = () => {
                   { value: "Commerce", label: "Commerce" },
                 ]}
               />
-              <FormSelect
-                label="Section"
-                name="section"
-                options={filterSection}
-              />
-              <FormSelect label="Shift" name="shift" options={filterShift} />
+              <FormSelect label="Section" name="section" options={section} />
+              <FormSelect label="Shift" name="shift" options={shifts} />
               <FormSelect label="Session" name="session" options={sessions} />
               <FormSelect label="Term" name="term" options={terms} />
               <div className="mb-4.5">
@@ -288,12 +284,12 @@ const AddResult = () => {
         </div>
       </div>
       <div>
-        {rollRangeStudent.length > 0 && (
-          <MarksInput
-            rollRangeStudent={rollRangeStudent}
-            rollRangeStudentData={rollRangeStudentData}
-          />
-        )}
+        {/* {rollRangeStudent.length > 0 && (
+        )} */}
+        <MarksInput
+          rollRangeStudent={rollRangeStudent}
+          rollRangeStudentData={rollRangeStudentData}
+        />
       </div>
     </div>
   );
