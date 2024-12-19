@@ -71,7 +71,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
       links: [
         { to: "/add-result", label: "Add Result" },
         { to: "/add-result-bulk", label: "Add Result Bulk" },
-        // { to: "/result-list", label: "Result List" },
+        { to: "/result-list", label: "Result List" },
       ],
       activeCondition:
         pathname.includes === "result" || pathname.includes("dashboard"),
@@ -132,7 +132,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
       links: [
         { to: "/add-result", label: "Add Result" },
         { to: "/add-result-bulk", label: "Add Result Bulk" },
-        // { to: "/result-list", label: "Result List" },
+        { to: "/result-list", label: "Result List" },
       ],
       activeCondition:
         pathname.includes === "result" || pathname.includes("dashboard"),

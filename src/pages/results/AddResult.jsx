@@ -94,7 +94,7 @@ const AddResult = () => {
     );
 
     setFilteredSubjects(filtered);
-    setClassData(selectedOption.value);
+    setClassData(selectedOption.name);
   };
 
   const onSubmit = async (data) => {
@@ -107,7 +107,7 @@ const AddResult = () => {
     setIsLoading(true);
 
     try {
-      const reseponse = await gurdedApi.get(
+      const reseponse = await gurdedApi.post(
         `/get-student-by-roll-range`,
         payload
       );
@@ -171,6 +171,9 @@ const AddResult = () => {
         <div className="p-6.5">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <FormSelect label="Year" name="session" options={sessions} />
+              <FormSelect label="Exam" name="term" options={terms} />
+              <FormSelect label="Shift" name="shift" options={shifts} />
               <div className="mb-4.5">
                 <label className="mb-3 block text-black dark:text-white">
                   Select Class
@@ -199,6 +202,7 @@ const AddResult = () => {
                   </span>
                 )}
               </div>
+              <FormSelect label="Section" name="section" options={section} />
               <FormSelect
                 label="Select Group"
                 name="group"
@@ -209,17 +213,14 @@ const AddResult = () => {
                   { value: "Commerce", label: "Commerce" },
                 ]}
               />
-              <FormSelect label="Section" name="section" options={section} />
-              <FormSelect label="Shift" name="shift" options={shifts} />
-              <FormSelect label="Session" name="session" options={sessions} />
-              <FormSelect label="Term" name="term" options={terms} />
+
               <div className="mb-4.5">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="mb-3 block text-black dark:text-white">
                   Select Subject
                 </label>
                 <select
                   {...register("subject", { required: "Subject is required" })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 >
                   <option value="">Select Subject</option>
                   {filteredSubjects.map((subject) => (
@@ -278,18 +279,18 @@ const AddResult = () => {
                 isLoading ? "opacity-50 cursor-not-allowed" : ""
               }`}
             >
-              {isLoading ? "Searching..." : "Search Result"}
+              {isLoading ? "Searching..." : "Search"}
             </button>
           </form>
         </div>
       </div>
       <div>
-        {/* {rollRangeStudent.length > 0 && (
-        )} */}
-        <MarksInput
-          rollRangeStudent={rollRangeStudent}
-          rollRangeStudentData={rollRangeStudentData}
-        />
+        {rollRangeStudent.length > 0 && (
+          <MarksInput
+            rollRangeStudent={rollRangeStudent}
+            rollRangeStudentData={rollRangeStudentData}
+          />
+        )}
       </div>
     </div>
   );
