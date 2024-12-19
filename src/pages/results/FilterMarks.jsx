@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 
-const FilterStudents = ({ classes, onFilter }) => {
+const FilterMarks = () => {
   const {
     register,
     handleSubmit,
@@ -8,7 +8,7 @@ const FilterStudents = ({ classes, onFilter }) => {
   } = useForm();
 
   const onSubmit = (data) => {
-    onFilter(data); // Pass the filter criteria to the parent component
+    // onFilter(data); // Pass the filter criteria to the parent component
   };
 
   return (
@@ -47,11 +47,11 @@ const FilterStudents = ({ classes, onFilter }) => {
               className="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="">Class</option>
-              {classes.map((className) => (
+              {/* {classes.map((className) => (
                 <option key={className._id} value={className.value}>
                   {className.name}
                 </option>
-              ))}
+              ))} */}
             </select>
           </div>
 
@@ -95,4 +95,4 @@ const FilterStudents = ({ classes, onFilter }) => {
   );
 };
 
-export default FilterStudents;
+export default FilterMarks;

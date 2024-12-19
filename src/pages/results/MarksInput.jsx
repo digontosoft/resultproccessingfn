@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
@@ -8,36 +8,23 @@ const MarksInput = ({ rollRangeStudent, rollRangeStudentData }) => {
   const url = import.meta.env.VITE_SERVER_BASE_URL;
   const { control, handleSubmit, setValue } = useForm();
 
-  useEffect(() => {
-    // Initialize studentId values in the form state
-    rollRangeStudent?.forEach((student) => {
-      setValue("studentId", student.studentId);
-    });
-  }, [rollRangeStudent, setValue]);
-
-  useEffect(() => {
-    const fetchResults = async () => {
-      try {
-        const response = await axios.get(`${url}/result/get_all`);
-        setResults(response.data.data); // Assuming API returns data in `data.data`
-        console.log("results", response.data.data);
-      } catch (error) {
-        console.error("Error fetching results:", error);
-      }
-    };
-
-    fetchResults();
-  }, [url]);
-
   const {
     section,
     class: className,
     subject: subjectName,
     shift,
-    session,
+    year: session,
     term,
   } = rollRangeStudentData;
   const onSubmit = async (data) => {
+    const formattedResults = rollRangeStudent.map((student, index) => ({
+      subjective: parseInt(data.students[index].subjective) || 0,
+      objective: parseInt(data.students[index].objective) || 0,
+      practical: parseInt(data.students[index].practical) || 0,
+      classAssignment: 0, // Add default value or add new input field if needed
+      studentId: student.studentId,
+    }));
+
     const payload = {
       section,
       className,
@@ -45,9 +32,11 @@ const MarksInput = ({ rollRangeStudent, rollRangeStudentData }) => {
       shift,
       session,
       term,
-      results: [{ ...data }],
+      results: formattedResults,
     };
+
     try {
+      console.log("payload", payload);
       const response = await axios.post(`${url}/result/create`, payload);
       if (response.status === 201) {
         toast.success("Marks added successfully");
@@ -55,8 +44,6 @@ const MarksInput = ({ rollRangeStudent, rollRangeStudentData }) => {
     } catch (error) {
       toast.error("Failed to add marks");
     }
-
-    console.log("Results Array:", payload);
   };
 
   // Error Handling
