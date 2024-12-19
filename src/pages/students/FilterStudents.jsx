@@ -174,7 +174,7 @@ const FilterStudents = ({ classes, onFilter }) => {
             >
               <option value="">Class</option>
               {classes.map((className) => (
-                <option key={className._id} value={className.name}>
+                <option key={className._id} value={className.value}>
                   {className.name}
                 </option>
               ))}

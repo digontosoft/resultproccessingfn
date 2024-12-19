@@ -91,8 +91,8 @@ const AddStudents = () => {
     setIsLoading(true);
     try {
       const response = await gurdedApi.post("/addStudentData", { ...data });
-      if(response.status === 202) {
-        toast.error("StudentId and roll already exist")
+      if (response.status === 202) {
+        toast.error("StudentId and roll already exist");
       }
       if (response.status === 200) {
         toast.success("Student added successfully");
@@ -108,7 +108,7 @@ const AddStudents = () => {
       setIsLoading(false);
     }
 
-    // console.log("data:", data);
+    console.log("data:", data);
   };
 
   // Reusable input field component
@@ -202,7 +202,7 @@ const AddStudents = () => {
                   Select Class
                 </option>
                 {filterClass.map((option) => (
-                  <option key={option._id} value={option.name}>
+                  <option key={option._id} value={option.value}>
                     {option.name}
                   </option>
                 ))}
