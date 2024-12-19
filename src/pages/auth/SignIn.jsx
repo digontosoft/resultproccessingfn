@@ -24,7 +24,8 @@ const SignIn = () => {
   const onSubmit = async (data) => {
     try {
       const response = await api.post("/login", { ...data });
-
+      console.log(response);
+      
       if (response.status === 202) {
         toast.warn("User with given email is not registered yet.", {
           autoClose: 2500,
@@ -37,6 +38,7 @@ const SignIn = () => {
         setAuth({ ...response.data });
         navigate("/");
       }
+     
     } catch (error) {
       console.log(error);
       toast.error(`Error: ${error.response.data.message}`);

@@ -128,7 +128,7 @@ const Profile = () => {
                 className={`w-full border p-2 rounded-md ${
                   isEditing ? "bg-white" : "bg-gray-3"
                 }`}
-                placeholder="Enter First Name"
+                placeholder="Enter Name"
               />
               {errors.firstName && (
                 <p className="text-red-500 text-sm mt-1">
@@ -136,20 +136,20 @@ const Profile = () => {
                 </p>
               )}
               <label className="block text-sm font-medium mb-2 mt-4 text-gray-700">
-                Position
+              Phone Number
               </label>
               <input
                 type="text"
-                {...register("position", { required: "Position is required" })}
+                {...register("phoneNumber", { required: "Position is required" })}
                 disabled={!isEditing}
                 className={`w-full border p-2 rounded-md ${
                   isEditing ? "bg-white" : "bg-gray-3"
                 }`}
-                placeholder="Enter Position"
+                placeholder="Enter phone number"
               />
-              {errors.position && (
+              {errors.phoneNumber && (
                 <p className="text-red-500 text-sm mt-1">
-                  {errors.position.message}
+                  {errors.phoneNumber.message}
                 </p>
               )}
             </div>
@@ -157,37 +157,37 @@ const Profile = () => {
             {/* Last Name and Subject */}
             <div className="w-full">
               <label className="block text-sm font-medium mb-2 text-gray-700">
-                User Name
+                Shift
               </label>
               <input
                 type="text"
-                {...register("username", { required: "Last name is required" })}
-                disabled={!isEditing}
+                {...register("shift", { required: "shift is required" })}
+                disabled={true}
                 className={`w-full border p-2 rounded-md ${
                   isEditing ? "bg-white" : "bg-gray-3"
                 }`}
-                placeholder="Enter User name"
+                placeholder="Enter shift"
               />
               {errors.lastName && (
                 <p className="text-red-500 text-sm mt-1">
-                  {errors.username.message}
+                  {errors.shift.message}
                 </p>
               )}
               <label className="block text-sm font-medium mb-2 mt-4 text-gray-700">
-                Subject
+                Group
               </label>
               <input
                 type="text"
-                {...register("subject", { required: "Subject is required" })}
-                disabled={!isEditing}
+                {...register("group", { required: "Group is required" })}
+                disabled={true}
                 className={`w-full border p-2 rounded-md ${
                   isEditing ? "bg-white" : "bg-gray-3"
                 }`}
-                placeholder="Enter Subject"
+                placeholder="Enter Group"
               />
               {errors.subject && (
                 <p className="text-red-500 text-sm mt-1">
-                  {errors.subject.message}
+                  {errors.group.message}
                 </p>
               )}
             </div>
@@ -195,45 +195,42 @@ const Profile = () => {
             {/* Designation and Mobile */}
             <div className="w-full">
               <label className="block text-sm font-medium mb-2 text-gray-700">
-                Designation
+                Class
               </label>
               <input
                 type="text"
-                {...register("designation", {
-                  required: "Designation is required",
+                {...register("class_id.name", {
+                  required: "class is required",
                 })}
-                disabled={!isEditing}
+                disabled={true}
                 className={`w-full border p-2 rounded-md ${
                   isEditing ? "bg-white" : "bg-gray-3"
                 }`}
-                placeholder="Enter Designation"
+                placeholder="Enter class"
               />
               {errors.designation && (
                 <p className="text-red-500 text-sm mt-1">
-                  {errors.designation.message}
+                  {errors.class.message}
                 </p>
               )}
               <label className="block text-sm font-medium mb-2 mt-4 text-gray-700">
-                Mobile
+              Section
               </label>
               <input
                 type="text"
-                {...register("phoneNumber", {
-                  required: "Mobile number is required",
-                  pattern: {
-                    value: /^[0-9]{10,15}$/,
-                    message: "Enter a valid mobile number",
-                  },
+                {...register("section", {
+                  required: "section is required",
+                  
                 })}
-                disabled={!isEditing}
+                disabled={true}
                 className={`w-full border p-2 rounded-md ${
                   isEditing ? "bg-white" : "bg-gray-3"
                 }`}
-                placeholder="Enter Mobile Number"
+                placeholder="section Number"
               />
-              {errors.phoneNumber && (
+              {errors.section && (
                 <p className="text-red-500 text-sm mt-1">
-                  {errors.phoneNumber.message}
+                  {errors.section.message}
                 </p>
               )}
             </div>

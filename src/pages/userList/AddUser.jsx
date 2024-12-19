@@ -39,6 +39,12 @@ const AddUser = () => {
       if (response.status === 200) {
         toast.success("User Added successfully");
       }
+      if (response.status === 200) {
+        toast.success("User Added successfully");
+      }
+      if (response.status === 202) {
+        toast.error("Phone number already exist");
+      }
     } catch (error) {
       console.log(error, "data post failed");
       toast.error("Failed to add user");

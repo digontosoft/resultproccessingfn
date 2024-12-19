@@ -14,6 +14,7 @@ import useSingleUser from "../../hooks/useSingleUser";
 import FilterStudents from "./FilterStudents";
 import GlobalLoadingState from "../../components/GlobalLoadingState/GlobalLoadingState";
 
+
 const StudentList = () => {
   const { gurdedApi } = useAxios();
   const [students, setStudents] = useState([]);
@@ -44,6 +45,7 @@ const StudentList = () => {
     fetchClasses();
   }, [gurdedApi]);
 
+
   const getStudents = async () => {
     try {
       setIsLoading(true);
@@ -55,6 +57,7 @@ const StudentList = () => {
         setStudents(response.data.data);
 
         setFilteredStudents(response.data.data); // Initialize filtered students
+
       }
     } catch (error) {
       //console.error(error);
@@ -129,9 +132,10 @@ const StudentList = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+    
     try {
       await gurdedApi.put(
-        `/student/${selectedStudent?.studentId}`,
+        `/student/${selectedStudent?._id}`,
         selectedStudent
       );
       setStudents((prevStudents) =>
@@ -161,8 +165,9 @@ const StudentList = () => {
     }
   };
 
+
   useEffect(() => {
-    if (students && getUser.userType === "teacher") {
+    if (students&&getUser.userType==='teacher') {
       const data = students.filter(
         (item) =>
           item.class === getUser.class_id.name &&
@@ -182,59 +187,56 @@ const StudentList = () => {
 
   return (
     <>
-      {/* <StudentTable
+      <StudentTable
         students={filterStudent}
         onView={handleView}
         onEdit={handleEdit}
         onDelete={handleDelete}
-      /> */}
+      />
 
       {selectedStudent && openModal && !isEditing && (
         <StudentViewModal
           student={selectedStudent}
-          onClose={handleCloseModal}
-        />
-      )}
+          onClose={handleCloseModal}  />)}
 
-      <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-        <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
-          <h3 className="font-medium text-black dark:text-white">
-            Student List
-          </h3>
-        </div>
-        <div className="p-6.5 space-y-5">
-          <FilterStudents classes={classes} onFilter={handleFilter} />
-          <StudentTable
-            students={filteredStudents}
-            onView={handleView}
-            onEdit={handleEdit}
-            onDelete={handleDelete}
-          />
-
-          {selectedStudent && openModal && !isEditing && (
-            <StudentViewModal
-              student={selectedStudent}
-              onClose={handleCloseModal}
-            />
-          )}
-
-          {selectedStudent && openModal && isEditing && (
-            <StudentEditModal
-              student={selectedStudent}
-              onSubmit={handleFormSubmit}
-              onChange={setSelectedStudent}
-              onClose={handleCloseModal}
-            />
-          )}
-
-          {confirmDelete && (
-            <DeleteConfirmationModal
-              onConfirm={confirmDeleteStudent}
-              onClose={handleCloseModal}
-            />
-          )}
-        </div>
+    <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+      <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
+        <h3 className="font-medium text-black dark:text-white">Student List</h3>
       </div>
+      <div className="p-6.5 space-y-5">
+        <FilterStudents classes={classes} onFilter={handleFilter} />
+        <StudentTable
+          students={filteredStudents}
+          onView={handleView}
+          onEdit={handleEdit}
+          onDelete={handleDelete}/>
+
+       
+
+        {selectedStudent && openModal && !isEditing && (
+          <StudentViewModal
+            student={selectedStudent}
+            onClose={handleCloseModal}
+          />
+        )}
+
+        {selectedStudent && openModal && isEditing && (
+          <StudentEditModal
+            student={selectedStudent}
+            onSubmit={handleFormSubmit}
+            onChange={setSelectedStudent}
+            onClose={handleCloseModal}
+          />
+        )}
+
+        {confirmDelete && (
+          <DeleteConfirmationModal
+            onConfirm={confirmDeleteStudent}
+            onClose={handleCloseModal}
+          />
+        )}
+      </div>
+    </div>
     </>
   );
 };
