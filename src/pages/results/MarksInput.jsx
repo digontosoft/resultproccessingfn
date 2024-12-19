@@ -1,9 +1,10 @@
 import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
 const MarksInput = ({ rollRangeStudent, rollRangeStudentData }) => {
+  const [results, setResults] = useState([]);
   const url = import.meta.env.VITE_SERVER_BASE_URL;
   const { control, handleSubmit, setValue } = useForm();
 
@@ -13,6 +14,20 @@ const MarksInput = ({ rollRangeStudent, rollRangeStudentData }) => {
       setValue("studentId", student.studentId);
     });
   }, [rollRangeStudent, setValue]);
+
+  useEffect(() => {
+    const fetchResults = async () => {
+      try {
+        const response = await axios.get(`${url}/result/get_all`);
+        setResults(response.data.data); // Assuming API returns data in `data.data`
+        console.log("results", response.data.data);
+      } catch (error) {
+        console.error("Error fetching results:", error);
+      }
+    };
+
+    fetchResults();
+  }, [url]);
 
   const {
     section,

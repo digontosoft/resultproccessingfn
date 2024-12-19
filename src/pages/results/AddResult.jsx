@@ -94,7 +94,7 @@ const AddResult = () => {
     );
 
     setFilteredSubjects(filtered);
-    setClassData(selectedOption.name);
+    setClassData(selectedOption.value);
   };
 
   const onSubmit = async (data) => {
