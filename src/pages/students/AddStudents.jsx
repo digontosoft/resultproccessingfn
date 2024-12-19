@@ -91,6 +91,9 @@ const AddStudents = () => {
     setIsLoading(true);
     try {
       const response = await gurdedApi.post("/addStudentData", { ...data });
+      if(response.status === 202) {
+        toast.error("StudentId and roll already exist")
+      }
       if (response.status === 200) {
         toast.success("Student added successfully");
         reset();
