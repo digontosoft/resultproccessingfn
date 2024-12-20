@@ -111,10 +111,10 @@ const UserList = () => {
     setProfile((prevProfile) =>
       prevProfile.filter((p) => p._id !== profile._id)
     );
-    console.log("Profile deleted successfully");
+    console.log("Profile deleted successfully:", selectedProfile._id);
     handleCloseModal();
     try {
-      await gurdedApi.delete(`/teacher/${selectedProfile._id}`);
+      await gurdedApi.delete(`/user/${selectedProfile._id}`);
       await getUsers();
       toast.success("Student deleted successfully");
       handleCloseModal();
