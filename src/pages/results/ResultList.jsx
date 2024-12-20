@@ -4,11 +4,11 @@ import { Controller, useForm } from "react-hook-form";
 import useAxios from "../../hooks/useAxios";
 import { toast } from "react-toastify";
 import FilterResult from "./FilterResult";
+import useUserProtectFilter from "../../hooks/useUserProtectFilter";
 
 const ResultList = () => {
   const { gurdedApi } = useAxios();
   const [results, setResults] = useState([]);
-  const [subjects, setSubjects] = useState([]);
   const [filteredResults, setFilteredResults] = useState([]);
   const [students, setStudents] = useState([]);
   const [selectedStudent, setSelectedStudent] = useState(null); // For edit modal
@@ -16,7 +16,10 @@ const ResultList = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // Delete modal visibility
   const [deleteId, setDeleteId] = useState(null); // ID of the result to delete
   const url = import.meta.env.VITE_SERVER_BASE_URL;
+  const [subjects, setSubjects] = useState([]);
+  const [filteredSubjects, setFilteredSubjects] = useState([]);
   const { control, handleSubmit, reset } = useForm();
+  const { filterClass, filterSection, filterShift } = useUserProtectFilter();
 
   //   // Fetch students
   useEffect(() => {
@@ -116,6 +119,34 @@ const ResultList = () => {
     setFilteredResults(filtered);
   };
 
+  useEffect(() => {
+    const fetchSubjects = async () => {
+      try {
+        const response = await axios.get(`${url}/subjects`);
+        setSubjects(response.data.subjects);
+        console.log("subjects:", response.data.subjects);
+      } catch (error) {
+        toast.error("Failed to fetch subjects");
+      }
+    };
+
+    fetchSubjects();
+  }, [url]);
+
+  const handleFilterChange = (event) => {
+    const selectedValue = event.target.value;
+    const selectedOption = filterClass.find(
+      (option) => option._id === selectedValue
+    );
+    const filtered = subjects.filter(
+      (subject) => subject.class._id === selectedOption._id
+    );
+
+    setFilteredSubjects(filtered);
+    // setClassData(selectedOption.value);
+  };
+  console.log("subjects:", filteredSubjects);
+
   return (
     <div>
       <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -123,7 +154,14 @@ const ResultList = () => {
           <h3 className="font-medium text-black dark:text-white">Marks List</h3>
         </div>
         <div className="p-6.5 space-y-5">
-          <FilterResult onFilter={handleFilter} />
+          <FilterResult
+            onFilter={handleFilter}
+            handleFilterChange={handleFilterChange}
+            filteredSubjects={filteredSubjects}
+            filterClass={filterClass}
+            filterSection={filterSection}
+            filterShift={filterShift}
+          />
         </div>
 
         <div className="p-6.5">

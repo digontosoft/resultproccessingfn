@@ -3,9 +3,16 @@ import useUserProtectFilter from "../../hooks/useUserProtectFilter";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-const FilterResult = ({ onFilter }) => {
-  const { filterClass, filterShift, filterSection, sessions } =
-    useUserProtectFilter();
+const FilterResult = ({
+  onFilter,
+  handleFilterChange,
+  filteredSubjects,
+  filterClass,
+  filterSection,
+  filterShift,
+}) => {
+  // const { filterClass, filterShift, filterSection, sessions } =
+  //   useUserProtectFilter();
   const { register, handleSubmit } = useForm();
   const [subjects, setSubjects] = useState([]);
   const url = import.meta.env.VITE_SERVER_BASE_URL;
@@ -35,6 +42,9 @@ const FilterResult = ({ onFilter }) => {
           <div className="col-span-1">
             <select
               {...register("className")}
+              onChange={(e) => {
+                handleFilterChange(e);
+              }}
               className="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="">Class</option>
@@ -73,13 +83,21 @@ const FilterResult = ({ onFilter }) => {
           </div>
           <div className="col-span-1">
             <select
-              {...register("subjectName")}
-              className="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              {...register("subject", { required: "Subject is required" })}
+              className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
             >
-              <option value="">Subject</option>
-              <option value="Bangla">Bangla</option>
-              <option value="English">English</option>
+              <option value="">Select Subject</option>
+              {filteredSubjects.map((subject) => (
+                <option key={subject._id} value={subject.name}>
+                  {subject.name}
+                </option>
+              ))}
             </select>
+            {/* {errors.subject && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.subject.message}
+              </p>
+            )} */}
           </div>
         </div>
         <div className="flex justify-center items-center w-40">
