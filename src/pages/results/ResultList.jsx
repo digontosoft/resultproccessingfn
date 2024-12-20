@@ -96,9 +96,9 @@ const ResultList = () => {
       const response = await axios.delete(`${url}/result/delete/${deleteId}`);
       if (response.status === 200) {
         toast.success("Marks deleted successfully");
-        setResults((prevResults) =>
-          prevResults.filter((result) => result._id !== deleteId)
-        );
+        // setResults((prevResults) =>
+        //   prevResults.filter((result) => result._id !== deleteId)
+        // );
       }
     } catch (error) {
       toast.error("Failed to delete marks");
