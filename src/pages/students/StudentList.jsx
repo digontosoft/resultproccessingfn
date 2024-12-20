@@ -53,6 +53,7 @@ const StudentList = () => {
       if (response.status === 200) {
         //const data =
         setStudents(response.data.data);
+        console.log("students:", response.data.data);
 
         setFilteredStudents(response.data.data); // Initialize filtered students
       }

@@ -1,28 +1,30 @@
 import axios from "axios";
-import { useEffect } from "react";
+import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
 const MarksInput = ({ rollRangeStudent, rollRangeStudentData }) => {
+  const [results, setResults] = useState([]);
   const url = import.meta.env.VITE_SERVER_BASE_URL;
   const { control, handleSubmit, setValue } = useForm();
-
-  useEffect(() => {
-    // Initialize studentId values in the form state
-    rollRangeStudent?.forEach((student) => {
-      setValue("studentId", student.studentId);
-    });
-  }, [rollRangeStudent, setValue]);
 
   const {
     section,
     class: className,
     subject: subjectName,
     shift,
-    session,
+    year: session,
     term,
   } = rollRangeStudentData;
   const onSubmit = async (data) => {
+    const formattedResults = rollRangeStudent.map((student, index) => ({
+      subjective: parseInt(data.students[index].subjective) || 0,
+      objective: parseInt(data.students[index].objective) || 0,
+      practical: parseInt(data.students[index].practical) || 0,
+      classAssignment: parseInt(data.students[index].classAssignment) || 0, // Add default value or add new input field if needed
+      studentId: student.studentId,
+    }));
+
     const payload = {
       section,
       className,
@@ -30,9 +32,11 @@ const MarksInput = ({ rollRangeStudent, rollRangeStudentData }) => {
       shift,
       session,
       term,
-      results: [{ ...data }],
+      results: formattedResults,
     };
+
     try {
+      console.log("payload", payload);
       const response = await axios.post(`${url}/result/create`, payload);
       if (response.status === 201) {
         toast.success("Marks added successfully");
@@ -40,8 +44,6 @@ const MarksInput = ({ rollRangeStudent, rollRangeStudentData }) => {
     } catch (error) {
       toast.error("Failed to add marks");
     }
-
-    // console.log("Results Array:", payload);
   };
 
   // Error Handling
@@ -68,6 +70,9 @@ const MarksInput = ({ rollRangeStudent, rollRangeStudentData }) => {
               <thead>
                 <tr className="bg-gray-2 text-left dark:bg-meta-4">
                   <th className="py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
+                    S.ID
+                  </th>
+                  <th className="py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
                     Roll
                   </th>
                   <th className="py-4 px-4 font-medium text-black dark:text-white">
@@ -82,11 +87,17 @@ const MarksInput = ({ rollRangeStudent, rollRangeStudentData }) => {
                   <th className="py-4 px-4 font-medium text-black dark:text-white">
                     Practical
                   </th>
+                  <th className="py-4 px-4 font-medium text-black dark:text-white">
+                    CA
+                  </th>
                 </tr>
               </thead>
               <tbody>
-                {rollRangeStudent?.map((student) => (
+                {rollRangeStudent?.map((student, index) => (
                   <tr key={student._id}>
+                    <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                      {student?.studentId}
+                    </td>
                     <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
                       {student?.roll}
                     </td>
@@ -94,8 +105,8 @@ const MarksInput = ({ rollRangeStudent, rollRangeStudentData }) => {
                       {student?.studentName}
                     </td>
                     <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                      <Controller
-                        name={`subjective`}
+                      {/* <Controller
+                        name={`students[${index}].subjective`}
                         control={control}
                         defaultValue=""
                         rules={{ validate: validateMarks }}
@@ -117,11 +128,32 @@ const MarksInput = ({ rollRangeStudent, rollRangeStudentData }) => {
                             )}
                           </div>
                         )}
+                      /> */}
+
+                      <Controller
+                        name={`students[${index}].subjective`}
+                        control={control}
+                        defaultValue=""
+                        // rules={{ validate: validateMarks }}
+                        render={({ field, fieldState }) => (
+                          <div>
+                            <input
+                              type="number"
+                              {...field}
+                              className={`w-full rounded border-[1.5px]  bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary`}
+                            />
+                            {/* {fieldState.error && (
+                              <p className="text-red-500 text-sm">
+                                {fieldState.error.message}
+                              </p>
+                            )} */}
+                          </div>
+                        )}
                       />
                     </td>
                     <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                       <Controller
-                        name={`objective`}
+                        name={`students[${index}].objective`}
                         control={control}
                         defaultValue=""
                         render={({ field }) => (
@@ -129,7 +161,7 @@ const MarksInput = ({ rollRangeStudent, rollRangeStudentData }) => {
                             <input
                               type="number"
                               {...field}
-                              className={`w-full rounded border-[1.5px] bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary`}
+                              className="w-full rounded border-[1.5px] bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                             />
                           </div>
                         )}
@@ -137,7 +169,7 @@ const MarksInput = ({ rollRangeStudent, rollRangeStudentData }) => {
                     </td>
                     <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                       <Controller
-                        name={`practical`}
+                        name={`students[${index}].practical`}
                         control={control}
                         defaultValue=""
                         render={({ field }) => (
@@ -145,7 +177,23 @@ const MarksInput = ({ rollRangeStudent, rollRangeStudentData }) => {
                             <input
                               type="number"
                               {...field}
-                              className={`w-full rounded border-[1.5px] bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary`}
+                              className="w-full rounded border-[1.5px] bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                            />
+                          </div>
+                        )}
+                      />
+                    </td>
+                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                      <Controller
+                        name={`students[${index}].classAssignment`}
+                        control={control}
+                        defaultValue=""
+                        render={({ field }) => (
+                          <div>
+                            <input
+                              type="number"
+                              {...field}
+                              className="w-full rounded border-[1.5px] bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                             />
                           </div>
                         )}
@@ -155,6 +203,7 @@ const MarksInput = ({ rollRangeStudent, rollRangeStudentData }) => {
                 ))}
               </tbody>
             </table>
+
             <button
               type="submit"
               className="mt-4 w-full rounded bg-blue-500 py-3 px-5 font-medium text-white hover:bg-blue-600"
