@@ -4,11 +4,13 @@ import { useForm } from "react-hook-form";
 import useAuth from "../../hooks/useAuth";
 import { GridLoader } from "react-spinners";
 import { toast } from "react-toastify";
+import useUserProtectFilter from "../../hooks/useUserProtectFilter";
 const AddUser = () => {
   const { auth } = useAuth();
   const [classes, setClasses] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const authToken = auth.token;
+  const { filterClass } = useUserProtectFilter();
   const baseUrl = import.meta.env.VITE_SERVER_BASE_URL;
   const {
     register,
@@ -39,9 +41,9 @@ const AddUser = () => {
       if (response.status === 200) {
         toast.success("User Added successfully");
       }
-      if (response.status === 200) {
-        toast.success("User Added successfully");
-      }
+      // if (response.status === 200) {
+      //   toast.success("User Added successfully");
+      // }
       if (response.status === 202) {
         toast.error("Phone number already exist");
       }
@@ -181,7 +183,7 @@ const AddUser = () => {
                     className="w-full px-3 py-2 border border-gray-300 rounded-md  focus:outline-none focus:ring-1 focus:ring-blue-500"
                   >
                     <option value="">Select Class</option>
-                    {classes.map((cls, index) => (
+                    {filterClass.map((cls, index) => (
                       <option key={index} value={cls?._id}>
                         {cls?.name}
                       </option>

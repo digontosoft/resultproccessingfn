@@ -157,12 +157,12 @@ const ResultList = () => {
                 <th className="py-4 px-4 font-medium text-black dark:text-white">
                   Practical
                 </th>
-                <th className="py-4 px-4 font-medium text-black dark:text-white">
+                {/* <th className="py-4 px-4 font-medium text-black dark:text-white">
                   Action
-                </th>
+                </th> */}
               </tr>
             </thead>
-            {/* <tbody>
+            <tbody>
               {filteredResults?.map((student) => (
                 <tr key={student._id}>
                   <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
@@ -205,8 +205,8 @@ const ResultList = () => {
                   </td>
                 </tr>
               ))}
-            </tbody> */}
-            <tbody>
+            </tbody>
+            {/* <tbody>
               {filteredResults.map((result) => {
                 const student = students.find(
                   (s) => s.studentId === result.studentId
@@ -217,10 +217,10 @@ const ResultList = () => {
                       {result.studentId}
                     </td>
                     <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                      {result.className}
+                      {student?.studentName || "Unknown"}
                     </td>
                     <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                      {student?.studentName || "Unknown"}
+                      {result.className}
                     </td>
                     <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                       {result.shift}
@@ -257,7 +257,7 @@ const ResultList = () => {
                   </tr>
                 );
               })}
-            </tbody>
+            </tbody> */}
           </table>
         </div>
       </div>
