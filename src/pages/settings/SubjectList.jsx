@@ -519,13 +519,15 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import useAxios from "../../hooks/useAxios";
 import useUserProtectFilter from "../../hooks/useUserProtectFilter";
-
-const groups = ["general", "science", "humanities", "business"];
+import useSingleUser from "../../hooks/useSingleUser";
+const group = ["general"]
+const groups = ["science", "humanities", "business"];
 
 const SubjectList = () => {
   const { gurdedApi } = useAxios();
   const [classes, setClasses] = useState([]);
   const [subjects, setSubjects] = useState([]);
+  const [filterGroup,setFilterGroup] = useState([])
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editingSubject, setEditingSubject] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -535,6 +537,7 @@ const SubjectList = () => {
   const [selectedGroup, setSelectedGroup] = useState("");
   const url = import.meta.env.VITE_SERVER_BASE_URL;
   const { filterClass } = useUserProtectFilter();
+  const {getUser} = useSingleUser()
   const {
     register,
     handleSubmit,
@@ -561,7 +564,7 @@ const SubjectList = () => {
         const response = await axios.get(`${url}/subjects`);
         const data = response.data.subjects;
         setSubjects(data);
-        setFilteredSubjects(data);
+        //setFilteredSubjects(data);
       } catch (error) {
         toast.error("Failed to fetch subjects");
         console.error(error);
@@ -571,12 +574,13 @@ const SubjectList = () => {
     fetchSubjects();
   }, [url]);
 
+
   const handleFilterChange = (classId, group) => {
     const updatedClass = classId || selectedClass;
     const updatedGroup = group || selectedGroup;
 
-    setSelectedClass(updatedClass);
-    setSelectedGroup(updatedGroup);
+     setSelectedClass(updatedClass);
+     setSelectedGroup(updatedGroup);
 
     if (updatedClass && updatedGroup) {
       const filtered = subjects.filter(
@@ -598,6 +602,25 @@ const SubjectList = () => {
     });
     setIsEditModalOpen(true);
   };
+  //console.log("subjects",subjects);
+  //console.log("user",getUser)
+  
+
+  useEffect(()=>{
+    if(getUser.userType==='teacher'||getUser.userType==='operator') {
+     const data = subjects.filter((item)=>item.class.name===getUser.class_id.name)
+      setFilteredSubjects(data) 
+      if(getUser.class_id.value !== "9"||getUser.class_id.value !== "10"){
+       setFilterGroup(group)
+      } else {
+       setFilterGroup(groups)
+      } 
+    }
+    else {
+      setFilteredSubjects(subjects)
+      setFilterGroup([...group,...groups])
+    }
+  },[getUser,subjects,selectedClass,selectedGroup])
 
   const closeEditModal = () => {
     setIsEditModalOpen(false);
@@ -681,7 +704,7 @@ const SubjectList = () => {
             className="w-full rounded-lg border py-2 px-4"
           >
             <option value="">Select Group</option>
-            {groups.map((grp) => (
+            {filterGroup.map((grp) => (
               <option key={grp} value={grp}>
                 {grp}
               </option>
