@@ -2,58 +2,41 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { toast } from "react-toastify";
+import useAxios from "../../hooks/useAxios";
 
 const groups = ["general", "science", "humanities", "business"];
 
 const SubjectList = () => {
-  const [filters, setFilters] = useState({
-    className: "",
-    group: "",
-    session: "",
-  });
+  const { gurdedApi } = useAxios();
   const [classes, setClasses] = useState([]);
   const [subjects, setSubjects] = useState([]);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editingSubject, setEditingSubject] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [subjectToDelete, setSubjectToDelete] = useState(null);
-  const [teacherAccess, setTeacherAccess] = useState([]);
   const [teacherSubjects, setTeacherSubjects] = useState([]);
   const [filteredSubjects, setFilteredSubjects] = useState([]);
+  const [selectedClass, setSelectedClass] = useState("");
+  const [selectedGroup, setSelectedGroup] = useState("");
   const url = import.meta.env.VITE_SERVER_BASE_URL;
-
   const {
-    control,
-    handleSubmit,
     reset,
     formState: { errors },
-  } = useForm({
-    defaultValues: {
-      name: "",
-      code: "",
-      marks: "",
-    },
-  });
+  } = useForm();
 
-  const teacher = JSON.parse(localStorage.getItem("auth"));
-  // console.log("teacher", teacher);
   useEffect(() => {
-    const fetchUsers = async () => {
+    const fetchClasses = async () => {
       try {
-        const response = await axios.get(
-          `${url}/teacher-subjects/${teacher._id}`
-        );
-        const teacherData = response.data.data;
-        console.log("teacherData:", teacherData);
-        setTeacherAccess(teacherData);
+        const response = await gurdedApi.get(`/class`);
+        const classNames = response.data.classes;
+        setClasses(classNames);
       } catch (error) {
-        toast.error("Failed to fetch users");
         console.error(error);
       }
     };
 
-    fetchUsers();
-  }, [url, teacher._id]);
+    fetchClasses();
+  }, [gurdedApi]);
 
   useEffect(() => {
     const fetchSubjects = async () => {
@@ -62,7 +45,6 @@ const SubjectList = () => {
         const data = response.data.subjects;
         setTeacherSubjects(data);
         setFilteredSubjects(data); // Initially set all subjects
-        console.log("teacherSubjects", data);
       } catch (error) {
         toast.error("Failed to fetch subjects");
         console.error(error);
@@ -72,25 +54,26 @@ const SubjectList = () => {
     fetchSubjects();
   }, [url]);
 
-  const handleFilterChange = (classId) => {
-    console.log("Selected classId:", classId);
+  const handleFilterChange = (classId, group) => {
+    const updatedClass = classId || selectedClass;
+    const updatedGroup = group || selectedGroup;
 
-    // Filter the subjects based on the selected classId
-    const filtered = teacherSubjects.filter(
-      (subject) => subject.class._id === classId
-    );
+    setSelectedClass(updatedClass);
+    setSelectedGroup(updatedGroup);
 
-    // Update the state with the filtered subjects
-    setFilteredSubjects(filtered);
-    console.log("Filtered subjects:", filtered);
+    // Only filter when both classId and group are provided
+    if (updatedClass && updatedGroup) {
+      const filtered = teacherSubjects.filter(
+        (subject) =>
+          subject.class._id === updatedClass && subject.group === updatedGroup
+      );
+      setFilteredSubjects(filtered);
+    } else {
+      // Clear the filtered subjects or reset based on your requirements
+      setFilteredSubjects([]);
+    }
   };
 
-  const teacher_class = teacherAccess.flatMap((cls) =>
-    cls.ClassVsSubject.map((cl) => cl.class_id)
-  );
-  // Handle filter chang
-
-  // Open edit modal
   const openEditModal = (subject) => {
     setEditingSubject(subject);
     reset({
@@ -101,17 +84,15 @@ const SubjectList = () => {
     setIsEditModalOpen(true);
   };
 
-  // Handle edit form submit
   const onEditSubmit = async (data) => {
     try {
-      const response = await axios.put(`${url}/subject/${subjects._id}`, {
+      const response = await axios.put(`${url}/subject/${editingSubject._id}`, {
         name: data.name,
         subjectCode: data.code,
         marks: data.marks,
       });
 
       if (response.status === 200) {
-        // Update the subject list after successful edit
         setSubjects((prev) =>
           prev.map((subject) =>
             subject._id === editingSubject._id
@@ -127,7 +108,7 @@ const SubjectList = () => {
           )
         );
         toast.success("Subject updated successfully");
-        setIsEditModalOpen(false); // Close the modal after editing
+        setIsEditModalOpen(false);
       }
     } catch (error) {
       toast.error("Failed to update subject");
@@ -135,13 +116,11 @@ const SubjectList = () => {
     }
   };
 
-  // Handle delete action (Show confirmation modal)
   const handleDeleteConfirmation = (id) => {
     setSubjectToDelete(id);
-    setIsDeleteModalOpen(true); // Open confirmation modal
+    setIsDeleteModalOpen(true);
   };
 
-  // Confirm delete
   const handleDelete = async () => {
     try {
       const response = await axios.delete(`${url}/subject/${subjectToDelete}`);
@@ -154,16 +133,15 @@ const SubjectList = () => {
         setFilteredSubjects((prev) =>
           prev.filter((subject) => subject._id !== subjectToDelete)
         );
-        setIsDeleteModalOpen(false); // Close confirmation modal after deletion
+        setIsDeleteModalOpen(false);
       }
     } catch (error) {
       toast.error("Failed to delete the subject");
       console.error(error);
-      setIsDeleteModalOpen(false); // Close modal in case of error
+      setIsDeleteModalOpen(false);
     }
   };
 
-  // Close the confirmation modal without deleting
   const closeDeleteModal = () => {
     setIsDeleteModalOpen(false);
   };
@@ -171,16 +149,14 @@ const SubjectList = () => {
   return (
     <div>
       <div className="p-6 space-y-4">
-        {/* Filters */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <select
             name="className"
-            value={filters.className}
-            onChange={(e) => handleFilterChange(e.target.value)}
+            onChange={(e) => handleFilterChange(e.target.value, null)}
             className="w-full rounded-lg border border-stroke py-2 px-4 text-black bg-white dark:bg-boxdark dark:text-white"
           >
             <option value="">Select Class</option>
-            {teacher_class.map((cls) => (
+            {classes.map((cls) => (
               <option key={cls._id} value={cls._id}>
                 {cls.name}
               </option>
@@ -188,8 +164,7 @@ const SubjectList = () => {
           </select>
           <select
             name="group"
-            value={filters.group}
-            onChange={handleFilterChange}
+            onChange={(e) => handleFilterChange(null, e.target.value)}
             className="w-full rounded-lg border border-stroke py-2 px-4 text-black bg-white dark:bg-boxdark dark:text-white"
           >
             <option value="">Select Group</option>
@@ -200,7 +175,6 @@ const SubjectList = () => {
             ))}
           </select>
         </div>
-        {/* Subject Table */}
         <div className="overflow-x-auto">
           <table className="w-full table-auto border-collapse border border-stroke">
             <thead>
@@ -246,7 +220,7 @@ const SubjectList = () => {
                         Edit
                       </button>
                       <button
-                        onClick={() => handleDeleteConfirmation(subject._id)} // Trigger delete confirmation modal
+                        onClick={() => handleDeleteConfirmation(subject._id)}
                         className="text-red-500 hover:underline"
                       >
                         Delete
@@ -257,7 +231,7 @@ const SubjectList = () => {
               ) : (
                 <tr>
                   <td
-                    colSpan="4"
+                    colSpan="5"
                     className="border border-stroke px-4 py-2 text-center"
                   >
                     No subjects found for the selected filters.
@@ -268,116 +242,6 @@ const SubjectList = () => {
           </table>
         </div>
       </div>
-
-      {/* Edit Modal */}
-      {isEditModalOpen && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-            <h2 className="text-xl font-semibold mb-4">Edit Subject</h2>
-            <form onSubmit={handleSubmit(onEditSubmit)} className="space-y-4">
-              <div>
-                <label className="block mb-1">Subject Name</label>
-                <Controller
-                  name="name"
-                  control={control}
-                  rules={{ required: "Subject Name is required" }}
-                  render={({ field }) => (
-                    <input
-                      {...field}
-                      type="text"
-                      className="w-full border border-stroke rounded px-3 py-2"
-                    />
-                  )}
-                />
-                {errors.name && (
-                  <span className="text-red-500 text-sm">
-                    {errors.name.message}
-                  </span>
-                )}
-              </div>
-              <div>
-                <label className="block mb-1">Code</label>
-                <Controller
-                  name="code"
-                  control={control}
-                  rules={{ required: "Code is required" }}
-                  render={({ field }) => (
-                    <input
-                      {...field}
-                      type="text"
-                      className="w-full border border-stroke rounded px-3 py-2"
-                    />
-                  )}
-                />
-                {errors.code && (
-                  <span className="text-red-500 text-sm">
-                    {errors.code.message}
-                  </span>
-                )}
-              </div>
-              <div>
-                <label className="block mb-1">Marks</label>
-                <Controller
-                  name="marks"
-                  control={control}
-                  rules={{ required: "Marks are required" }}
-                  render={({ field }) => (
-                    <input
-                      {...field}
-                      type="number"
-                      className="w-full border border-stroke rounded px-3 py-2"
-                    />
-                  )}
-                />
-                {errors.marks && (
-                  <span className="text-red-500 text-sm">
-                    {errors.marks.message}
-                  </span>
-                )}
-              </div>
-              <div className="flex justify-end space-x-4">
-                <button
-                  type="button"
-                  onClick={() => setIsEditModalOpen(false)}
-                  className="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="px-4 py-2 rounded bg-blue-500 text-white hover:bg-blue-600"
-                >
-                  Save Changes
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-
-      {/* Delete Modal */}
-      {isDeleteModalOpen && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-            <h2 className="text-xl font-semibold mb-4">Delete Subject</h2>
-            <p>Are you sure you want to delete this subject?</p>
-            <div className="flex justify-end space-x-4 mt-4">
-              <button
-                onClick={closeDeleteModal}
-                className="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleDelete}
-                className="px-4 py-2 rounded bg-red-500 text-white hover:bg-red-600"
-              >
-                Delete
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

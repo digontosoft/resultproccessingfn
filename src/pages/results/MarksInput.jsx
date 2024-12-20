@@ -21,7 +21,7 @@ const MarksInput = ({ rollRangeStudent, rollRangeStudentData }) => {
       subjective: parseInt(data.students[index].subjective) || 0,
       objective: parseInt(data.students[index].objective) || 0,
       practical: parseInt(data.students[index].practical) || 0,
-      classAssignment: 0, // Add default value or add new input field if needed
+      classAssignment: parseInt(data.students[index].classAssignment) || 0, // Add default value or add new input field if needed
       studentId: student.studentId,
     }));
 
@@ -87,6 +87,9 @@ const MarksInput = ({ rollRangeStudent, rollRangeStudentData }) => {
                   <th className="py-4 px-4 font-medium text-black dark:text-white">
                     Practical
                   </th>
+                  <th className="py-4 px-4 font-medium text-black dark:text-white">
+                    CA
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -102,7 +105,7 @@ const MarksInput = ({ rollRangeStudent, rollRangeStudentData }) => {
                       {student?.studentName}
                     </td>
                     <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                      <Controller
+                      {/* <Controller
                         name={`students[${index}].subjective`}
                         control={control}
                         defaultValue=""
@@ -123,6 +126,27 @@ const MarksInput = ({ rollRangeStudent, rollRangeStudentData }) => {
                                 {fieldState.error.message}
                               </p>
                             )}
+                          </div>
+                        )}
+                      /> */}
+
+                      <Controller
+                        name={`students[${index}].subjective`}
+                        control={control}
+                        defaultValue=""
+                        // rules={{ validate: validateMarks }}
+                        render={({ field, fieldState }) => (
+                          <div>
+                            <input
+                              type="number"
+                              {...field}
+                              className={`w-full rounded border-[1.5px]  bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary`}
+                            />
+                            {/* {fieldState.error && (
+                              <p className="text-red-500 text-sm">
+                                {fieldState.error.message}
+                              </p>
+                            )} */}
                           </div>
                         )}
                       />
@@ -146,6 +170,22 @@ const MarksInput = ({ rollRangeStudent, rollRangeStudentData }) => {
                     <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                       <Controller
                         name={`students[${index}].practical`}
+                        control={control}
+                        defaultValue=""
+                        render={({ field }) => (
+                          <div>
+                            <input
+                              type="number"
+                              {...field}
+                              className="w-full rounded border-[1.5px] bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                            />
+                          </div>
+                        )}
+                      />
+                    </td>
+                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                      <Controller
+                        name={`students[${index}].classAssignment`}
                         control={control}
                         defaultValue=""
                         render={({ field }) => (
