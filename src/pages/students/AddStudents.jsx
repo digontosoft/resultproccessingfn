@@ -8,15 +8,18 @@ import useSingleUser from "../../hooks/useSingleUser";
 import useUserProtectFilter from "../../hooks/useUserProtectFilter";
 
 const AddStudents = () => {
- // const shifts = ["Morning", "Day"];
+  // const shifts = ["Morning", "Day"];
   const { gurdedApi } = useAxios();
   const [configs, setConfigs] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   //const [classes, setClasses] = useState([]);
   const url = import.meta.env.VITE_SERVER_BASE_URL;
-  
-  const {filterClass,filterSection,filterShift,sessions} = useUserProtectFilter()
+
+  const { filterClass, filterSection, filterShift, sessions } =
+    useUserProtectFilter();
+
+  console.log("sessions", sessions, filterSection, filterShift);
   const {
     register,
     handleSubmit,
@@ -40,19 +43,19 @@ const AddStudents = () => {
 
     fetchConfigs();
   }, [gurdedApi]);
-  useEffect(() => {
-    const fetchClasses = async () => {
-      try {
-        const response = await axios.get(`${url}/class`);
-        const classNames = response.data.classes;
-        setClasses(classNames);
-      } catch (error) {
-        toast.error("Failed to fetch classes");
-      }
-    };
+  // useEffect(() => {
+  //   const fetchClasses = async () => {
+  //     try {
+  //       const response = await axios.get(`${url}/class`);
+  //       const classNames = response.data.classes;
+  //       setClasses(classNames);
+  //     } catch (error) {
+  //       toast.error("Failed to fetch classes");
+  //     }
+  //   };
 
-    fetchClasses();
-  }, [url]);
+  //   fetchClasses();
+  // }, [url]);
   const dropdownOptions = {
     // class: Array.from({ length: 10 }, (_, i) => `Class ${i + 1}`),
     // section: ['Section A', 'Section B'],
@@ -221,9 +224,11 @@ const AddStudents = () => {
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               >
                 <option value="">Select Year</option>
-                <option value="2022">2022</option>
-                <option value="2023">2023</option>
-                <option value="2024">2024</option>
+                {sessions.map((session) => (
+                  <option key={session} value={session}>
+                    {session}
+                  </option>
+                ))}
               </select>
               {errors.year && (
                 <span className="text-red-500 text-sm mt-1">
@@ -242,8 +247,11 @@ const AddStudents = () => {
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               >
                 <option value="">Select Section</option>
-                <option value="A">A</option>
-                <option value="B">B</option>
+                {filterSection.map((section) => (
+                  <option key={section} value={section}>
+                    {section}
+                  </option>
+                ))}
               </select>
               {errors.year && (
                 <span className="text-red-500 text-sm mt-1">
@@ -260,8 +268,11 @@ const AddStudents = () => {
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               >
                 <option value="">Select Shift</option>
-                <option value="Morning">Morning</option>
-                <option value="Day">Day</option>
+                {filterShift.map((shift) => (
+                  <option key={shift} value={shift}>
+                    {shift}
+                  </option>
+                ))}
               </select>
               {errors.shift && (
                 <span className="text-red-500 text-sm mt-1">

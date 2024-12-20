@@ -13,7 +13,7 @@ const MarksInput = ({ rollRangeStudent, rollRangeStudentData }) => {
     class: className,
     subject: subjectName,
     shift,
-    year: session,
+    session,
     term,
   } = rollRangeStudentData;
   const onSubmit = async (data) => {

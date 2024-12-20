@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 
-const FilterStudents = ({ classes, onFilter,shift,section,sessions }) => {
+const FilterStudents = ({ classes, onFilter, shift, section, sessions }) => {
   const {
     register,
     handleSubmit,
@@ -22,9 +22,11 @@ const FilterStudents = ({ classes, onFilter,shift,section,sessions }) => {
               className="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="">Select Year</option>
-              <option value="2024">2024</option>
-              <option value="2023">2023</option>
-              <option value="2022">2022</option>
+              {sessions.map((session) => (
+                <option key={session} value={session}>
+                  {session}
+                </option>
+              ))}
             </select>
           </div>
 
@@ -35,8 +37,11 @@ const FilterStudents = ({ classes, onFilter,shift,section,sessions }) => {
               className="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="">Shift</option>
-              <option value="Morning">Morning</option>
-              <option value="Day">Day</option>
+              {shift.map((item) => (
+                <option key={item} value={item}>
+                  {item}
+                </option>
+              ))}
             </select>
           </div>
 
@@ -76,8 +81,11 @@ const FilterStudents = ({ classes, onFilter,shift,section,sessions }) => {
               className="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="">Section</option>
-              <option value="A">A</option>
-              <option value="B">B</option>
+              {section.map((item) => (
+                <option key={item} value={item}>
+                  {item}
+                </option>
+              ))}
             </select>
           </div>
         </div>

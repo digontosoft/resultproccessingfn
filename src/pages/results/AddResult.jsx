@@ -21,8 +21,9 @@ const AddResult = () => {
   const [rollRangeStudent, setRollRangeStudent] = useState([]);
   const [rollRangeStudentData, setRollRangeStudentData] = useState({});
   const { getUser } = useSingleUser();
-  const {filterClass,filterSection,filterShift,sessions} = useUserProtectFilter()
- 
+  const { filterClass, filterSection, filterShift, sessions } =
+    useUserProtectFilter();
+
   const {
     control,
     register,
@@ -31,9 +32,6 @@ const AddResult = () => {
     reset,
     formState: { errors },
   } = useForm();
-
- 
-
 
   useEffect(() => {
     const fetchSubjects = async () => {
@@ -63,7 +61,7 @@ const AddResult = () => {
 
   const onSubmit = async (data) => {
     console.log(data);
-    
+
     const payload = {
       ...data,
       class: classData,
@@ -137,7 +135,7 @@ const AddResult = () => {
         <div className="p-6.5">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <FormSelect label="Year" name="year" options={sessions} />
+              <FormSelect label="Year" name="session" options={sessions} />
               <FormSelect label="Exam" name="term" options={terms} />
               <FormSelect label="Shift" name="shift" options={filterShift} />
               <div className="mb-4.5">
@@ -168,7 +166,11 @@ const AddResult = () => {
                   </span>
                 )}
               </div>
-              <FormSelect label="Section" name="section" options={filterSection} />
+              <FormSelect
+                label="Section"
+                name="section"
+                options={filterSection}
+              />
               <FormSelect
                 label="Select Group"
                 name="group"
