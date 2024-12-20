@@ -22,7 +22,9 @@ const useUserProtectFilter = () => {
             const response = await axios.get(`${url}/class`);
             const classNames = response.data.classes;
 
-        setClasses(classNames);
+            const sortData = classNames.sort((a, b) => Number(a.value) - Number(b.value));
+
+        setClasses(sortData);
             
         } catch (error) {
             toast.error("Failed to fetch classes");
@@ -31,6 +33,9 @@ const useUserProtectFilter = () => {
     }
     fetchClasses()
   },[url])
+
+  console.log(classes);
+  
 
   useEffect(() => {
     if (getUser.userType === "teacher") {
