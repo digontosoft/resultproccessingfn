@@ -100,7 +100,7 @@ const UserList = () => {
           profile._id === selectedProfile._id ? selectedProfile : profile
         )
       );
-      toast.success("profile updated successfully");
+      toast.success("Profile updated successfully");
       handleCloseModal();
     } catch (error) {
       toast.error("Failed to update profile");
@@ -111,12 +111,12 @@ const UserList = () => {
     setProfile((prevProfile) =>
       prevProfile.filter((p) => p._id !== profile._id)
     );
-    console.log("Profile deleted successfully");
+    console.log("Profile deleted successfully:", selectedProfile._id);
     handleCloseModal();
     try {
-      await gurdedApi.delete(`/teacher/${selectedProfile._id}`);
+      await gurdedApi.delete(`/user/${selectedProfile._id}`);
       await getUsers();
-      toast.success("Student deleted successfully");
+      toast.success("Profile deleted successfully");
       handleCloseModal();
     } catch (error) {
       toast.error("Failed to delete student");

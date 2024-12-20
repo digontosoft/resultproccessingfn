@@ -300,6 +300,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import * as XLSX from "xlsx";
+import useUserProtectFilter from "../../hooks/useUserProtectFilter";
 
 const AddResultBulkAdmin = () => {
   const fileInputRef = useRef(null);
@@ -308,6 +309,7 @@ const AddResultBulkAdmin = () => {
   const [allClass, setAllClass] = useState([]);
   const [teacherSubjects, setTeacherSubjects] = useState([]);
   const [filteredSubjects, setFilteredSubjects] = useState([]);
+  const { filterClass } = useUserProtectFilter();
   const navigate = useNavigate();
   const currentYear = new Date().getFullYear();
   const {
@@ -454,7 +456,7 @@ const AddResultBulkAdmin = () => {
                   <option value="" hidden>
                     Select Class
                   </option>
-                  {allClass.map((option) => (
+                  {filterClass.map((option) => (
                     <option key={option._id} value={option._id}>
                       {option.name}
                     </option>
