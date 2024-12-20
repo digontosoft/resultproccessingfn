@@ -98,8 +98,8 @@ const AddStudents = () => {
       }
       if (response.status === 200) {
         toast.success("Student added successfully");
-        reset();
-        navigate("/student-list");
+        // reset();
+        // navigate("/student-list");
       }
     } catch (error) {
       console.error(error.response?.data?.message || "Something went wrong");

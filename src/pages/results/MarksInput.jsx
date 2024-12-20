@@ -34,6 +34,7 @@ const MarksInput = ({ rollRangeStudent, rollRangeStudentData }) => {
       term,
       results: formattedResults,
     };
+    console.log("result:", payload);
 
     try {
       console.log("payload", payload);
