@@ -6,28 +6,23 @@ import { toast } from "react-toastify";
 import useAxios from "../../hooks/useAxios";
 import MarksInput from "./MarksInput";
 import useSingleUser from "../../hooks/useSingleUser";
+import useUserProtectFilter from "../../hooks/useUserProtectFilter";
 
-const shifts = ["Morning", "Day"];
-const section = ["A", "B"];
-const currentYear = new Date().getFullYear();
-const sessions = [currentYear, currentYear - 1, currentYear - 2];
 const terms = ["Half Yearly", "Annual", "Pretest", "Test", "Model Test"];
 
 const AddResult = () => {
   const { gurdedApi } = useAxios();
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const [classes, setClasses] = useState([]);
   const [classData, setClassData] = useState("");
   const url = import.meta.env.VITE_SERVER_BASE_URL;
   const [subjects, setSubjects] = useState([]);
   const [filteredSubjects, setFilteredSubjects] = useState([]);
   const [rollRangeStudent, setRollRangeStudent] = useState([]);
   const [rollRangeStudentData, setRollRangeStudentData] = useState({});
-  const [filterClass, setFilterClass] = useState([]);
   const { getUser } = useSingleUser();
-  const [filterSection, setFilterSection] = useState([]);
-  const [filterShift, setFilterShift] = useState([]);
+  const {filterClass,filterSection,filterShift,sessions} = useUserProtectFilter()
+ 
   const {
     control,
     register,
@@ -37,39 +32,8 @@ const AddResult = () => {
     formState: { errors },
   } = useForm();
 
-  useEffect(() => {
-    const fetchClasses = async () => {
-      try {
-        const response = await axios.get(`${url}/class`);
-        const classNames = response.data.classes;
+ 
 
-        setClasses(classNames);
-      } catch (error) {
-        toast.error("Failed to fetch classes");
-      }
-    };
-
-    fetchClasses();
-  }, [url, getUser]);
-
-  // useEffect(() => {
-  //   if (getUser.userType === "teacher") {
-  //     const data = classes.filter(
-  //       (item) => item.name === getUser.class_id.name
-  //     );
-  //     const sectionData = section.filter((item) => item === getUser.section);
-  //     const shiftData = shifts.filter((item) => item === getUser.shift);
-  //     setFilterClass(data);
-  //     setFilterSection(sectionData);
-  //     setFilterShift(shiftData);
-  //   } else {
-  //     setFilterClass(classes);
-  //     setFilterSection(section);
-  //     setFilterShift(shifts);
-  //   }
-  // }, [getUser]);
-
-  //console.log(singleClass);
 
   useEffect(() => {
     const fetchSubjects = async () => {
@@ -86,7 +50,7 @@ const AddResult = () => {
 
   const handleFilterChange = (event) => {
     const selectedValue = event.target.value;
-    const selectedOption = classes.find(
+    const selectedOption = filterClass.find(
       (option) => option._id === selectedValue
     );
     const filtered = subjects.filter(
@@ -175,7 +139,7 @@ const AddResult = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               <FormSelect label="Year" name="year" options={sessions} />
               <FormSelect label="Exam" name="term" options={terms} />
-              <FormSelect label="Shift" name="shift" options={shifts} />
+              <FormSelect label="Shift" name="shift" options={filterShift} />
               <div className="mb-4.5">
                 <label className="mb-3 block text-black dark:text-white">
                   Select Class
@@ -192,7 +156,7 @@ const AddResult = () => {
                   <option value="" hidden>
                     Select Class
                   </option>
-                  {classes.map((option) => (
+                  {filterClass.map((option) => (
                     <option key={option._id} value={option._id}>
                       {option.name}
                     </option>
@@ -204,7 +168,7 @@ const AddResult = () => {
                   </span>
                 )}
               </div>
-              <FormSelect label="Section" name="section" options={section} />
+              <FormSelect label="Section" name="section" options={filterSection} />
               <FormSelect
                 label="Select Group"
                 name="group"

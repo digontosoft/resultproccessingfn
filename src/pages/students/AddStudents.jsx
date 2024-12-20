@@ -5,19 +5,18 @@ import { toast } from "react-toastify";
 import useAxios from "../../hooks/useAxios";
 import axios from "axios";
 import useSingleUser from "../../hooks/useSingleUser";
+import useUserProtectFilter from "../../hooks/useUserProtectFilter";
 
 const AddStudents = () => {
-  const shifts = ["Morning", "Day"];
+ // const shifts = ["Morning", "Day"];
   const { gurdedApi } = useAxios();
   const [configs, setConfigs] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const [classes, setClasses] = useState([]);
+  //const [classes, setClasses] = useState([]);
   const url = import.meta.env.VITE_SERVER_BASE_URL;
-  const [filterClass, setFilterClass] = useState([]);
-  const { getUser } = useSingleUser();
-  const [filterSection, setFilterSection] = useState([]);
-  const [filterShift, setFilterShift] = useState([]);
+  
+  const {filterClass,filterSection,filterShift,sessions} = useUserProtectFilter()
   const {
     register,
     handleSubmit,
@@ -68,24 +67,24 @@ const AddStudents = () => {
     gender: configs.filter((config) => config.slug === "gender"),
   };
 
-  useEffect(() => {
-    if (classes && getUser.userType === "teacher") {
-      const data = classes.filter(
-        (item) => item.name === getUser.class_id.name
-      );
-      const sectionData = dropdownOptions.section.filter(
-        (item) => item.value === getUser.section
-      );
-      const shiftData = shifts.filter((item) => item === getUser.shift);
-      setFilterClass(data);
-      setFilterSection(sectionData);
-      setFilterShift(shiftData);
-    } else {
-      setFilterClass(classes);
-      setFilterSection(dropdownOptions.section);
-      setFilterShift(shifts);
-    }
-  }, [getUser]);
+  // useEffect(() => {
+  //   if (classes && getUser.userType === "teacher") {
+  //     const data = classes.filter(
+  //       (item) => item.name === getUser.class_id.name
+  //     );
+  //     const sectionData = dropdownOptions.section.filter(
+  //       (item) => item.value === getUser.section
+  //     );
+  //     const shiftData = shifts.filter((item) => item === getUser.shift);
+  //     setFilterClass(data);
+  //     setFilterSection(sectionData);
+  //     setFilterShift(shiftData);
+  //   } else {
+  //     setFilterClass(classes);
+  //     setFilterSection(dropdownOptions.section);
+  //     setFilterShift(shifts);
+  //   }
+  // }, [getUser]);
 
   const onSubmit = async (data) => {
     setIsLoading(true);

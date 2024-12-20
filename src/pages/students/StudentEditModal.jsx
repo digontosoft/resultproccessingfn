@@ -22,7 +22,7 @@ const StudentEditModal = ({ student, onSubmit, onChange, onClose }) => {
 							type="text"
 							value={student?.studentName}
 							onChange={(e) =>
-								onChange({ ...student, firstName: e.target.value })
+								onChange({ ...student, studentName: e.target.value })
 							}
 							className="border rounded p-2 w-full mb-4"
 						/>
@@ -115,6 +115,15 @@ const StudentEditModal = ({ student, onSubmit, onChange, onClose }) => {
 						<input
 							type="text"
 							value={student?.studentId}
+							readOnly
+							className="border rounded p-2 w-full mb-4 bg-gray-100"
+						/>
+					</div>
+					<div>
+						<label className="block mb-2 text-sm font-medium">Student Roll</label>
+						<input
+							type="text"
+							value={student?.roll}
 							readOnly
 							className="border rounded p-2 w-full mb-4 bg-gray-100"
 						/>

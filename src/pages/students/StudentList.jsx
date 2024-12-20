@@ -13,6 +13,7 @@ import useSingleUser from "../../hooks/useSingleUser";
 
 import FilterStudents from "./FilterStudents";
 import GlobalLoadingState from "../../components/GlobalLoadingState/GlobalLoadingState";
+import useUserProtectFilter from "../../hooks/useUserProtectFilter";
 
 const StudentList = () => {
   const { gurdedApi } = useAxios();
@@ -24,25 +25,25 @@ const StudentList = () => {
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
-
+  const {filterClass,filterSection,filterShift,sessions} = useUserProtectFilter()
   const { getUser, loading } = useSingleUser();
-  const [filterStudent, setFilterStudent] = useState([]);
+  // const [filterStudent, setFilterStudent] = useState([]);
 
-  const [classes, setClasses] = useState([]);
+  // const [classes, setClasses] = useState([]);
 
-  useEffect(() => {
-    const fetchClasses = async () => {
-      try {
-        const response = await gurdedApi.get(`/class`);
-        const classNames = response.data.classes;
-        setClasses(classNames);
-      } catch (error) {
-        toast.error("Failed to fetch classes");
-      }
-    };
+  // useEffect(() => {
+  //   const fetchClasses = async () => {
+  //     try {
+  //       const response = await gurdedApi.get(`/class`);
+  //       const classNames = response.data.classes;
+  //       setClasses(classNames);
+  //     } catch (error) {
+  //       toast.error("Failed to fetch classes");
+  //     }
+  //   };
 
-    fetchClasses();
-  }, [gurdedApi]);
+  //   fetchClasses();
+  // }, [gurdedApi]);
 
   const getStudents = async () => {
     try {
@@ -149,6 +150,8 @@ const StudentList = () => {
   };
 
   const confirmDeleteStudent = async () => {
+    console.log(selectedStudent);
+    
     try {
       await gurdedApi.delete(`/student/${selectedStudent._id}`);
       await getStudents();
@@ -164,13 +167,15 @@ const StudentList = () => {
     if (students && getUser.userType === "teacher") {
       const data = students.filter(
         (item) =>
-          item.class === getUser.class_id.name &&
+          item.class === getUser.class_id.value &&
           item.section === getUser.section &&
           item.shift === getUser.shift
       );
-      setFilterStudent(data);
+      setFilteredStudents(data);
+    } else {
+      setFilteredStudents(students)
     }
-  }, [getUser]);
+  }, [getUser,students]);
 
   if (isLoading) return <LoadingState />;
 
@@ -202,7 +207,7 @@ const StudentList = () => {
           </h3>
         </div>
         <div className="p-6.5 space-y-5">
-          <FilterStudents classes={classes} onFilter={handleFilter} />
+          <FilterStudents classes={filterClass} onFilter={handleFilter} section={filterSection} shift={filterShift} sessions={sessions} />
           <StudentTable
             students={filteredStudents}
             onView={handleView}

@@ -88,7 +88,7 @@ const SignIn = () => {
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="mb-4">
                 <label className="mb-2.5 block font-medium text-black">
-                  Phone Number or Username
+                  Phone Number
                 </label>
                 <div className="relative">
                   <input

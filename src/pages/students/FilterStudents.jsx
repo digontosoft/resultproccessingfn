@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 
-const FilterStudents = ({ classes, onFilter }) => {
+const FilterStudents = ({ classes, onFilter,shift,section,sessions }) => {
   const {
     register,
     handleSubmit,
