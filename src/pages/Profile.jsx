@@ -51,6 +51,8 @@ const Profile = () => {
       if (response.status === 200) {
         toast.success("Profile updated successfully");
         setIsEditing(false);
+        window.location.reload();
+        
       }
     } catch (error) {
       console.error("Error updating profile:", error);

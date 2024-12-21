@@ -101,9 +101,10 @@ const StudentList = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-
+    console.log(selectedStudent);
+    
     try {
-      await gurdedApi.put(`/student/${selectedStudent?._id}`, selectedStudent);
+     // await gurdedApi.put(`/student/${selectedStudent?._id}`, selectedStudent);
       setStudents((prevStudents) =>
         prevStudents.map((student) =>
           student.studentId === selectedStudent.studentId
