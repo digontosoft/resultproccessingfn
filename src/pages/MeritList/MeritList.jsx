@@ -1,3 +1,5 @@
+import { groupData } from "../../data/data";
+
 const MeritList = () => {
   return (
     <div>
@@ -99,8 +101,8 @@ const MeritList = () => {
               <option value="" disabled selected>
                 Select Section
               </option>
-              <option value="a">A</option>
-              <option value="b">B</option>
+              <option value="A">A</option>
+              <option value="B">B</option>
             </select>
           </div>
 
@@ -118,9 +120,11 @@ const MeritList = () => {
               <option value="" disabled selected>
                 Select Group
               </option>
-              <option value="science">Science</option>
-              <option value="commerce">Commerce</option>
-              <option value="arts">Arts</option>
+              {groupData.map((item) => (
+                  <option key={item} value={item}>
+                    {item}
+                  </option>
+                ))}
             </select>
           </div>
 

@@ -34,6 +34,7 @@ const data = [
 import { PDFViewer } from "@react-pdf/renderer";
 import Logo from "../../assets/school-logo.png";
 import TabulationPdf from "./TabulationPdf";
+import { groupData } from "../../data/data";
 const TabulationSheet = () => {
   return (
     <div>
@@ -154,9 +155,11 @@ const TabulationSheet = () => {
               <option value="" disabled selected>
                 Select Group
               </option>
-              <option value="science">Science</option>
-              <option value="commerce">Commerce</option>
-              <option value="arts">Arts</option>
+              {groupData.map((item) => (
+                  <option key={item} value={item}>
+                    {item}
+                  </option>
+                ))}
             </select>
           </div>
 

@@ -520,8 +520,8 @@ import { toast } from "react-toastify";
 import useAxios from "../../hooks/useAxios";
 import useUserProtectFilter from "../../hooks/useUserProtectFilter";
 import useSingleUser from "../../hooks/useSingleUser";
-const group = ["general"];
-const groups = ["science", "humanities", "business"];
+
+import { groupData } from "../../data/data";
 
 const SubjectList = () => {
   const { gurdedApi } = useAxios();
@@ -606,7 +606,6 @@ const SubjectList = () => {
   };
   //console.log("subjects",subjects);
   //console.log("user",getUser)
-
   useEffect(() => {
     if (getUser.userType === "teacher" || getUser.userType === "operator") {
       const data = subjects.filter(
@@ -614,13 +613,13 @@ const SubjectList = () => {
       );
       setFilteredSubjects(data);
       if (getUser.class_id.value !== "9" || getUser.class_id.value !== "10") {
-        setFilterGroup(group);
+        setFilterGroup(groupData.slice(0, 1));
       } else {
-        setFilterGroup(groups);
+        setFilterGroup(groupData.slice(1, 4));
       }
     } else {
       // setFilteredSubjects(subjects)
-      setFilterGroup([...group, ...groups]);
+      setFilterGroup(groupData);
     }
   }, [getUser, subjects, selectedClass, selectedGroup]);
 

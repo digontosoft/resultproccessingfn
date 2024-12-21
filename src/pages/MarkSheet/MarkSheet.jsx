@@ -1,3 +1,5 @@
+import { groupData } from "../../data/data";
+
 const MarkSheet = () => {
   return (
     <div>
@@ -118,9 +120,11 @@ const MarkSheet = () => {
               <option value="" disabled selected>
                 Select Group
               </option>
-              <option value="science">Science</option>
-              <option value="commerce">Commerce</option>
-              <option value="arts">Arts</option>
+              {groupData.map((item) => (
+                  <option key={item} value={item}>
+                    {item}
+                  </option>
+                ))}
             </select>
           </div>
 

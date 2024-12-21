@@ -6,26 +6,66 @@ import useAxios from "../../hooks/useAxios";
 import axios from "axios";
 import useSingleUser from "../../hooks/useSingleUser";
 import useUserProtectFilter from "../../hooks/useUserProtectFilter";
+import { groupData } from "../../data/data";
+//const groups = ["general", "science", "humanities", "business"]
 
 const AddStudents = () => {
-  // const shifts = ["Morning", "Day"];
   const { gurdedApi } = useAxios();
   const [configs, setConfigs] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [subjects, setSubjects] = useState([]);
+  const [fourthSubject, setFourthSubject] = useState([]);
   const navigate = useNavigate();
-  //const [classes, setClasses] = useState([]);
   const url = import.meta.env.VITE_SERVER_BASE_URL;
+  const [filterGroup,setFilterGroup] = useState([])
 
   const { filterClass, filterSection, filterShift, sessions } =
     useUserProtectFilter();
+  //console.log("condition", fourthSubject);
 
-  console.log("sessions", sessions, filterSection, filterShift);
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
   } = useForm();
+
+  const handelClass =(value)=>{
+   // console.log(value);
+    
+    if(value==9||value==10) {
+      setFilterGroup(groupData.slice(1,4))
+    }
+    else {
+      setFilterGroup(groupData.slice(0,1))
+    }
+    
+  }
+
+ // console.log("filter Group",filterGroup);
+  
+
+
+  useEffect(() => {
+    const fetchSubjects = async () => {
+      try {
+        const response = await axios.get(`${url}/subjects`);
+        setSubjects(response.data.subjects);
+      } catch (error) {
+        toast.error("Failed to fetch subjects");
+      }
+    };
+
+    fetchSubjects();
+  }, [url]);
+
+  // console.log(subjects);
+  const handleFourthSubjectFilter = (group) => {
+    const data = subjects.filter(
+      (item) => item.group === group && item.isFourthSubject === true
+    );
+    setFourthSubject(data);
+  };
 
   useEffect(() => {
     const fetchConfigs = async () => {
@@ -43,19 +83,7 @@ const AddStudents = () => {
 
     fetchConfigs();
   }, [gurdedApi]);
-  // useEffect(() => {
-  //   const fetchClasses = async () => {
-  //     try {
-  //       const response = await axios.get(`${url}/class`);
-  //       const classNames = response.data.classes;
-  //       setClasses(classNames);
-  //     } catch (error) {
-  //       toast.error("Failed to fetch classes");
-  //     }
-  //   };
 
-  //   fetchClasses();
-  // }, [url]);
   const dropdownOptions = {
     // class: Array.from({ length: 10 }, (_, i) => `Class ${i + 1}`),
     // section: ['Section A', 'Section B'],
@@ -69,25 +97,6 @@ const AddStudents = () => {
     religion: configs.filter((config) => config.slug === "religion"),
     gender: configs.filter((config) => config.slug === "gender"),
   };
-
-  // useEffect(() => {
-  //   if (classes && getUser.userType === "teacher") {
-  //     const data = classes.filter(
-  //       (item) => item.name === getUser.class_id.name
-  //     );
-  //     const sectionData = dropdownOptions.section.filter(
-  //       (item) => item.value === getUser.section
-  //     );
-  //     const shiftData = shifts.filter((item) => item === getUser.shift);
-  //     setFilterClass(data);
-  //     setFilterSection(sectionData);
-  //     setFilterShift(shiftData);
-  //   } else {
-  //     setFilterClass(classes);
-  //     setFilterSection(dropdownOptions.section);
-  //     setFilterShift(shifts);
-  //   }
-  // }, [getUser]);
 
   const onSubmit = async (data) => {
     setIsLoading(true);
@@ -110,8 +119,10 @@ const AddStudents = () => {
       setIsLoading(false);
     }
 
-    console.log("data:", data);
+    // console.log("data:", data);
   };
+
+  
 
   // Reusable input field component
   const InputField = ({ label, name, type = "text", placeholder }) => (
@@ -198,7 +209,7 @@ const AddStudents = () => {
               <select
                 {...register("class", { required: "Please select a class" })}
                 // onChange={(e) => handleFilterChange(e.target.value)}
-                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" onChange={(e)=>handelClass(e.target.value)}
               >
                 <option value="" hidden>
                   Select Class
@@ -287,12 +298,14 @@ const AddStudents = () => {
               <select
                 {...register("group", { required: "Group is required" })}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                onChange={(e) => handleFourthSubjectFilter(e.target.value)}
               >
                 <option value="">Select Group</option>
-                <option value="General">General</option>
-                <option value="Science">Science</option>
-                <option value="Commerce">Bussines</option>
-                <option value="Arts">Humanities</option>
+                {filterGroup.map((item) => (
+                  <option key={item} value={item}>
+                    {item}
+                  </option>
+                ))}
               </select>
               {errors.group && (
                 <span className="text-red-500 text-sm mt-1">
@@ -328,7 +341,7 @@ const AddStudents = () => {
                 {...register("gender", { required: "Gender is required" })}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               >
-                <option value="">Select Gender</option>
+                {/* <option value="">Select Gender</option> */}
                 <option value="Female">Female</option>
                 {errors.gender && (
                   <span className="text-red-500 text-sm mt-1">
@@ -337,6 +350,31 @@ const AddStudents = () => {
                 )}
               </select>
             </div>
+            {fourthSubject.length > 0 && (
+              <div>
+                <label className="mb-3 block text-black dark:text-white">
+                  Group
+                </label>
+                <select
+                  {...register("fourthSubjectCode", {
+                    required: "fourthSubjectCode is required",
+                  })}
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                >
+                  <option value="">Select Group</option>
+                  {fourthSubject.map((item) => (
+                    <option key={item._id} value={item.subjectCode}>
+                      {item.name}
+                    </option>
+                  ))}
+                </select>
+                {errors.fourthSubjectCode && (
+                  <span className="text-red-500 text-sm mt-1">
+                    {errors.fourthSubjectCode.message}
+                  </span>
+                )}
+              </div>
+            )}
           </div>
 
           <button
