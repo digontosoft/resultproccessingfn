@@ -40,9 +40,8 @@ const MarksInput = ({ rollRangeStudent, rollRangeStudentData }) => {
       console.log("payload", payload);
       const response = await axios.post(`${url}/result/create`, payload);
       if (response.status === 201) {
-        window.location.reload();
+        toast.success("Marks added successfully");
       }
-      toast.success("Marks added successfully");
     } catch (error) {
       toast.error("Failed to add marks");
     }

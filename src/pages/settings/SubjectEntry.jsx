@@ -47,7 +47,7 @@ const SubjectEntry = () => {
       // Simulated API call
       await axios.post(`${url}/create-subject`, data);
       toast.success("Subject created successfully");
-      reset();
+      // reset();
     } catch (error) {
       toast.error("Failed to create subject");
     } finally {

@@ -18,7 +18,7 @@ const GetResult = () => {
   });
 
   const currentYear = new Date().getFullYear();
-  const shifts = ["morning", "day"];
+  const shifts = ["Morning", "Day"];
   const sessions = [currentYear, currentYear - 1, currentYear - 2];
   const terms = ["Annual", "Half Yearly"];
 
@@ -43,7 +43,7 @@ const GetResult = () => {
     console.log("Form submitted:", formData);
     try {
       const response = await api.post("/result/individual", formData);
-      console.log(response);
+      console.log("individual-result:", response.data);
 
       if (response.status === 200) {
         localStorage.setItem("result", JSON.stringify(response.data));
@@ -99,7 +99,7 @@ const GetResult = () => {
                 options={[
                   { value: "4", label: "Class 4" },
                   { value: "5", label: "Class 5" },
-                  { value: "9", label: "Class 9" },
+                  { value: "6", label: "Class 6" },
                   { value: "10", label: "Class 10" },
                 ]}
               />
