@@ -102,9 +102,9 @@ const StudentList = () => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     console.log(selectedStudent);
-    
+
     try {
-     // await gurdedApi.put(`/student/${selectedStudent?._id}`, selectedStudent);
+      await gurdedApi.put(`/student/${selectedStudent?._id}`, selectedStudent);
       setStudents((prevStudents) =>
         prevStudents.map((student) =>
           student.studentId === selectedStudent.studentId
@@ -121,7 +121,7 @@ const StudentList = () => {
   };
 
   const confirmDeleteStudent = async () => {
-    // console.log("selectedStudent:", selectedStudent._id);
+    console.log("selectedStudent:", selectedStudent);
 
     try {
       await gurdedApi.delete(`/student/${selectedStudent._id}`);
@@ -157,13 +157,6 @@ const StudentList = () => {
 
   return (
     <>
-      {/* <StudentTable
-        students={filterStudent}
-        onView={handleView}
-        onEdit={handleEdit}
-        onDelete={handleDelete}
-      /> */}
-
       {selectedStudent && openModal && !isEditing && (
         <StudentViewModal
           student={selectedStudent}

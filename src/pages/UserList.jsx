@@ -87,6 +87,7 @@ const UserList = () => {
     setIsEditing(false);
   };
   const handleFormSubmit = async (e) => {
+    console.log("profile:", selectedProfile);
     e.preventDefault();
     try {
       await axios.put(`${baseUrl}/teacher/${selectedProfile?._id}`, {
