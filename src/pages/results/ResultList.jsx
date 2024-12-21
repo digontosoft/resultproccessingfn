@@ -19,7 +19,8 @@ const ResultList = () => {
   const [subjects, setSubjects] = useState([]);
   const [filteredSubjects, setFilteredSubjects] = useState([]);
   const { control, handleSubmit, reset } = useForm();
-  const { filterClass, filterSection, filterShift } = useUserProtectFilter();
+  const { filterClass, filterSection, filterShift, sessions } =
+    useUserProtectFilter();
 
   //   // Fetch students
   useEffect(() => {
