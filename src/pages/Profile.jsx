@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { gurdedApi } from "../api";
+import useUserProtectFilter from "../hooks/useUserProtectFilter";
 
 const Profile = () => {
   const { auth } = useAuth();
@@ -11,6 +12,7 @@ const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [showResetPassword, setShowResetPassword] = useState(false);
   const baseUrl = import.meta.env.VITE_SERVER_BASE_URL;
+  const {isSuperAdmin} = useUserProtectFilter()
 
   const {
     register,
@@ -169,7 +171,9 @@ const Profile = () => {
               <input
                 type="text"
                 {...register("shift", { required: "shift is required" })}
-                disabled={!isEditing}
+
+                disabled={isSuperAdmin?!isEditing:isEditing}
+
                 className={`w-full border p-2 rounded-md ${
                   isEditing ? "bg-white" : "bg-gray-3"
                 }`}
@@ -209,7 +213,8 @@ const Profile = () => {
                 {...register("class_id.name", {
                   required: "class is required",
                 })}
-                disabled={!true}
+                disabled={isSuperAdmin?!isEditing:isEditing}
+
                 className={`w-full border p-2 rounded-md ${
                   isEditing ? "bg-white" : "bg-gray-3"
                 }`}
@@ -228,7 +233,8 @@ const Profile = () => {
                 {...register("section", {
                   required: "section is required",
                 })}
-                disabled={!true}
+                disabled={isSuperAdmin?!isEditing:isEditing}
+
                 className={`w-full border p-2 rounded-md ${
                   isEditing ? "bg-white" : "bg-gray-3"
                 }`}

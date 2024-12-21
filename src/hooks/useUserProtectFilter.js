@@ -15,6 +15,8 @@ const useUserProtectFilter = () => {
   const { getUser } = useSingleUser();
   const [filterSection, setFilterSection] = useState([]);
   const [filterShift, setFilterShift] = useState([]);
+  const [isSuperAdmin,setIsSuperAdmin] = useState(false)
+  
 
   useEffect(()=>{
     const fetchClasses = async () =>{
@@ -34,11 +36,8 @@ const useUserProtectFilter = () => {
     fetchClasses()
   },[url])
 
-  console.log(classes);
-  
-
   useEffect(() => {
-    if (getUser.userType === "teacher") {
+    if (getUser.userType === "teacher"||getUser.userType === "operator") {
       const data = classes.filter(
         (item) => item.name === getUser.class_id.name
       );
@@ -54,9 +53,18 @@ const useUserProtectFilter = () => {
     }
   }, [getUser]);
 
+  useEffect(()=>{
+    if(getUser.userType==='superadmin'){
+      setIsSuperAdmin(true)
+    } 
+    else {
+      setIsSuperAdmin(false)
+    }
+  },[getUser])
+
  
 
-  return {filterClass,filterSection,filterShift,sessions}
+  return {filterClass,filterSection,filterShift,sessions,isSuperAdmin}
 };
 
 export default useUserProtectFilter;
