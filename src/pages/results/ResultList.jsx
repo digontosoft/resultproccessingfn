@@ -20,9 +20,9 @@ const ResultList = () => {
   const [subjects, setSubjects] = useState([]);
   const [filteredSubjects, setFilteredSubjects] = useState([]);
   const { control, handleSubmit, reset } = useForm();
-  const { filterClass, filterSection, filterShift,session } = useUserProtectFilter();
-  const {getUser} = useSingleUser()
-
+  const { filterClass, filterSection, filterShift, session } =
+    useUserProtectFilter();
+  const { getUser } = useSingleUser();
 
   //   // Fetch students
   useEffect(() => {
@@ -38,19 +38,17 @@ const ResultList = () => {
     fetchStudents();
   }, [url]);
 
-  useEffect(() => {
-    const fetchResults = async () => {
-      try {
-        const response = await axios.get(`${url}/result/get_all`);
-        setResults(response.data.data);
-       // setFilteredResults(response.data.data);
-        console.log("first", response.data.data);
-      } catch (error) {
-        console.error("Error fetching results:", error);
-      }
-    };
+  const getAllResult = async () => {
+    try {
+      const response = await axios.get(`${url}/result/get_all`);
+      setResults(response.data.data);
+    } catch (error) {
+      console.error("Error fetching results:", error);
+    }
+  };
 
-    fetchResults();
+  useEffect(() => {
+    getAllResult();
   }, [url]);
 
   const openEditModal = (student) => {
@@ -88,6 +86,7 @@ const ResultList = () => {
           )
         );
       }
+      window.location.reload();
     } catch (error) {
       toast.error("Failed to update marks");
     }
@@ -96,17 +95,18 @@ const ResultList = () => {
 
   const handleDelete = async () => {
     try {
-      const response = await axios.delete(`${url}/result/delete/${deleteId}`);
-      if (response.status === 200) {
-        toast.success("Marks deleted successfully");
-        // setResults((prevResults) =>
-        //   prevResults.filter((result) => result._id !== deleteId)
-        // );
-      }
+      await axios.delete(`${url}/result/delete/${deleteId}`);
+      await getAllResult();
+      toast.success("Marks deleted successfully");
+      closeDeleteModal();
+      // if (response.status === 200) {
+      //   // setResults((prevResults) =>
+      //   //   prevResults.filter((result) => result._id !== deleteId)
+      //   // );
+      // }
     } catch (error) {
       toast.error("Failed to delete marks");
     }
-    closeDeleteModal();
   };
 
   // Filter results based on criteria
@@ -121,18 +121,21 @@ const ResultList = () => {
     });
     setFilteredResults(filtered);
   };
-  console.log("filter result",results);
-  
+  console.log("filter result", results);
 
-  useEffect(()=>{
-    if(getUser.userType==='teacher'||getUser.userType==='operator')
-    {
-      const data = results.filter((item)=>item.className===getUser.class_id.value&&item.section===getUser.section&&item.shift===getUser.shift)
-      setFilteredResults(data)
+  useEffect(() => {
+    if (getUser.userType === "teacher" || getUser.userType === "operator") {
+      const data = results.filter(
+        (item) =>
+          item.className === getUser.class_id.value &&
+          item.section === getUser.section &&
+          item.shift === getUser.shift
+      );
+      setFilteredResults(data);
     } else {
-      setFilteredResults(results)
+      setFilteredResults(results);
     }
-  },[getUser])
+  }, [getUser]);
 
   useEffect(() => {
     const fetchSubjects = async () => {
@@ -149,25 +152,24 @@ const ResultList = () => {
   }, [url]);
 
   //console.log("subject",subjects);
-  
 
   const handleFilterChange = (event) => {
     const selectedValue = event.target.value;
-    console.log("selected value",selectedValue);
-    
+    console.log("selected value", selectedValue);
+
     const selectedOption = filterClass.find(
       (option) => option.value === selectedValue
     );
     console.log(selectedOption);
-    
+
     const filtered = subjects.filter(
       (subject) => subject.class._id === selectedOption._id
     );
 
     setFilteredSubjects(filtered);
-  // setClassData(selectedOption.value);
+    // setClassData(selectedOption.value);
   };
- console.log("subjects:", filteredSubjects);
+  console.log("subjects:", filteredSubjects);
 
   return (
     <div>
@@ -267,135 +269,12 @@ const ResultList = () => {
                 </tr>
               ))}
             </tbody>
-            {/* <tbody>
-              {filteredResults.map((result) => {
-                const student = students.find(
-                  (s) => s.studentId === result.studentId
-                );
-                return (
-                  <tr key={result._id}>
-                    <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                      {result.studentId}
-                    </td>
-                    <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                      {student?.studentName || "Unknown"}
-                    </td>
-                    <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                      {result.className}
-                    </td>
-                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                      {result.shift}
-                    </td>
-                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                      {result.section}
-                    </td>
-                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                      {result.subjectName}
-                    </td>
-                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                      {result.subjective}
-                    </td>
-                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                      {result.objective}
-                    </td>
-                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                      {result.practical}
-                    </td>
-                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark flex gap-5">
-                      <button
-                        className="text-blue-500"
-                        onClick={() => openEditModal(student)}
-                      >
-                        Edit
-                      </button>
-                      <button
-                        className="text-red-500"
-                        onClick={() => openDeleteModal(student._id)}
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody> */}
           </table>
         </div>
       </div>
 
       {/* Edit Modal */}
       {isEditModalOpen && (
-        // <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-        //   <div className="w-1/3 rounded bg-white p-6 shadow-lg">
-        //     <h3 className="mb-4 text-lg font-medium text-black">Edit Marks</h3>
-        //     <form onSubmit={handleSubmit(onSubmit)}>
-        //       <div className="mb-4">
-        //         <label className="block text-sm font-medium text-gray-700">
-        //           Subjective
-        //         </label>
-        //         <Controller
-        //           name="subjective"
-        //           control={control}
-        //           render={({ field }) => (
-        //             <input
-        //               type="number"
-        //               {...field}
-        //               className="mt-1 w-full rounded border-gray-300 p-2"
-        //             />
-        //           )}
-        //         />
-        //       </div>
-        //       <div className="mb-4">
-        //         <label className="block text-sm font-medium text-gray-700">
-        //           Objective
-        //         </label>
-        //         <Controller
-        //           name="objective"
-        //           control={control}
-        //           render={({ field }) => (
-        //             <input
-        //               type="number"
-        //               {...field}
-        //               className="mt-1 w-full rounded border-gray-300 p-2"
-        //             />
-        //           )}
-        //         />
-        //       </div>
-        //       <div className="mb-4">
-        //         <label className="block text-sm font-medium text-gray-700">
-        //           Practical
-        //         </label>
-        //         <Controller
-        //           name="practical"
-        //           control={control}
-        //           render={({ field }) => (
-        //             <input
-        //               type="number"
-        //               {...field}
-        //               className="mt-1 w-full rounded border-gray-300 p-2"
-        //             />
-        //           )}
-        //         />
-        //       </div>
-        //       <div className="flex justify-end gap-2">
-        //         <button
-        //           type="button"
-        //           onClick={closeEditModal}
-        //           className="rounded bg-gray-300 px-4 py-2"
-        //         >
-        //           Cancel
-        //         </button>
-        //         <button
-        //           type="submit"
-        //           className="rounded bg-blue-500 px-4 py-2 text-white"
-        //         >
-        //           Save
-        //         </button>
-        //       </div>
-        //     </form>
-        //   </div>
-        // </div>
-
         <div className="fixed inset-0 z-9999 flex items-center justify-center bg-black bg-opacity-50">
           <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-xl">
             <div className="mb-4 rounded-t-lg bg-gradient-to-r from-blue-500 to-indigo-500 p-4">
@@ -472,28 +351,6 @@ const ResultList = () => {
 
       {/* Delete Confirmation Modal */}
       {isDeleteModalOpen && (
-        // <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-        //   <div className="w-1/3 rounded bg-white p-6 shadow-lg">
-        //     <h3 className="mb-4 text-lg font-medium text-black">
-        //       Confirm Delete
-        //     </h3>
-        //     <p>Are you sure you want to delete this result?</p>
-        //     <div className="flex justify-end gap-2 mt-4">
-        //       <button
-        //         onClick={closeDeleteModal}
-        //         className="rounded bg-gray-300 px-4 py-2"
-        //       >
-        //         Cancel
-        //       </button>
-        //       <button
-        //         onClick={handleDelete}
-        //         className="rounded bg-red-500 px-4 py-2 text-white"
-        //       >
-        //         Delete
-        //       </button>
-        //     </div>
-        //   </div>
-        // </div>
         <div className="fixed inset-0 z-9999 flex items-center justify-center bg-black bg-opacity-50">
           <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-xl">
             <div className="mb-4 rounded-t-lg bg-red-500 p-4">
