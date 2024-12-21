@@ -1,5 +1,4 @@
 import { useForm } from "react-hook-form";
-import useUserProtectFilter from "../../hooks/useUserProtectFilter";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -10,6 +9,7 @@ const FilterResult = ({
   filterClass,
   filterSection,
   filterShift,
+  session
 }) => {
   // const { filterClass, filterShift, filterSection, sessions } =
   //   useUserProtectFilter();
@@ -22,7 +22,7 @@ const FilterResult = ({
       try {
         const response = await axios.get(`${url}/getAllSub`);
         setSubjects(response.data.data);
-        console.log("subjects:", response.data.data);
+       // console.log("subjects:", response.data.data);
       } catch (error) {
         console.error("Error fetching students:", error);
       }
@@ -39,6 +39,22 @@ const FilterResult = ({
     <div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
+          {/* <div className="col-span-1">
+            <select
+              {...register("session")}
+              onChange={(e) => {
+                handleFilterChange(e);
+              }}
+              className="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="">session</option>
+              {session.map((c) => (
+                <option key={c} value={c.value}>
+                  {c.name}
+                </option>
+              ))}
+            </select>
+          </div> */}
           <div className="col-span-1">
             <select
               {...register("className")}

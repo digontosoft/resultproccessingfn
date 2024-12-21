@@ -581,6 +581,8 @@ const SubjectList = () => {
 
      setSelectedClass(updatedClass);
      setSelectedGroup(updatedGroup);
+     //console.log({selectedClass,selectedGroup});
+     
 
     if (updatedClass && updatedGroup) {
       const filtered = subjects.filter(
@@ -588,7 +590,10 @@ const SubjectList = () => {
           subject.class._id === updatedClass && subject.group === updatedGroup
       );
       setFilteredSubjects(filtered);
-    } else {
+     // console.log("filtered",filtered);
+      
+    } 
+    else {
       setFilteredSubjects(subjects);
     }
   };
@@ -617,7 +622,7 @@ const SubjectList = () => {
       } 
     }
     else {
-      setFilteredSubjects(subjects)
+     // setFilteredSubjects(subjects)
       setFilterGroup([...group,...groups])
     }
   },[getUser,subjects,selectedClass,selectedGroup])

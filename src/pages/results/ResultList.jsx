@@ -5,6 +5,7 @@ import useAxios from "../../hooks/useAxios";
 import { toast } from "react-toastify";
 import FilterResult from "./FilterResult";
 import useUserProtectFilter from "../../hooks/useUserProtectFilter";
+import useSingleUser from "../../hooks/useSingleUser";
 
 const ResultList = () => {
   const { gurdedApi } = useAxios();
@@ -19,7 +20,8 @@ const ResultList = () => {
   const [subjects, setSubjects] = useState([]);
   const [filteredSubjects, setFilteredSubjects] = useState([]);
   const { control, handleSubmit, reset } = useForm();
-  const { filterClass, filterSection, filterShift } = useUserProtectFilter();
+  const { filterClass, filterSection, filterShift,session } = useUserProtectFilter();
+  const {getUser} = useSingleUser()
 
   //   // Fetch students
   useEffect(() => {
@@ -40,7 +42,7 @@ const ResultList = () => {
       try {
         const response = await axios.get(`${url}/result/get_all`);
         setResults(response.data.data);
-        setFilteredResults(response.data.data);
+       // setFilteredResults(response.data.data);
         console.log("first", response.data.data);
       } catch (error) {
         console.error("Error fetching results:", error);
@@ -118,6 +120,18 @@ const ResultList = () => {
     });
     setFilteredResults(filtered);
   };
+  console.log("filter result",results);
+  
+
+  useEffect(()=>{
+    if(getUser.userType==='teacher'||getUser.userType==='operator')
+    {
+      const data = results.filter((item)=>item.className===getUser.class_id.value&&item.section===getUser.section&&item.shift===getUser.shift)
+      setFilteredResults(data)
+    } else {
+      setFilteredResults(results)
+    }
+  },[getUser])
 
   useEffect(() => {
     const fetchSubjects = async () => {
@@ -133,19 +147,26 @@ const ResultList = () => {
     fetchSubjects();
   }, [url]);
 
+  //console.log("subject",subjects);
+  
+
   const handleFilterChange = (event) => {
     const selectedValue = event.target.value;
+    console.log("selected value",selectedValue);
+    
     const selectedOption = filterClass.find(
-      (option) => option._id === selectedValue
+      (option) => option.value === selectedValue
     );
+    console.log(selectedOption);
+    
     const filtered = subjects.filter(
       (subject) => subject.class._id === selectedOption._id
     );
 
     setFilteredSubjects(filtered);
-    // setClassData(selectedOption.value);
+  // setClassData(selectedOption.value);
   };
-  console.log("subjects:", filteredSubjects);
+ console.log("subjects:", filteredSubjects);
 
   return (
     <div>
@@ -161,6 +182,7 @@ const ResultList = () => {
             filterClass={filterClass}
             filterSection={filterSection}
             filterShift={filterShift}
+            session={session}
           />
         </div>
 
