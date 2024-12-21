@@ -20,7 +20,7 @@ const GetResult = () => {
   const currentYear = new Date().getFullYear();
   const shifts = ["morning", "day"];
   const sessions = [currentYear, currentYear - 1, currentYear - 2];
-  const terms = ["Final", "Half Yearly"];
+  const terms = ["Annual", "Half Yearly"];
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -40,16 +40,9 @@ const GetResult = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // console.log('Form submitted:', formData);
+    console.log("Form submitted:", formData);
     try {
-      const response = await api.post("/result/individual", {
-        section: "A",
-        className: "9",
-        shift: "morning",
-        session: "2024",
-        term: "Final",
-        studentId: "1",
-      });
+      const response = await api.post("/result/individual", formData);
       console.log(response);
 
       if (response.status === 200) {
