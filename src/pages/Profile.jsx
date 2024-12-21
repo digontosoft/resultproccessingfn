@@ -12,7 +12,7 @@ const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [showResetPassword, setShowResetPassword] = useState(false);
   const baseUrl = import.meta.env.VITE_SERVER_BASE_URL;
-  const {isSuperAdmin} = useUserProtectFilter()
+  const { isSuperAdmin } = useUserProtectFilter();
 
   const {
     register,
@@ -171,9 +171,7 @@ const Profile = () => {
               <input
                 type="text"
                 {...register("shift", { required: "shift is required" })}
-
-                disabled={isSuperAdmin?!isEditing:isEditing}
-
+                disabled={true}
                 className={`w-full border p-2 rounded-md ${
                   isEditing ? "bg-white" : "bg-gray-3"
                 }`}
@@ -190,7 +188,7 @@ const Profile = () => {
               <input
                 type="text"
                 {...register("group", { required: "Group is required" })}
-                disabled={!true}
+                disabled={true}
                 className={`w-full border p-2 rounded-md ${
                   isEditing ? "bg-white" : "bg-gray-3"
                 }`}
@@ -213,8 +211,7 @@ const Profile = () => {
                 {...register("class_id.name", {
                   required: "class is required",
                 })}
-                disabled={isSuperAdmin?!isEditing:isEditing}
-
+                disabled={true}
                 className={`w-full border p-2 rounded-md ${
                   isEditing ? "bg-white" : "bg-gray-3"
                 }`}
@@ -233,8 +230,7 @@ const Profile = () => {
                 {...register("section", {
                   required: "section is required",
                 })}
-                disabled={isSuperAdmin?!isEditing:isEditing}
-
+                disabled={true}
                 className={`w-full border p-2 rounded-md ${
                   isEditing ? "bg-white" : "bg-gray-3"
                 }`}

@@ -175,6 +175,7 @@ const AddResult = () => {
               <FormSelect
                 label="Select Group"
                 name="group"
+
                 options={groupData}
               />
 

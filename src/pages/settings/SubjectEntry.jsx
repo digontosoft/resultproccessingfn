@@ -19,7 +19,11 @@ const SubjectEntry = () => {
     reset,
     register,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      isFourthSubject: false,
+    },
+  });
 
   useEffect(() => {
     const fetchClasses = async () => {
@@ -43,12 +47,13 @@ const SubjectEntry = () => {
       // Simulated API call
       await axios.post(`${url}/create-subject`, data);
       toast.success("Subject created successfully");
-      reset();
+      // reset();
     } catch (error) {
       toast.error("Failed to create subject");
     } finally {
       setIsLoading(false);
     }
+    console.log("subject:", data);
   };
 
   const FormSelect = ({ label, name, options }) => (
@@ -164,7 +169,7 @@ const SubjectEntry = () => {
             >
               <option value="">Select Class</option>
               {filterClass.map((option, i) => (
-                <option key={i} value={option._id}>
+                <option key={i} value={option.value}>
                   {option?.name}
                 </option>
               ))}
