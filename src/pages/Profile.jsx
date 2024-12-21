@@ -44,11 +44,14 @@ const Profile = () => {
   const onSubmit = async (data) => {
     try {
       //console.log(`${baseUrl}/teacher/${auth._id}`);
-      const response = await gurdedApi.put(`${baseUrl}/teacher/${auth._id}`, data);
-     if(response.status===200) {
-      toast.success("Profile updated successfully");
-         setIsEditing(false);
-     }
+      const response = await gurdedApi.put(
+        `${baseUrl}/teacher/${auth._id}`,
+        data
+      );
+      if (response.status === 200) {
+        toast.success("Profile updated successfully");
+        setIsEditing(false);
+      }
     } catch (error) {
       console.error("Error updating profile:", error);
     }
@@ -85,7 +88,9 @@ const Profile = () => {
 
   const handleResetPassword = async (data) => {
     try {
-      const response = await axios.put(`${baseUrl}/change-password/${auth._id}`, data
+      const response = await axios.put(
+        `${baseUrl}/change-password/${auth._id}`,
+        data
       );
       if (response.status === 200) {
         toast.success("Password reset successfully");
@@ -93,8 +98,8 @@ const Profile = () => {
         resetResetForm(); // Clear reset password form
       }
     } catch (error) {
-      if(error.status===400){
-        toast.error("Current password is incorrect")
+      if (error.status === 400) {
+        toast.error("Current password is incorrect");
       }
       console.error("Error resetting password:", error);
     }
@@ -138,11 +143,13 @@ const Profile = () => {
                 </p>
               )}
               <label className="block text-sm font-medium mb-2 mt-4 text-gray-700">
-              Phone Number
+                Phone Number
               </label>
               <input
                 type="text"
-                {...register("phoneNumber", { required: "Position is required" })}
+                {...register("phoneNumber", {
+                  required: "Position is required",
+                })}
                 disabled={!isEditing}
                 className={`w-full border p-2 rounded-md ${
                   isEditing ? "bg-white" : "bg-gray-3"
@@ -164,7 +171,9 @@ const Profile = () => {
               <input
                 type="text"
                 {...register("shift", { required: "shift is required" })}
+
                 disabled={isSuperAdmin?!isEditing:isEditing}
+
                 className={`w-full border p-2 rounded-md ${
                   isEditing ? "bg-white" : "bg-gray-3"
                 }`}
@@ -181,7 +190,7 @@ const Profile = () => {
               <input
                 type="text"
                 {...register("group", { required: "Group is required" })}
-                disabled={true}
+                disabled={!true}
                 className={`w-full border p-2 rounded-md ${
                   isEditing ? "bg-white" : "bg-gray-3"
                 }`}
@@ -205,6 +214,7 @@ const Profile = () => {
                   required: "class is required",
                 })}
                 disabled={isSuperAdmin?!isEditing:isEditing}
+
                 className={`w-full border p-2 rounded-md ${
                   isEditing ? "bg-white" : "bg-gray-3"
                 }`}
@@ -216,15 +226,15 @@ const Profile = () => {
                 </p>
               )}
               <label className="block text-sm font-medium mb-2 mt-4 text-gray-700">
-              Section
+                Section
               </label>
               <input
                 type="text"
                 {...register("section", {
                   required: "section is required",
-                  
                 })}
                 disabled={isSuperAdmin?!isEditing:isEditing}
+
                 className={`w-full border p-2 rounded-md ${
                   isEditing ? "bg-white" : "bg-gray-3"
                 }`}
@@ -278,7 +288,7 @@ const Profile = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div>
                   <label className="block text-sm font-medium mb-2 text-gray-700">
-                  Current Password
+                    Current Password
                   </label>
                   <input
                     type="password"
@@ -312,7 +322,7 @@ const Profile = () => {
                     </p>
                   )}
                 </div>
-                 {/* <div>
+                {/* <div>
                   <label className="block text-sm font-medium mb-2 text-gray-700">
                     Confirm Password
                   </label>

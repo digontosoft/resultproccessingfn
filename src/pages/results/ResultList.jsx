@@ -23,6 +23,7 @@ const ResultList = () => {
   const { filterClass, filterSection, filterShift,session } = useUserProtectFilter();
   const {getUser} = useSingleUser()
 
+
   //   // Fetch students
   useEffect(() => {
     const fetchStudents = async () => {
@@ -98,9 +99,9 @@ const ResultList = () => {
       const response = await axios.delete(`${url}/result/delete/${deleteId}`);
       if (response.status === 200) {
         toast.success("Marks deleted successfully");
-        setResults((prevResults) =>
-          prevResults.filter((result) => result._id !== deleteId)
-        );
+        // setResults((prevResults) =>
+        //   prevResults.filter((result) => result._id !== deleteId)
+        // );
       }
     } catch (error) {
       toast.error("Failed to delete marks");
