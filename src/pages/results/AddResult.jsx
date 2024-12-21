@@ -7,6 +7,7 @@ import useAxios from "../../hooks/useAxios";
 import MarksInput from "./MarksInput";
 import useSingleUser from "../../hooks/useSingleUser";
 import useUserProtectFilter from "../../hooks/useUserProtectFilter";
+import { groupData } from "../../data/data";
 
 const terms = ["Half Yearly", "Annual", "Pretest", "Test", "Model Test"];
 
@@ -174,12 +175,7 @@ const AddResult = () => {
               <FormSelect
                 label="Select Group"
                 name="group"
-                options={[
-                  { value: "General", label: "General" },
-                  { value: "Science", label: "Science" },
-                  { value: "Humanities", label: "Humanities" },
-                  { value: "Commerce", label: "Commerce" },
-                ]}
+                options={groupData}
               />
 
               <div className="mb-4.5">
