@@ -520,14 +520,14 @@ import { toast } from "react-toastify";
 import useAxios from "../../hooks/useAxios";
 import useUserProtectFilter from "../../hooks/useUserProtectFilter";
 import useSingleUser from "../../hooks/useSingleUser";
-import { groupData } from "../../data/data";
 
+import { groupData } from "../../data/data";
 
 const SubjectList = () => {
   const { gurdedApi } = useAxios();
   const [classes, setClasses] = useState([]);
   const [subjects, setSubjects] = useState([]);
-  const [filterGroup,setFilterGroup] = useState([])
+  const [filterGroup, setFilterGroup] = useState([]);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editingSubject, setEditingSubject] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -537,7 +537,7 @@ const SubjectList = () => {
   const [selectedGroup, setSelectedGroup] = useState("");
   const url = import.meta.env.VITE_SERVER_BASE_URL;
   const { filterClass } = useUserProtectFilter();
-  const {getUser} = useSingleUser()
+  const { getUser } = useSingleUser();
   const {
     register,
     handleSubmit,
@@ -574,15 +574,13 @@ const SubjectList = () => {
     fetchSubjects();
   }, [url]);
 
-
   const handleFilterChange = (classId, group) => {
     const updatedClass = classId || selectedClass;
     const updatedGroup = group || selectedGroup;
 
-     setSelectedClass(updatedClass);
-     setSelectedGroup(updatedGroup);
-     //console.log({selectedClass,selectedGroup});
-     
+    setSelectedClass(updatedClass);
+    setSelectedGroup(updatedGroup);
+    //console.log({selectedClass,selectedGroup});
 
     if (updatedClass && updatedGroup) {
       const filtered = subjects.filter(
@@ -590,10 +588,8 @@ const SubjectList = () => {
           subject.class._id === updatedClass && subject.group === updatedGroup
       );
       setFilteredSubjects(filtered);
-     // console.log("filtered",filtered);
-      
-    } 
-    else {
+      // console.log("filtered",filtered);
+    } else {
       setFilteredSubjects(subjects);
     }
   };
@@ -604,28 +600,28 @@ const SubjectList = () => {
       name: subject.name,
       code: subject.subjectCode,
       marks: subject.marks,
+      class: subject.class.value,
     });
     setIsEditModalOpen(true);
   };
   //console.log("subjects",subjects);
   //console.log("user",getUser)
-  
-
-  useEffect(()=>{
-    if(getUser.userType==='teacher'||getUser.userType==='operator') {
-     const data = subjects.filter((item)=>item.class.name===getUser.class_id.name)
-      setFilteredSubjects(data) 
-      if(getUser.class_id.value !== "9"||getUser.class_id.value !== "10"){
-       setFilterGroup(groupData.slice(0,1))
+  useEffect(() => {
+    if (getUser.userType === "teacher" || getUser.userType === "operator") {
+      const data = subjects.filter(
+        (item) => item.class.name === getUser.class_id.name
+      );
+      setFilteredSubjects(data);
+      if (getUser.class_id.value !== "9" || getUser.class_id.value !== "10") {
+        setFilterGroup(groupData.slice(0, 1));
       } else {
-       setFilterGroup(groupData.slice(1,4))
-      } 
+        setFilterGroup(groupData.slice(1, 4));
+      }
+    } else {
+      // setFilteredSubjects(subjects)
+      setFilterGroup(groupData);
     }
-    else {
-     // setFilteredSubjects(subjects)
-      setFilterGroup(groupData)
-    }
-  },[getUser,subjects,selectedClass,selectedGroup])
+  }, [getUser, subjects, selectedClass, selectedGroup]);
 
   const closeEditModal = () => {
     setIsEditModalOpen(false);
@@ -638,6 +634,7 @@ const SubjectList = () => {
         name: data.name,
         subjectCode: data.code,
         marks: data.marks,
+        class: data.class,
       });
 
       if (response.status === 200) {
@@ -795,6 +792,17 @@ const SubjectList = () => {
                 />
                 {errors.code && (
                   <p className="text-red-500 text-sm">Code is required</p>
+                )}
+              </div>
+              <div className="mb-4">
+                <label className="block text-sm font-medium mb-1">Class</label>
+                <input
+                  {...register("class", { required: true })}
+                  className="w-full border rounded-lg px-3 py-2"
+                  placeholder="Enter class"
+                />
+                {errors.class && (
+                  <p className="text-red-500 text-sm">Class is required</p>
                 )}
               </div>
               <div className="mb-4">
