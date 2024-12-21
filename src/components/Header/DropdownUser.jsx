@@ -5,11 +5,13 @@ import useAuth from '../../hooks/useAuth';
 import Logout from '../../pages/auth/Logout';
 import ClickOutside from '../ClickOutside';
 import UserOne from '/user/user-01.png';
+import useSingleUser from '../../hooks/useSingleUser';
 
 const DropdownUser = () => {
 	const [dropdownOpen, setDropdownOpen] = useState(false);
 	const { auth } = useAuth();
-	const { name, userType } = auth;
+	//const { name, userType } = auth;
+	const {getUser} = useSingleUser()
 
 	return (
 		<ClickOutside onClick={() => setDropdownOpen(false)} className="relative">
@@ -20,9 +22,9 @@ const DropdownUser = () => {
 			>
 				<span className="hidden text-right lg:block">
 					<span className="block text-sm font-medium text-black dark:text-white">
-						{name || 'User'}
+						{getUser.firstName || 'User'}
 					</span>
-					<span className="block text-xs">{userType}</span>
+					<span className="block text-xs">{getUser.userType}</span>
 				</span>
 
 				<span className="h-12 w-12 rounded-full">
