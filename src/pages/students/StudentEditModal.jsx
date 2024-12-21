@@ -8,7 +8,8 @@ const StudentEditModal = ({ student, onSubmit, onChange, onClose }) => {
 
 	return (
 		<Modal open={true} onClose={onClose}>
-			<form
+
+            <form
 				onSubmit={handleSubmit}
 				className="text-black max-h-150 overflow-y-auto p-4"
 			>
@@ -41,43 +42,67 @@ const StudentEditModal = ({ student, onSubmit, onChange, onClose }) => {
 
 					{/* Academic Information */}
 					<div>
-						<label className="block mb-2 text-sm font-medium">Class</label>
-						<input
-							type="text"
-							value={student?.class}
-							onChange={(e) => onChange({ ...student, class: e.target.value })}
-							className="border rounded p-2 w-full mb-4"
-						/>
+					<label className="block mb-2 text-sm font-medium">Class</label>
+					<select
+						value={student?.class}
+						onChange={(e) => onChange({ ...student, class: e.target.value })}
+						className="border rounded p-2 w-full mb-4"
+					>
+						<option value="">Select Class</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+						<option value="6">6</option>
+						<option value="7">7</option>
+						<option value="8">8</option>
+						<option value="9">9</option>
+						<option value="10">10</option>
+					</select>
 					</div>
+
 					<div>
 						<label className="block mb-2 text-sm font-medium">Section</label>
-						<input
-							type="text"
+						<select
 							value={student?.section}
-							onChange={(e) =>
-								onChange({ ...student, section: e.target.value })
-							}
+							onChange={(e) => onChange({ ...student, section: e.target.value })}
 							className="border rounded p-2 w-full mb-4"
-						/>
+						>
+							<option value="">Select Section</option>
+							<option value="A">A</option>
+							<option value="B">B</option>
+						</select>
 					</div>
-					<div>
-						<label className="block mb-2 text-sm font-medium">Shift</label>
-						<input
-							type="text"
-							value={student?.shift}
-							onChange={(e) => onChange({ ...student, shift: e.target.value })}
-							className="border rounded p-2 w-full mb-4"
-						/>
+					
+
+<					div>
+					<label className="block mb-2 text-sm font-medium">Shift</label>
+					<select
+						value={student?.shift || ""}
+						onChange={(e) => onChange({ ...student, shift: e.target.value })}
+						className="border rounded p-2 w-full mb-4"
+					>
+						<option value="">Select shift</option>
+						<option value="morning">Morning</option>
+						<option value="day">Day</option>
+					</select>
 					</div>
+
+					
 					<div>
 						<label className="block mb-2 text-sm font-medium">Group</label>
-						<input
-							type="text"
+						<select
 							value={student?.group}
 							onChange={(e) => onChange({ ...student, group: e.target.value })}
 							className="border rounded p-2 w-full mb-4"
-						/>
+						>
+							<option value="general">General</option>
+							<option value="science">Science</option>
+							<option value="business">Commerce</option>
+							<option value="humanities">Humanities</option>
+						</select>
 					</div>
+					
+					
+					
 
 					{/* Family Information */}
 					<div>
@@ -97,14 +122,21 @@ const StudentEditModal = ({ student, onSubmit, onChange, onClose }) => {
 					{/* Other Information */}
 					<div>
 						<label className="block mb-2 text-sm font-medium">Religion</label>
-						<input
-							type="text"
+						<select
 							value={student?.religion}
 							onChange={(e) =>
 								onChange({ ...student, religion: e.target.value })
 							}
 							className="border rounded p-2 w-full mb-4"
-						/>
+						>
+							<option value="">Select Religion</option>
+							<option value="Islam">Islam</option>
+							<option value="Hinduism">Hindu</option>
+							<option value="Christianity">Christian</option>
+							<option value="Buddhism">Buddhism</option>
+							<option value="Other">Other</option>
+						</select>
+						
 					</div>
 
 					{/* Full Width Fields */}
@@ -146,6 +178,7 @@ const StudentEditModal = ({ student, onSubmit, onChange, onClose }) => {
 					</button>
 				</div>
 			</form>
+
 		</Modal>
 	);
 };
