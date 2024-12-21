@@ -175,10 +175,10 @@ const AddResult = () => {
                 label="Select Group"
                 name="group"
                 options={[
-                  { value: "General", label: "General" },
-                  { value: "Science", label: "Science" },
-                  { value: "Humanities", label: "Humanities" },
-                  { value: "Commerce", label: "Commerce" },
+                  { value: "general", label: "General" },
+                  { value: "science", label: "Science" },
+                  { value: "humanities", label: "Humanities" },
+                  { value: "business", label: "Commerce" },
                 ]}
               />
 

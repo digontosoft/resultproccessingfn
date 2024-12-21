@@ -194,7 +194,13 @@ const ResultList = () => {
             <thead>
               <tr className="bg-gray-2 text-left dark:bg-meta-4">
                 <th className="py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
-                  S.ID
+                  SI.No
+                </th>
+                <th className="py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
+                  ST.ID
+                </th>
+                <th className="py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
+                  Roll
                 </th>
                 <th className="py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
                   Class
@@ -220,54 +226,69 @@ const ResultList = () => {
                 <th className="py-4 px-4 font-medium text-black dark:text-white">
                   Practical
                 </th>
-                {/* <th className="py-4 px-4 font-medium text-black dark:text-white">
+                <th className="py-4 px-4 font-medium text-black dark:text-white">
                   Action
-                </th> */}
+                </th>
               </tr>
             </thead>
             <tbody>
-              {filteredResults?.map((student) => (
-                <tr key={student._id}>
-                  <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                    {student?.studentId}
-                  </td>
-                  <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                    {student?.className}
-                  </td>
-                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    {student?.shift}
-                  </td>
-                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    {student?.section}
-                  </td>
-                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    {student?.subjectName}
-                  </td>
-                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    {student?.subjective}
-                  </td>
-                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    {student?.objective}
-                  </td>
-                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    {student?.practical}
-                  </td>
-                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark flex gap-5">
-                    <button
-                      className="text-blue-500"
-                      onClick={() => openEditModal(student)}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className="text-red-500"
-                      onClick={() => openDeleteModal(student._id)}
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))}
+              {filteredResults?.map((result, i) => {
+                const student = students.find(
+                  (s) => s.studentId === result.studentId
+                );
+                console.log("student:", student);
+                return (
+                  <tr key={result._id}>
+                    <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                      {i + 1}
+                    </td>
+                    <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                      {result?.studentId}
+                    </td>
+                    <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                      {student?.roll}
+                    </td>
+                    <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                      {result?.className}
+                    </td>
+                    <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                      {student?.studentName || "Unknown"}
+                    </td>
+                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                      {result?.shift}
+                    </td>
+                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                      {result?.section}
+                    </td>
+                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                      {result?.subjectName}
+                    </td>
+                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                      {result?.subjective}
+                    </td>
+                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                      {result?.objective}
+                    </td>
+                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                      {result?.practical}
+                    </td>
+                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark flex gap-5">
+                      <button
+                        className="text-blue-500"
+                        onClick={() => openEditModal(student)}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="text-red-500"
+                        onClick={() => openDeleteModal(student._id)}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
@@ -384,6 +405,47 @@ const ResultList = () => {
 };
 
 export default ResultList;
+
+//       <tr key={student._id}>
+//   <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+//     {student?.studentId}
+//   </td>
+//   <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+//     {student?.className}
+//   </td>
+//   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+//     {student?.shift}
+//   </td>
+//   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+//     {student?.section}
+//   </td>
+//   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+//     {student?.subjectName}
+//   </td>
+//   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+//     {student?.subjective}
+//   </td>
+//   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+//     {student?.objective}
+//   </td>
+//   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+//     {student?.practical}
+//   </td>
+//   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark flex gap-5">
+//     <button
+//       className="text-blue-500"
+//       onClick={() => openEditModal(student)}
+//     >
+//       Edit
+//     </button>
+//     <button
+//       className="text-red-500"
+//       onClick={() => openDeleteModal(student._id)}
+//     >
+//       Delete
+//     </button>
+//   </td>
+// </tr>
 
 // import { useEffect, useState } from "react";
 // import axios from "axios";
