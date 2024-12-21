@@ -1,12 +1,13 @@
 import axios from "axios";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const MarksInput = ({ rollRangeStudent, rollRangeStudentData }) => {
-  const [results, setResults] = useState([]);
   const url = import.meta.env.VITE_SERVER_BASE_URL;
-  const { control, handleSubmit, setValue } = useForm();
+  const { control, handleSubmit, reset } = useForm();
+  const navigate = useNavigate();
 
   const {
     section,
@@ -40,7 +41,11 @@ const MarksInput = ({ rollRangeStudent, rollRangeStudentData }) => {
       console.log("payload", payload);
       const response = await axios.post(`${url}/result/create`, payload);
       if (response.status === 201) {
+        reset();
         toast.success("Marks added successfully");
+        setTimeout(() => {
+          window.location.reload();
+        }, 500);
       }
     } catch (error) {
       toast.error("Failed to add marks");
@@ -106,36 +111,10 @@ const MarksInput = ({ rollRangeStudent, rollRangeStudentData }) => {
                       {student?.studentName}
                     </td>
                     <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                      {/* <Controller
-                        name={`students[${index}].subjective`}
-                        control={control}
-                        defaultValue=""
-                        rules={{ validate: validateMarks }}
-                        render={({ field, fieldState }) => (
-                          <div>
-                            <input
-                              type="number"
-                              {...field}
-                              className={`w-full rounded border-[1.5px] ${
-                                fieldState.error
-                                  ? "border-red-500"
-                                  : "border-stroke"
-                              } bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary`}
-                            />
-                            {fieldState.error && (
-                              <p className="text-red-500 text-sm">
-                                {fieldState.error.message}
-                              </p>
-                            )}
-                          </div>
-                        )}
-                      /> */}
-
                       <Controller
                         name={`students[${index}].subjective`}
                         control={control}
                         defaultValue=""
-                        // rules={{ validate: validateMarks }}
                         render={({ field, fieldState }) => (
                           <div>
                             <input
@@ -143,11 +122,6 @@ const MarksInput = ({ rollRangeStudent, rollRangeStudentData }) => {
                               {...field}
                               className={`w-full rounded border-[1.5px]  bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary`}
                             />
-                            {/* {fieldState.error && (
-                              <p className="text-red-500 text-sm">
-                                {fieldState.error.message}
-                              </p>
-                            )} */}
                           </div>
                         )}
                       />

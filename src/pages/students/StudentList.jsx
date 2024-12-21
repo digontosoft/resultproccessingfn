@@ -25,25 +25,9 @@ const StudentList = () => {
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
-  const {filterClass,filterSection,filterShift,sessions} = useUserProtectFilter()
+  const { filterClass, filterSection, filterShift, sessions } =
+    useUserProtectFilter();
   const { getUser, loading } = useSingleUser();
-  // const [filterStudent, setFilterStudent] = useState([]);
-
-  // const [classes, setClasses] = useState([]);
-
-  // useEffect(() => {
-  //   const fetchClasses = async () => {
-  //     try {
-  //       const response = await gurdedApi.get(`/class`);
-  //       const classNames = response.data.classes;
-  //       setClasses(classNames);
-  //     } catch (error) {
-  //       toast.error("Failed to fetch classes");
-  //     }
-  //   };
-
-  //   fetchClasses();
-  // }, [gurdedApi]);
 
   const getStudents = async () => {
     try {
@@ -54,7 +38,7 @@ const StudentList = () => {
       if (response.status === 200) {
         //const data =
         setStudents(response.data.data);
-        console.log("students:", response.data.data);
+        // console.log("students:", response.data.data);
 
         setFilteredStudents(response.data.data); // Initialize filtered students
       }
@@ -70,20 +54,6 @@ const StudentList = () => {
   useEffect(() => {
     getStudents();
   }, [gurdedApi]);
-
-  // const handleFilter = (filterCriteria) => {
-  //   const filtered = students.filter((student) => {
-  //     return (
-  //       (!filterCriteria.year || student.year === filterCriteria.year) &&
-  //       (!filterCriteria.shift || student.shift === filterCriteria.shift) &&
-  //       (!filterCriteria.class || student.class === filterCriteria.class) &&
-  //       (!filterCriteria.group || student.group === filterCriteria.group) &&
-  //       (!filterCriteria.section || student.section === filterCriteria.section)
-  //     );
-  //   });
-  //   setFilteredStudents(filtered);
-  //   console.log("filter:", filtered);
-  // };
 
   const handleFilter = (filterCriteria) => {
     const filtered = students.filter((student) => {
@@ -102,7 +72,7 @@ const StudentList = () => {
     }
 
     setFilteredStudents(filtered);
-    console.log("filter:", filtered);
+    // console.log("filter:", filtered);
   };
 
   const handleView = (student) => {
@@ -150,8 +120,8 @@ const StudentList = () => {
   };
 
   const confirmDeleteStudent = async () => {
-    console.log(selectedStudent);
-    
+    // console.log("selectedStudent:", selectedStudent._id);
+
     try {
       await gurdedApi.delete(`/student/${selectedStudent._id}`);
       await getStudents();
@@ -173,9 +143,9 @@ const StudentList = () => {
       );
       setFilteredStudents(data);
     } else {
-      setFilteredStudents(students)
+      setFilteredStudents(students);
     }
-  }, [getUser,students]);
+  }, [getUser, students]);
 
   if (isLoading) return <LoadingState />;
 
@@ -207,7 +177,13 @@ const StudentList = () => {
           </h3>
         </div>
         <div className="p-6.5 space-y-5">
-          <FilterStudents classes={filterClass} onFilter={handleFilter} section={filterSection} shift={filterShift} sessions={sessions} />
+          <FilterStudents
+            classes={filterClass}
+            onFilter={handleFilter}
+            section={filterSection}
+            shift={filterShift}
+            sessions={sessions}
+          />
           <StudentTable
             students={filteredStudents}
             onView={handleView}

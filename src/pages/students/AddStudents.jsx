@@ -17,7 +17,7 @@ const AddStudents = () => {
   const [fourthSubject, setFourthSubject] = useState([]);
   const navigate = useNavigate();
   const url = import.meta.env.VITE_SERVER_BASE_URL;
-  const [filterGroup,setFilterGroup] = useState([])
+  const [filterGroup, setFilterGroup] = useState([]);
 
   const { filterClass, filterSection, filterShift, sessions } =
     useUserProtectFilter();
@@ -30,21 +30,17 @@ const AddStudents = () => {
     reset,
   } = useForm();
 
-  const handelClass =(value)=>{
-   // console.log(value);
-    
-    if(value==9||value==10) {
-      setFilterGroup(groupData.slice(1,4))
-    }
-    else {
-      setFilterGroup(groupData.slice(0,1))
-    }
-    
-  }
+  const handelClass = (value) => {
+    // console.log(value);
 
- // console.log("filter Group",filterGroup);
-  
+    if (value == 9 || value == 10) {
+      setFilterGroup(groupData.slice(1, 4));
+    } else {
+      setFilterGroup(groupData.slice(0, 1));
+    }
+  };
 
+  // console.log("filter Group",filterGroup);
 
   useEffect(() => {
     const fetchSubjects = async () => {
@@ -107,8 +103,8 @@ const AddStudents = () => {
       }
       if (response.status === 200) {
         toast.success("Student added successfully");
-        // reset();
-        // navigate("/student-list");
+        reset();
+        navigate("/student-list");
       }
     } catch (error) {
       console.error(error.response?.data?.message || "Something went wrong");
@@ -121,8 +117,6 @@ const AddStudents = () => {
 
     // console.log("data:", data);
   };
-
-  
 
   // Reusable input field component
   const InputField = ({ label, name, type = "text", placeholder }) => (
@@ -209,7 +203,8 @@ const AddStudents = () => {
               <select
                 {...register("class", { required: "Please select a class" })}
                 // onChange={(e) => handleFilterChange(e.target.value)}
-                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" onChange={(e)=>handelClass(e.target.value)}
+                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                onChange={(e) => handelClass(e.target.value)}
               >
                 <option value="" hidden>
                   Select Class

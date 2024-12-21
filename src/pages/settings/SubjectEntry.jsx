@@ -4,8 +4,7 @@ import { Controller, useForm } from "react-hook-form";
 import { GridLoader } from "react-spinners";
 import { toast } from "react-toastify";
 import useUserProtectFilter from "../../hooks/useUserProtectFilter";
-
-const groups = ["general", "science", "humanities", "business"];
+import { groupData } from "../../data/data";
 
 const SubjectEntry = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -169,7 +168,7 @@ const SubjectEntry = () => {
             >
               <option value="">Select Class</option>
               {filterClass.map((option, i) => (
-                <option key={i} value={option.value}>
+                <option key={i} value={option._id}>
                   {option?.name}
                 </option>
               ))}
@@ -180,7 +179,7 @@ const SubjectEntry = () => {
               </span>
             )}
           </div>
-          <FormSelect label="Group" name="group" options={groups} />
+          <FormSelect label="Group" name="group" options={groupData} />
           <FormCheckbox label="Is 4th Subject?" name="isFourthSubject" />
           <button
             type="submit"

@@ -9,7 +9,7 @@ const FilterResult = ({
   filterClass,
   filterSection,
   filterShift,
-  session
+  sessions,
 }) => {
   // const { filterClass, filterShift, filterSection, sessions } =
   //   useUserProtectFilter();
@@ -22,7 +22,7 @@ const FilterResult = ({
       try {
         const response = await axios.get(`${url}/getAllSub`);
         setSubjects(response.data.data);
-       // console.log("subjects:", response.data.data);
+        // console.log("subjects:", response.data.data);
       } catch (error) {
         console.error("Error fetching students:", error);
       }
@@ -48,9 +48,9 @@ const FilterResult = ({
               className="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="">session</option>
-              {session.map((c) => (
-                <option key={c} value={c.value}>
-                  {c.name}
+              {sessions.map((c) => (
+                <option key={c} value={c}>
+                  {c}
                 </option>
               ))}
             </select>
