@@ -131,7 +131,7 @@ const AddResultsBulk = () => {
       const formData = new FormData();
       formData.append("file", data.excelFile[0]);
       formData.append("section", data.section);
-      formData.append("class", data.class);
+      formData.append("className", data.className);
       formData.append("subjectName", data.subjectName);
       formData.append("shift", data.shift);
       formData.append("session", data.session);
@@ -227,7 +227,7 @@ const AddResultsBulk = () => {
                   Select Class
                 </label>
                 <select
-                  {...register("class", {
+                  {...register("className", {
                     required: `class is required`,
                   })}
                   // onChange={(e) => handleFilterChange(e.target.value)} // Pass the selected value
@@ -239,7 +239,7 @@ const AddResultsBulk = () => {
                 >
                   <option value="">Select Class</option>
                   {filterClass.map((option, i) => (
-                    <option key={i} value={option._id}>
+                    <option key={i} value={option.name}>
                       {option?.name}
                     </option>
                   ))}
