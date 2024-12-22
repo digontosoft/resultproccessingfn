@@ -132,7 +132,7 @@ const AddResultsBulk = () => {
       formData.append("file", data.excelFile[0]);
       formData.append("section", data.section);
       formData.append("class", data.class);
-      formData.append("subject", data.subject);
+      formData.append("subject", data.subjectName);
       formData.append("shift", data.shift);
       formData.append("session", data.session);
       formData.append("term", data.term);

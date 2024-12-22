@@ -43,19 +43,19 @@ const StudentTableRow = ({ student, onView, onEdit, onDelete }) => {
             className="hover:text-primary"
             onClick={() => onView(student)}
           >
-            <img src="/view.svg" alt="view icon" width={18} height={18} />
+            <img src="/view.svg" alt="view icon" width={25} height={25} />
           </button>
           <button
             className="hover:text-primary"
             onClick={() => onEdit(student)}
           >
-            <img src="/edit.svg" alt="edit icon" width={18} height={18} />
+            <img src="/edit.svg" alt="edit icon" width={25} height={25} />
           </button>
           <button
             className="hover:text-primary"
             onClick={() => onDelete(student)}
           >
-            <img src="/delete.svg" alt="delete icon" width={18} height={18} />
+            <img src="/delete.svg" alt="delete icon" width={25} height={25} />
           </button>
         </div>
       </td>
