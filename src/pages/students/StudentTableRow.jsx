@@ -1,4 +1,5 @@
 const StudentTableRow = ({ student, onView, onEdit, onDelete }) => {
+  console.log("student:", student);
   return (
     <tr>
       <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">

@@ -52,7 +52,7 @@ const UserEditModal = ({ profile, onClose, onSubmit, onChange }) => {
               }
               className="border rounded p-2 w-full mb-4"
             >
-              {/* <option value="">Select Class</option> */}
+              <option value="">Select Class</option>
               {filterClass.map((option) => (
                 <option key={option._id} value={option._id}>
                   {option.name}

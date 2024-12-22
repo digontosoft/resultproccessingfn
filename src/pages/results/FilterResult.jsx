@@ -39,7 +39,7 @@ const FilterResult = ({
     <div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
-          {/* <div className="col-span-1">
+          <div className="col-span-1">
             <select
               {...register("session")}
               onChange={(e) => {
@@ -54,7 +54,7 @@ const FilterResult = ({
                 </option>
               ))}
             </select>
-          </div> */}
+          </div>
           <div className="col-span-1">
             <select
               {...register("className")}

@@ -112,10 +112,13 @@ const ResultList = () => {
         (!criteria.className || result.className === criteria.className) &&
         (!criteria.section || result.section === criteria.section) &&
         (!criteria.shift || result.shift === criteria.shift) &&
-        (!criteria.subjectName || result.subjectName === criteria.subjectName)
+        (!criteria.subject || result.subjectName === criteria.subject) &&
+        (!criteria.sessions || result.session === criteria.sessions)
       );
     });
     setFilteredResults(filtered);
+    console.log("filtered", filtered);
+    console.log("criteria", criteria);
   };
 
   useEffect(() => {

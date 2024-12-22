@@ -1,21 +1,25 @@
 import axios from "axios";
-import { use, useEffect } from "react";
+import { useEffect } from "react";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import * as XLSX from "xlsx";
-import AddResultBulkAdmin from "./AddResultBulkAdmin";
+import useUserProtectFilter from "../../hooks/useUserProtectFilter";
+import { groupData } from "../../data/data";
 
 const AddResultsBulk = () => {
   const fileInputRef = useRef(null);
   const url = import.meta.env.VITE_SERVER_BASE_URL;
   const [isLoading, setIsLoading] = useState(false);
   const [teacherAccess, setTeacherAccess] = useState([]);
-  const [selectedClass, setSelectedClass] = useState();
+  const [selectedClass, setSelectedClass] = useState([]);
   const [teacherSubjects, setTeacherSubjects] = useState([]);
   const [filteredSubjects, setFilteredSubjects] = useState([]);
+  const [subjects, setSubjects] = useState([]);
   const navigate = useNavigate();
+  const { filterClass, filterSection, filterShift, isSuperAdmin, sessions } =
+    useUserProtectFilter();
   const currentYear = new Date().getFullYear();
   const {
     handleSubmit,
@@ -23,27 +27,33 @@ const AddResultsBulk = () => {
     register,
   } = useForm();
 
-  
+  const terms = ["Annnual", "Half Yearly", "Pretest", "Test", "Model Test"];
 
-  const classes = Array.from({ length: 5 }, (_, i) => `${i + 6}`);
-  const subjects = [
-    "Bangla1st",
-    "Bangla2nd",
-    "English1st",
-    "English2nd",
-    "Mathematics",
-    "Higher Mathematics",
-    "Islam and Moral Education",
-    "Biology",
-    "Chemistry",
-    "Physics",
-    "Bangladesh and Global Studies",
-    "Information and Communication Technology",
-  ];
-  const shifts = ["Morning", "Day"];
-  const sessions = [currentYear, currentYear - 1, currentYear - 2];
-  const terms = ["Final", "Half Yearly"];
-  const groups = ["General", "Science", "Humanities", "Business"];
+  useEffect(() => {
+    const fetchSubjects = async () => {
+      try {
+        const response = await axios.get(`${url}/subjects`);
+        setSubjects(response.data.subjects);
+      } catch (error) {
+        toast.error("Failed to fetch subjects");
+      }
+    };
+
+    fetchSubjects();
+  }, [url]);
+
+  const handleFilterChange = (event) => {
+    const selectedValue = event.target.value;
+    const selectedOption = filterClass.find(
+      (option) => option._id === selectedValue
+    );
+    const filtered = subjects.filter(
+      (subject) => subject.class._id === selectedOption._id
+    );
+    console.log("filter:", filtered);
+    setFilteredSubjects(filtered);
+    // setClassData(selectedOption.value);
+  };
 
   // Create sample data for Excel template
   const handleDownloadTemplate = () => {
@@ -84,6 +94,22 @@ const AddResultsBulk = () => {
   useEffect(() => {
     const fetchSubjects = async () => {
       try {
+        const response = await axios.get(`${url}/class`);
+        const data = response.data.classes;
+        setSelectedClass(data);
+        console.log("class", data);
+      } catch (error) {
+        toast.error("Failed to fetch subjects");
+        console.error(error);
+      }
+    };
+
+    fetchSubjects();
+  }, [url]);
+
+  useEffect(() => {
+    const fetchSubjects = async () => {
+      try {
         const response = await axios.get(`${url}/subjects`);
         const data = response.data.subjects;
         setTeacherSubjects(data);
@@ -98,29 +124,8 @@ const AddResultsBulk = () => {
     fetchSubjects();
   }, [url]);
 
-  const handleFilterChange = (classId) => {
-    console.log("Selected classId:", classId);
-
-    // Filter the subjects based on the selected classId
-    const filtered = teacherSubjects.filter(
-      (subject) => subject.class._id === classId
-    );
-
-    // Update the state with the filtered subjects
-    setFilteredSubjects(filtered);
-    console.log("Filtered subjects:", filtered);
-  };
-
-  const teacher_class = teacherAccess.flatMap((cls) =>
-    cls.ClassVsSubject.map((cl) => cl.class_id)
-  );
-  const teacher_subject_ids = teacherAccess.flatMap((cls) =>
-    cls.ClassVsSubject.map((cl) => cl.subjects)
-  );
-
-  // console.log("Subject IDs:", teacher_class);
-
   const onSubmit = async (data) => {
+    console.log("results", data);
     setIsLoading(true);
     try {
       const formData = new FormData();
@@ -180,132 +185,132 @@ const AddResultsBulk = () => {
 
   return (
     <div>
-      {teacher?.userType === "teacher" ? (
-        <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-          <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
-            <h3 className="font-medium text-black dark:text-white">
-              Bulk Add Results
-            </h3>
+      <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+        <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
+          <h3 className="font-medium text-black dark:text-white">
+            Bulk Add Results
+          </h3>
+        </div>
+
+        <div className="p-6.5">
+          <div className="mb-8">
+            <h4 className="mb-4 text-black dark:text-white">Instructions</h4>
+            <ol className="list-decimal pl-6 space-y-2 text-black dark:text-white">
+              <li>Download the Excel template using the button below</li>
+              <li>
+                Fill in the student information following the template format
+              </li>
+              <li>
+                Select all required fields and upload the completed Excel file
+              </li>
+            </ol>
           </div>
 
-          <div className="p-6.5">
-            <div className="mb-8">
-              <h4 className="mb-4 text-black dark:text-white">Instructions</h4>
-              <ol className="list-decimal pl-6 space-y-2 text-black dark:text-white">
-                <li>Download the Excel template using the button below</li>
-                <li>
-                  Fill in the student information following the template format
-                </li>
-                <li>
-                  Select all required fields and upload the completed Excel file
-                </li>
-              </ol>
-            </div>
+          <div className="mb-8">
+            <button
+              onClick={handleDownloadTemplate}
+              className="inline-flex items-center justify-center bg-primary py-3 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
+            >
+              Download Template
+            </button>
+          </div>
 
-            <div className="mb-8">
-              <button
-                onClick={handleDownloadTemplate}
-                className="inline-flex items-center justify-center bg-primary py-3 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
-              >
-                Download Template
-              </button>
-            </div>
-
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                <FormSelect
-                  label="Section"
-                  name="section"
-                  options={["A", "B"]}
-                />
-                <div className="mb-4.5">
-                  <label className="mb-3 block text-black dark:text-white">
-                    Select Class
-                  </label>
-                  <select
-                    {...register("class", {
-                      required: `class is required`,
-                    })}
-                    onChange={(e) => handleFilterChange(e.target.value)} // Pass the selected value
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  >
-                    <option value="">Select Class</option>
-                    {teacher_class.map((option, i) => (
-                      <option key={i} value={option._id}>
-                        {option?.name}
-                      </option>
-                    ))}
-                  </select>
-                  {errors[name] && (
-                    <span className="text-red-500 text-sm mt-1">
-                      {errors[name].message}
-                    </span>
-                  )}
-                </div>
-                <div className="mb-4.5">
-                  <label className="mb-3 block text-black dark:text-white">
-                    Select Subject
-                  </label>
-                  <select
-                    {...register("subject", {
-                      required: `subject is required`,
-                    })}
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  >
-                    <option value="">Select Subject</option>
-                    {filteredSubjects.map((option, i) => (
-                      <option key={i} value={option?.name}>
-                        {option?.name}
-                      </option>
-                    ))}
-                  </select>
-                  {errors[name] && (
-                    <span className="text-red-500 text-sm mt-1">
-                      {errors[name].message}
-                    </span>
-                  )}
-                </div>
-                <FormSelect label="Shift" name="shift" options={shifts} />
-                <FormSelect label="Session" name="session" options={sessions} />
-                <FormSelect label="Term" name="term" options={terms} />
-                <FormSelect label="Group" name="group" options={groups} />
-              </div>
-
-              <div className="mt-4">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <FormSelect
+                label="Section"
+                name="section"
+                options={filterSection}
+              />
+              <div className="mb-4.5">
                 <label className="mb-3 block text-black dark:text-white">
-                  Upload Excel File
+                  Select Class
                 </label>
-                <input
-                  type="file"
-                  accept=".xlsx"
-                  ref={fileInputRef}
-                  {...register("excelFile", {
-                    required: "Please select a file to upload",
+                <select
+                  {...register("class", {
+                    required: `class is required`,
                   })}
+                  // onChange={(e) => handleFilterChange(e.target.value)} // Pass the selected value
+                  onChange={(e) => {
+                    handleFilterChange(e);
+                    // handelClass(e.target.value)
+                  }}
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                />
-                {errors.excelFile && (
+                >
+                  <option value="">Select Class</option>
+                  {filterClass.map((option, i) => (
+                    <option key={i} value={option._id}>
+                      {option?.name}
+                    </option>
+                  ))}
+                </select>
+                {errors[name] && (
                   <span className="text-red-500 text-sm mt-1">
-                    {errors.excelFile.message}
+                    {errors[name].message}
                   </span>
                 )}
               </div>
+              <div className="mb-4.5">
+                <label className="mb-3 block text-black dark:text-white">
+                  Select Subject
+                </label>
+                <select
+                  {...register("subject", {
+                    required: `subject is required`,
+                  })}
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                >
+                  <option value="">Select Subject</option>
+                  {filteredSubjects.map((option, i) => (
+                    <option key={i} value={option?.name}>
+                      {option?.name}
+                    </option>
+                  ))}
+                </select>
+                {errors[name] && (
+                  <span className="text-red-500 text-sm mt-1">
+                    {errors[name].message}
+                  </span>
+                )}
+              </div>
+              <FormSelect label="Shift" name="shift" options={filterShift} />
+              <FormSelect label="Session" name="session" options={sessions} />
+              <FormSelect label="Term" name="term" options={terms} />
+              <FormSelect label="Group" name="group" options={groupData} />
+            </div>
 
-              <button
-                type="submit"
-                disabled={isLoading}
-                className={`inline-flex items-center justify-center bg-primary py-3 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 ${
-                  isLoading ? "opacity-50 cursor-not-allowed" : ""
-                }`}
-              >
-                {isLoading ? "Uploading..." : "Upload Result"}
-              </button>
-            </form>
-          </div>
+            <div className="mt-4">
+              <label className="mb-3 block text-black dark:text-white">
+                Upload Excel File
+              </label>
+              <input
+                type="file"
+                accept=".xlsx"
+                ref={fileInputRef}
+                {...register("excelFile", {
+                  required: "Please select a file to upload",
+                })}
+                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+              />
+              {errors.excelFile && (
+                <span className="text-red-500 text-sm mt-1">
+                  {errors.excelFile.message}
+                </span>
+              )}
+            </div>
+
+            <button
+              type="submit"
+              disabled={isLoading}
+              className={`inline-flex items-center justify-center bg-primary py-3 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 ${
+                isLoading ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+            >
+              {isLoading ? "Uploading..." : "Upload Result"}
+            </button>
+          </form>
         </div>
-      ) : (
-        <AddResultBulkAdmin />
-      )}
+      </div>
     </div>
   );
 };

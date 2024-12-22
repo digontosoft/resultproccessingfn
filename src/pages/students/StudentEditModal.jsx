@@ -8,13 +8,13 @@ const StudentEditModal = ({ student, onSubmit, onChange, onClose }) => {
     e.preventDefault();
     onSubmit(e);
   };
-
+  console.log("student:", student);
   const { filterClass, filterSection, filterShift, sessions } =
     useUserProtectFilter();
   const [filterGroup, setFilterGroup] = useState([]);
 
   const handelClass = (value) => {
-     console.log(value);
+    console.log("value:", value);
 
     if (value == 9 || value == 10) {
       setFilterGroup(groupData.slice(1, 4));
@@ -55,18 +55,23 @@ const StudentEditModal = ({ student, onSubmit, onChange, onClose }) => {
               className="border rounded p-2 w-full mb-4"
             />
           </div>
-          
+
           {/* Academic Information */}
           <div>
             <label className="block mb-2 text-sm font-medium">Class</label>
             <select
               value={student?.class}
-              onChange={(e) => onChange({ ...student, class: e.target.value })}
+              onChange={(e) =>
+                onChange(
+                  { ...student, class: e.target.value },
+                  handelClass(e.target.value)
+                )
+              }
               className="border rounded p-2 w-full mb-4"
             >
               <option value="">Select Class</option>
               {filterClass.map((option) => (
-                <option key={option._id} value={option._id}>
+                <option key={option._id} value={option.value}>
                   {option.name}
                 </option>
               ))}
@@ -97,9 +102,9 @@ const StudentEditModal = ({ student, onSubmit, onChange, onClose }) => {
               className="border rounded p-2 w-full mb-4"
             >
               <option value="">Select shift</option>
-              {filterSection.map((section) => (
-                <option key={section} value={section}>
-                  {section}
+              {filterShift.map((shift) => (
+                <option key={shift} value={shift}>
+                  {shift}
                 </option>
               ))}
             </select>
@@ -107,11 +112,11 @@ const StudentEditModal = ({ student, onSubmit, onChange, onClose }) => {
           <div>
             <label className="block mb-2 text-sm font-medium">Group</label>
             <select
-              value={student?.group}
+              value={student?.group || ""}
               onChange={(e) => onChange({ ...student, group: e.target.value })}
               className="border rounded p-2 w-full mb-4"
             >
-              {groupData.map((item) => (
+              {filterGroup.map((item) => (
                 <option key={item} value={item}>
                   {item}
                 </option>
