@@ -12,6 +12,7 @@ const SubjectEntry = () => {
   const url = import.meta.env.VITE_SERVER_BASE_URL;
   const { filterClass } = useUserProtectFilter();
   const [filterGroup, setFilterGroup] = useState([]);
+  const {sessions} = useUserProtectFilter()
 
   const {
     control,
@@ -161,7 +162,31 @@ const SubjectEntry = () => {
             name="subjectCode"
             placeholder="Enter subject code"
           />
-          <FormInput label="Year" name="year" placeholder="Enter year" />
+           <div className="mb-4.5">
+            <label className="mb-3 block text-black dark:text-white">
+              Select year
+            </label>
+            <select
+              {...register("year", {
+                required: `class is required`,
+              })}
+              // onChange={(e) => handleFilterChange(e.target.value)} // Pass the selected value
+              className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+              onChange={(e) => handelClass(e.target.value)}
+            >
+              <option value="">Select year</option>
+              {sessions.map((option, i) => (
+                <option key={i} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+            {errors[name] && (
+              <span className="text-red-500 text-sm mt-1">
+                {errors[name].message}
+              </span>
+            )}
+          </div>
           <FormInput
             label="Marks"
             name="marks"

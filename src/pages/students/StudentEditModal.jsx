@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from "../../components/Modal/Modal";
 import useUserProtectFilter from "../../hooks/useUserProtectFilter";
 import { groupData } from "../../data/data";
+import axios from "axios";
 
 const StudentEditModal = ({ student, onSubmit, onChange, onClose }) => {
   const handleSubmit = (e) => {
@@ -12,6 +13,34 @@ const StudentEditModal = ({ student, onSubmit, onChange, onClose }) => {
   const { filterClass, filterSection, filterShift, sessions } =
     useUserProtectFilter();
   const [filterGroup, setFilterGroup] = useState([]);
+  const [subjects, setSubjects] = useState([]);
+  const url = import.meta.env.VITE_SERVER_BASE_URL;
+  const [fourthSubject, setFourthSubject] = useState([]);
+  useEffect(() => {
+    const fetchSubjects = async () => {
+      try {
+        const response = await axios.get(`${url}/subjects`);
+        //console.log("responce",response);
+        
+        setSubjects(response.data.subjects);
+      } catch (error) {
+        toast.error("Failed to fetch subjects");
+      }
+    };
+
+    fetchSubjects();
+  }, [url]);
+  console.log(subjects);
+  
+
+  const handleFourthSubjectFilter = (group) => {
+    const data = subjects.filter(
+      (item) => item.group === group && item.isFourthSubject === true
+    );
+    setFourthSubject(data);
+  };
+  console.log("4th subject",fourthSubject);
+  
 
   const handelClass = (value) => {
     console.log("value:", value);
@@ -22,6 +51,9 @@ const StudentEditModal = ({ student, onSubmit, onChange, onClose }) => {
       setFilterGroup(groupData.slice(0, 1));
     }
   };
+
+  console.log(filterGroup);
+  
 
   return (
     <Modal open={true} onClose={onClose}>
@@ -69,10 +101,10 @@ const StudentEditModal = ({ student, onSubmit, onChange, onClose }) => {
               }
               className="border rounded p-2 w-full mb-4"
             >
-              <option value="">Select Class</option>
+              <option value={student?.class}>{student?.class}</option>
               {filterClass.map((option) => (
                 <option key={option._id} value={option.value}>
-                  {option.name}
+                  {option.value}
                 </option>
               ))}
             </select>
@@ -86,7 +118,7 @@ const StudentEditModal = ({ student, onSubmit, onChange, onClose }) => {
               }
               className="border rounded p-2 w-full mb-4"
             >
-              <option value="">Select Section</option>
+              <option value={student?.section}>{student?.section}</option>
               {filterSection.map((section) => (
                 <option key={section} value={section}>
                   {section}
@@ -97,11 +129,11 @@ const StudentEditModal = ({ student, onSubmit, onChange, onClose }) => {
           <div>
             <label className="block mb-2 text-sm font-medium">Shift</label>
             <select
-              value={student?.shift || ""}
+              value={student?.shift}
               onChange={(e) => onChange({ ...student, shift: e.target.value })}
               className="border rounded p-2 w-full mb-4"
             >
-              <option value="">Select shift</option>
+              <option value={student?.shift}>{student?.shift}</option>
               {filterShift.map((shift) => (
                 <option key={shift} value={shift}>
                   {shift}
@@ -112,10 +144,11 @@ const StudentEditModal = ({ student, onSubmit, onChange, onClose }) => {
           <div>
             <label className="block mb-2 text-sm font-medium">Group</label>
             <select
-              value={student?.group || ""}
-              onChange={(e) => onChange({ ...student, group: e.target.value })}
+              value={student?.group}
+              onChange={(e) => onChange({ ...student, group: e.target.value },handleFourthSubjectFilter(e.target.value))}
               className="border rounded p-2 w-full mb-4"
             >
+              <option value={student?.group}>{student?.group}</option>
               {filterGroup.map((item) => (
                 <option key={item} value={item}>
                   {item}
@@ -135,15 +168,16 @@ const StudentEditModal = ({ student, onSubmit, onChange, onClose }) => {
                   onChange({ ...student, fourthSubjectCode: e.target.value })
                 }
                 className="border rounded p-2 w-full mb-4"
+                
               >
-                <option value={student?.fourthSubjectCode}>
-                  {student?.fourthSubjectCode}
+                <option value={student?.name}>
+                  {student?.name}
                 </option>
-                {/* {sessions.map((session) => (
-                    <option key={session} value={session}>
-                      {session}
+                {fourthSubject.map((data) => (
+                    <option key={data} value={data.subjectCode}>
+                      {data.name}
                     </option>
-                  ))} */}
+                  ))}
               </select>
             </div>
           )}
