@@ -217,11 +217,7 @@ const AddResultsBulk = () => {
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <FormSelect
-                label="Section"
-                name="section"
-                options={filterSection}
-              />
+              <FormSelect label="Session" name="session" options={sessions} />
               <div className="mb-4.5">
                 <label className="mb-3 block text-black dark:text-white">
                   Select Class
@@ -250,6 +246,11 @@ const AddResultsBulk = () => {
                   </span>
                 )}
               </div>
+              <FormSelect
+                label="Section"
+                name="section"
+                options={filterSection}
+              />
               <div className="mb-4.5">
                 <label className="mb-3 block text-black dark:text-white">
                   Select Subject
@@ -274,9 +275,8 @@ const AddResultsBulk = () => {
                 )}
               </div>
               <FormSelect label="Shift" name="shift" options={filterShift} />
-              <FormSelect label="Session" name="session" options={sessions} />
-              <FormSelect label="Term" name="term" options={terms} />
               <FormSelect label="Group" name="group" options={groupData} />
+              <FormSelect label="Term" name="term" options={terms} />
             </div>
 
             <div className="mt-4">

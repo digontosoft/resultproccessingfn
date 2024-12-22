@@ -21,7 +21,7 @@ const StudentEditModal = ({ student, onSubmit, onChange, onClose }) => {
       try {
         const response = await axios.get(`${url}/subjects`);
         //console.log("responce",response);
-        
+
         setSubjects(response.data.subjects);
       } catch (error) {
         toast.error("Failed to fetch subjects");
@@ -31,7 +31,6 @@ const StudentEditModal = ({ student, onSubmit, onChange, onClose }) => {
     fetchSubjects();
   }, [url]);
   console.log(subjects);
-  
 
   const handleFourthSubjectFilter = (group) => {
     const data = subjects.filter(
@@ -39,8 +38,7 @@ const StudentEditModal = ({ student, onSubmit, onChange, onClose }) => {
     );
     setFourthSubject(data);
   };
-  console.log("4th subject",fourthSubject);
-  
+  console.log("4th subject", fourthSubject);
 
   const handelClass = (value) => {
     console.log("value:", value);
@@ -53,7 +51,6 @@ const StudentEditModal = ({ student, onSubmit, onChange, onClose }) => {
   };
 
   console.log(filterGroup);
-  
 
   return (
     <Modal open={true} onClose={onClose}>
@@ -145,7 +142,12 @@ const StudentEditModal = ({ student, onSubmit, onChange, onClose }) => {
             <label className="block mb-2 text-sm font-medium">Group</label>
             <select
               value={student?.group}
-              onChange={(e) => onChange({ ...student, group: e.target.value },handleFourthSubjectFilter(e.target.value))}
+              onChange={(e) =>
+                onChange(
+                  { ...student, group: e.target.value },
+                  handleFourthSubjectFilter(e.target.value)
+                )
+              }
               className="border rounded p-2 w-full mb-4"
             >
               <option value={student?.group}>{student?.group}</option>
@@ -168,16 +170,13 @@ const StudentEditModal = ({ student, onSubmit, onChange, onClose }) => {
                   onChange({ ...student, fourthSubjectCode: e.target.value })
                 }
                 className="border rounded p-2 w-full mb-4"
-                
               >
-                <option value={student?.name}>
-                  {student?.name}
-                </option>
+                <option value={student?.name}>{student?.name}</option>
                 {fourthSubject.map((data) => (
-                    <option key={data} value={data.subjectCode}>
-                      {data.name}
-                    </option>
-                  ))}
+                  <option key={data} value={data.subjectCode}>
+                    {data.name}
+                  </option>
+                ))}
               </select>
             </div>
           )}
@@ -221,10 +220,9 @@ const StudentEditModal = ({ student, onSubmit, onChange, onClose }) => {
             >
               <option value="">Select Religion</option>
               <option value="Islam">Islam</option>
-              <option value="Hinduism">Hindu</option>
-              <option value="Christianity">Christian</option>
-              <option value="Buddhism">Buddhism</option>
-              <option value="Other">Other</option>
+              <option value="Hindu">Hindu</option>
+              <option value="Christian">Christian</option>
+              <option value="Buddhist">Buddhist</option>
             </select>
           </div>
           {/* Full Width Fields */}

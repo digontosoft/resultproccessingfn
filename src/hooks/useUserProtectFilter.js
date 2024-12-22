@@ -62,7 +62,14 @@ const useUserProtectFilter = () => {
   //   }
   // },[getUser])
 
-  return { filterClass, filterSection, filterShift, sessions, isSuperAdmin };
+  return {
+    filterClass,
+    filterSection,
+    filterShift,
+    sessions,
+    isSuperAdmin,
+    classes,
+  };
 };
 
 export default useUserProtectFilter;

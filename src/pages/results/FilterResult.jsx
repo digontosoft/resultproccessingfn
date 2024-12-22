@@ -16,6 +16,7 @@ const FilterResult = ({
   const { register, handleSubmit } = useForm();
   const [subjects, setSubjects] = useState([]);
   const url = import.meta.env.VITE_SERVER_BASE_URL;
+  const terms = ["Half Yearly", "Annual", "Pretest", "Test", "Model Test"];
 
   useEffect(() => {
     const fetchStudents = async () => {
@@ -47,7 +48,7 @@ const FilterResult = ({
               }}
               className="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              <option value="">session</option>
+              <option value="">Session</option>
               {sessions.map((c) => (
                 <option key={c} value={c}>
                   {c}
@@ -114,6 +115,22 @@ const FilterResult = ({
                 {errors.subject.message}
               </p>
             )} */}
+          </div>
+          <div className="col-span-1">
+            <select
+              {...register("term")}
+              onChange={(e) => {
+                handleFilterChange(e);
+              }}
+              className="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="">Term</option>
+              {terms.map((c) => (
+                <option key={c} value={c}>
+                  {c}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
         <div className="flex justify-center items-center w-40">

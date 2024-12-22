@@ -115,7 +115,8 @@ const ResultList = () => {
         (!criteria.shift || result.shift === criteria.shift) &&
         (!criteria.subjectName ||
           result.subjectName === criteria.subjectName) &&
-        (!criteria.sessions || result.session === criteria.sessions)
+        (!criteria.sessions || result.session === criteria.sessions) &&
+        (!criteria.term || result.term === criteria.term)
       );
     });
     setFilteredResults(filtered);

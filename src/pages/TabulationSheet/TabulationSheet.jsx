@@ -156,10 +156,10 @@ const TabulationSheet = () => {
                 Select Group
               </option>
               {groupData.map((item) => (
-                  <option key={item} value={item}>
-                    {item}
-                  </option>
-                ))}
+                <option key={item} value={item}>
+                  {item}
+                </option>
+              ))}
             </select>
           </div>
 
@@ -258,12 +258,9 @@ const TabulationSheet = () => {
             Tabulation Sheet
           </span>
         </div>
-        <PDFViewer width="100%" height="600">
-          <TabulationPdf />
-        </PDFViewer>
       </div>
 
-      {/* <section className="flex justify-between items-center space-y-10">
+      <section className="flex justify-between items-center space-y-10">
         <div>
           <img
             src={Logo}
@@ -296,8 +293,8 @@ const TabulationSheet = () => {
             </tbody>
           </table>
         </div>
-      </section> */}
-      {/* <div className="overflow-x-auto">
+      </section>
+      <div className="overflow-x-auto">
         <table className="table-auto w-full border-collapse border border-gray-300">
           <thead className="text-xs">
             <tr>
@@ -677,7 +674,7 @@ const TabulationSheet = () => {
             </tr>
           </tbody>
         </table>
-      </div> */}
+      </div>
     </div>
   );
 };

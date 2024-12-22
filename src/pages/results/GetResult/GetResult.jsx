@@ -3,12 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { api } from "../../../api";
 import ResultNav from "../../../components/ResultNav";
 import axios from "axios";
+import { groupData } from "../../../data/data";
+import useUserProtectFilter from "../../../hooks/useUserProtectFilter";
 
 const GetResult = () => {
   const navigate = useNavigate();
   const [selectedClass, setSelectedClass] = useState("");
-  const [classes, setClasses] = useState([]);
-  const url = import.meta.env.VITE_SERVER_BASE_URL;
   const [formData, setFormData] = useState({
     className: "",
     group: "",
@@ -24,6 +24,7 @@ const GetResult = () => {
   const shifts = ["Morning", "Day"];
   const sessions = [currentYear, currentYear - 1, currentYear - 2];
   const terms = ["Annual", "Half Yearly", "Pretest", "Test", "Model Test"];
+  const classes = ["4", "5", "6", "7", "8", "9", "10"];
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -40,22 +41,6 @@ const GetResult = () => {
       }
     }
   };
-
-  useEffect(() => {
-    const fetchClasses = async () => {
-      try {
-        const response = await axios.get(`${url}/class`);
-        const classNames = response.data.classes.map((item) =>
-          typeof item === "string" ? item : item.name
-        );
-        setClasses(classNames);
-      } catch (error) {
-        toast.error("Failed to fetch classes");
-      }
-    };
-
-    fetchClasses();
-  }, [url]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -122,11 +107,7 @@ const GetResult = () => {
                 <FormSelect
                   label="Select Group"
                   name="group"
-                  options={[
-                    { value: "science", label: "Science" },
-                    { value: "arts", label: "Arts" },
-                    { value: "commerce", label: "Commerce" },
-                  ]}
+                  options={groupData}
                 />
               )}
             </div>

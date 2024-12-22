@@ -157,7 +157,7 @@ const Transcript = () => {
               </tr>
             </thead>
             <tbody>
-              {TotalResult.map((result, index) => (
+              {TotalResult?.map((result, index) => (
                 <tr key={index}>
                   <td className="border px-1 py-1">{result.subject}</td>
                   <td className="border px-1 py-1 text-center">
