@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { api } from "../../../api";
 import ResultNav from "../../../components/ResultNav";
 import axios from "axios";
-import { groupData } from "../../../data/data";
+import { groupData, termsData } from "../../../data/data";
 import useUserProtectFilter from "../../../hooks/useUserProtectFilter";
 
 const GetResult = () => {
@@ -116,7 +116,7 @@ const GetResult = () => {
               <FormSelect label="Section" name="section" options={["A", "B"]} />
               <FormSelect label="Shift" name="shift" options={shifts} />
               <FormSelect label="Session" name="session" options={sessions} />
-              <FormSelect label="Term" name="term" options={terms} />
+              <FormSelect label="Term" name="term" options={termsData} />
 
               {/* <div className="mb-4.5">
                 <label className="mb-3 block text-black dark:text-white">

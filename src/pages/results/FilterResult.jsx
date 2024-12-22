@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { termsData } from "../../data/data";
 
 const FilterResult = ({
   onFilter,
@@ -16,7 +17,7 @@ const FilterResult = ({
   const { register, handleSubmit } = useForm();
   const [subjects, setSubjects] = useState([]);
   const url = import.meta.env.VITE_SERVER_BASE_URL;
-  const terms = ["Half Yearly", "Annual", "Pretest", "Test", "Model Test"];
+  const terms = ["Annual", "Half Yearly", "Pretest", "Test", "Model Test"];
 
   useEffect(() => {
     const fetchStudents = async () => {
@@ -125,7 +126,7 @@ const FilterResult = ({
               className="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="">Term</option>
-              {terms.map((c) => (
+              {termsData.map((c) => (
                 <option key={c} value={c}>
                   {c}
                 </option>

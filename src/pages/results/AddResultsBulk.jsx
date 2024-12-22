@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import * as XLSX from "xlsx";
 import useUserProtectFilter from "../../hooks/useUserProtectFilter";
-import { groupData } from "../../data/data";
+import { groupData, termsData } from "../../data/data";
 
 const AddResultsBulk = () => {
   const fileInputRef = useRef(null);
@@ -17,17 +17,15 @@ const AddResultsBulk = () => {
   const [teacherSubjects, setTeacherSubjects] = useState([]);
   const [filteredSubjects, setFilteredSubjects] = useState([]);
   const [subjects, setSubjects] = useState([]);
+  const [filterGroup, setFilterGroup] = useState([]);
   const navigate = useNavigate();
   const { filterClass, filterSection, filterShift, isSuperAdmin, sessions } =
     useUserProtectFilter();
-  const currentYear = new Date().getFullYear();
   const {
     handleSubmit,
     formState: { errors },
     register,
   } = useForm();
-
-  const terms = ["Annnual", "Half Yearly", "Pretest", "Test", "Model Test"];
 
   useEffect(() => {
     const fetchSubjects = async () => {
@@ -42,15 +40,27 @@ const AddResultsBulk = () => {
     fetchSubjects();
   }, [url]);
 
+  const handelClass = (value) => {
+    console.log(value);
+
+    if (value == 9 || value == 10) {
+      setFilterGroup(groupData.slice(1, 4));
+    } else {
+      setFilterGroup(groupData.slice(0, 1));
+    }
+  };
+
+  console.log("filterClass", filterClass);
+
   const handleFilterChange = (event) => {
     const selectedValue = event.target.value;
     const selectedOption = filterClass.find(
-      (option) => option._id === selectedValue
+      (option) => option.value === selectedValue
     );
     const filtered = subjects.filter(
       (subject) => subject.class._id === selectedOption._id
     );
-    console.log("filter:", filtered);
+    // console.log("selectedOption:", selectedOption);
     setFilteredSubjects(filtered);
     // setClassData(selectedOption.value);
   };
@@ -113,8 +123,6 @@ const AddResultsBulk = () => {
         const response = await axios.get(`${url}/subjects`);
         const data = response.data.subjects;
         setTeacherSubjects(data);
-        setFilteredSubjects(data); // Initially set all subjects
-        console.log("teacherSubjects", data);
       } catch (error) {
         toast.error("Failed to fetch subjects");
         console.error(error);
@@ -229,13 +237,13 @@ const AddResultsBulk = () => {
                   // onChange={(e) => handleFilterChange(e.target.value)} // Pass the selected value
                   onChange={(e) => {
                     handleFilterChange(e);
-                    // handelClass(e.target.value)
+                    handelClass(e.target.value);
                   }}
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 >
                   <option value="">Select Class</option>
                   {filterClass.map((option, i) => (
-                    <option key={i} value={option.name}>
+                    <option key={i} value={option.value}>
                       {option?.name}
                     </option>
                   ))}
@@ -262,8 +270,8 @@ const AddResultsBulk = () => {
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 >
                   <option value="">Select Subject</option>
-                  {filteredSubjects.map((option, i) => (
-                    <option key={i} value={option?.name}>
+                  {filteredSubjects.map((option) => (
+                    <option key={option._id} value={option?.name}>
                       {option?.name}
                     </option>
                   ))}
@@ -275,8 +283,8 @@ const AddResultsBulk = () => {
                 )}
               </div>
               <FormSelect label="Shift" name="shift" options={filterShift} />
-              <FormSelect label="Group" name="group" options={groupData} />
-              <FormSelect label="Term" name="term" options={terms} />
+              <FormSelect label="Group" name="group" options={filterGroup} />
+              <FormSelect label="Term" name="term" options={termsData} />
             </div>
 
             <div className="mt-4">

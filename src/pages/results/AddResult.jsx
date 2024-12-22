@@ -7,9 +7,7 @@ import useAxios from "../../hooks/useAxios";
 import MarksInput from "./MarksInput";
 import useSingleUser from "../../hooks/useSingleUser";
 import useUserProtectFilter from "../../hooks/useUserProtectFilter";
-import { groupData } from "../../data/data";
-
-const terms = ["Half Yearly", "Annual", "Pretest", "Test", "Model Test"];
+import { groupData, termsData } from "../../data/data";
 
 const AddResult = () => {
   const { gurdedApi } = useAxios();
@@ -35,18 +33,19 @@ const AddResult = () => {
     formState: { errors },
   } = useForm();
 
-  const handelClass = (value) =>{
+  const handelClass = (value) => {
     //console.log("i am value",value);
-    const data = filterClass.filter((item)=>item._id===value &&(item.value==9||item.value==10)
-    )
+    const data = filterClass.filter(
+      (item) => item._id === value && (item.value == 9 || item.value == 10)
+    );
     //console.log(data);
-    
-     if (data.length>0) {
-          setFilterGroup(groupData.slice(1, 4));
-        } else {
-          setFilterGroup(groupData.slice(0, 1));
-        }
-  }
+
+    if (data.length > 0) {
+      setFilterGroup(groupData.slice(1, 4));
+    } else {
+      setFilterGroup(groupData.slice(0, 1));
+    }
+  };
 
   useEffect(() => {
     const fetchSubjects = async () => {
@@ -151,7 +150,7 @@ const AddResult = () => {
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               <FormSelect label="Year" name="session" options={sessions} />
-              <FormSelect label="Exam" name="term" options={terms} />
+              <FormSelect label="Exam" name="term" options={termsData} />
               <FormSelect label="Shift" name="shift" options={filterShift} />
               <div className="mb-4.5">
                 <label className="mb-3 block text-black dark:text-white">
@@ -163,9 +162,9 @@ const AddResult = () => {
                   })}
                   onChange={(e) => {
                     handleFilterChange(e);
-                    handelClass(e.target.value)
+                    handelClass(e.target.value);
                   }}
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" 
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 >
                   <option value="" hidden>
                     Select Class
@@ -190,7 +189,6 @@ const AddResult = () => {
               <FormSelect
                 label="Select Group"
                 name="group"
-
                 options={filterGroup}
               />
 
