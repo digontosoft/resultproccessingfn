@@ -42,6 +42,7 @@ const ResultList = () => {
     try {
       const response = await axios.get(`${url}/result/get_all`);
       setResults(response.data.data);
+      console.log("result:", response.data.data);
     } catch (error) {
       console.error("Error fetching results:", error);
     }
@@ -112,7 +113,8 @@ const ResultList = () => {
         (!criteria.className || result.className === criteria.className) &&
         (!criteria.section || result.section === criteria.section) &&
         (!criteria.shift || result.shift === criteria.shift) &&
-        (!criteria.subject || result.subjectName === criteria.subject) &&
+        (!criteria.subjectName ||
+          result.subjectName === criteria.subjectName) &&
         (!criteria.sessions || result.session === criteria.sessions)
       );
     });
@@ -167,7 +169,7 @@ const ResultList = () => {
     setFilteredSubjects(filtered);
     // setClassData(selectedOption.value);
   };
-  console.log("subjects:", filteredSubjects);
+  console.log("subjects:", results);
 
   return (
     <div>
@@ -188,7 +190,7 @@ const ResultList = () => {
         </div>
 
         <div className="p-6.5">
-          {/* <table className="w-full table-auto overflow-x-auto">
+          <table className="w-full table-auto overflow-x-auto">
             <thead>
               <tr className="bg-gray-2 text-left dark:bg-meta-4">
                 <th className="py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
@@ -251,25 +253,25 @@ const ResultList = () => {
                     <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
                       {student?.studentName || "Unknown"}
                     </td>
-                    <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                    <td className="border-b border-[#eee] py-5 px-4  dark:border-strokedark xl:pl-11">
                       {result?.shift}
                     </td>
-                    <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                    <td className="border-b border-[#eee] py-5 px-4  dark:border-strokedark xl:pl-11">
                       {result?.section}
                     </td>
-                    <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                    <td className="border-b border-[#eee] py-5 px-4  dark:border-strokedark xl:pl-11">
                       {result?.subjectName}
                     </td>
-                    <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                    <td className="border-b border-[#eee] py-5 px-4  dark:border-strokedark xl:pl-11">
                       {result?.subjective}
                     </td>
-                    <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                    <td className="border-b border-[#eee] py-5 px-4  dark:border-strokedark xl:pl-11">
                       {result?.objective}
                     </td>
-                    <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                    <td className="border-b border-[#eee] py-5 px-4  dark:border-strokedark xl:pl-11">
                       {result?.practical}
                     </td>
-                    <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark flex gap-5">
+                    <td className="border-b border-[#eee] py-5 px-4  dark:border-strokedark flex gap-5">
                       <button
                         className="text-blue-500"
                         onClick={() => openEditModal(result)}
@@ -287,109 +289,7 @@ const ResultList = () => {
                 );
               })}
             </tbody>
-          </table> */}
-          <div className="w-full overflow-x-auto">
-            <table className="w-full table-auto">
-              <thead>
-                <tr className="bg-gray-2 text-left dark:bg-meta-4">
-                  <th className="py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
-                    SI.No
-                  </th>
-                  <th className="py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
-                    ST.ID
-                  </th>
-                  <th className="py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
-                    Roll
-                  </th>
-                  <th className="py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
-                    Class
-                  </th>
-                  <th className="py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
-                    Name
-                  </th>
-                  <th className="py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
-                    Shift
-                  </th>
-                  <th className="py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
-                    Section
-                  </th>
-                  <th className="py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
-                    Subject
-                  </th>
-                  <th className="py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
-                    Subjective
-                  </th>
-                  <th className="py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
-                    Objective
-                  </th>
-                  <th className="py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
-                    Practical
-                  </th>
-                  <th className="py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
-                    Action
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredResults?.map((result, i) => {
-                  const student = students.find(
-                    (s) => s.studentId === result.studentId
-                  );
-                  return (
-                    <tr key={result._id}>
-                      <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                        {i + 1}
-                      </td>
-                      <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                        {result?.studentId}
-                      </td>
-                      <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                        {student?.roll}
-                      </td>
-                      <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                        {result?.className}
-                      </td>
-                      <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                        {student?.studentName || "Unknown"}
-                      </td>
-                      <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                        {result?.shift}
-                      </td>
-                      <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                        {result?.section}
-                      </td>
-                      <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                        {result?.subjectName}
-                      </td>
-                      <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                        {result?.subjective}
-                      </td>
-                      <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                        {result?.objective}
-                      </td>
-                      <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                        {result?.practical}
-                      </td>
-                      <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark flex gap-5">
-                        <button
-                          className="text-blue-500"
-                          onClick={() => openEditModal(result)}
-                        >
-                          Edit
-                        </button>
-                        <button
-                          className="text-red-500"
-                          onClick={() => openDeleteModal(result._id)}
-                        >
-                          Delete
-                        </button>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
+          </table>
         </div>
       </div>
 

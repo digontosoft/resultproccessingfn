@@ -132,7 +132,7 @@ const AddResultsBulk = () => {
       formData.append("file", data.excelFile[0]);
       formData.append("section", data.section);
       formData.append("class", data.class);
-      formData.append("subject", data.subjectName);
+      formData.append("subjectName", data.subjectName);
       formData.append("shift", data.shift);
       formData.append("session", data.session);
       formData.append("term", data.term);
@@ -255,7 +255,7 @@ const AddResultsBulk = () => {
                   Select Subject
                 </label>
                 <select
-                  {...register("subject", {
+                  {...register("subjectName", {
                     required: `subject is required`,
                   })}
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
