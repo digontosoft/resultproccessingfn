@@ -123,6 +123,44 @@ const StudentEditModal = ({ student, onSubmit, onChange, onClose }) => {
               ))}
             </select>
           </div>
+
+          {(student?.class === "9" || student?.class === "10") && (
+            <div>
+              <label className="block mb-2 text-sm font-medium">
+                4th Subject
+              </label>
+              <select
+                value={student?.fourthSubjectCode}
+                onChange={(e) =>
+                  onChange({ ...student, fourthSubjectCode: e.target.value })
+                }
+                className="border rounded p-2 w-full mb-4"
+              >
+                <option value={student?.fourthSubjectCode}>
+                  {student?.fourthSubjectCode}
+                </option>
+                {/* {sessions.map((session) => (
+                    <option key={session} value={session}>
+                      {session}
+                    </option>
+                  ))} */}
+              </select>
+            </div>
+          )}
+          {/* <div>
+            <label className="block mb-2 text-sm font-medium">Group</label>
+            <select
+              value={student?.group || ""}
+              onChange={(e) => onChange({ ...student, group: e.target.value })}
+              className="border rounded p-2 w-full mb-4"
+            >
+              {filterGroup.map((item) => (
+                <option key={item} value={item}>
+                  {item}
+                </option>
+              ))}
+            </select>
+          </div> */}
           {/* Family Information */}
           <div>
             <label className="block mb-2 text-sm font-medium">

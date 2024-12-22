@@ -57,8 +57,8 @@ const AddResultsBulk = () => {
 
   // Create sample data for Excel template
   const handleDownloadTemplate = () => {
-    const headers = ["Roll", "Student Name", "CQ", "MCQ", "CA", "PRAC"];
-    const sampleData = [["1", "Name of student", "19", "20", "16", "22"]];
+    const headers = ["studentId", "CQ", "MCQ", "CA", "PRAC"];
+    const sampleData = [["1", "19", "20", "16", "22"]];
 
     // Create a worksheet
     const worksheet = XLSX.utils.aoa_to_sheet([headers, ...sampleData]);

@@ -2,6 +2,7 @@ import React from "react";
 import Modal from "../../components/Modal/Modal";
 
 const StudentViewModal = ({ student, onClose }) => {
+  console.log("student:", student);
   return (
     <Modal open={true} onClose={onClose}>
       <div className="max-w-125 p-6 max-h-150 overflow-y-auto">
@@ -67,6 +68,16 @@ const StudentViewModal = ({ student, onClose }) => {
                   <span>{student?.group}</span>
                 </p>
               </div>
+              {(student?.class === "9" || student?.class === "10") && (
+                <div>
+                  <p className="mb-2">
+                    <span className="font-medium text-gray-700">
+                      4th Subject Code:{" "}
+                    </span>
+                    <span>{student?.fourthSubjectCode}</span>
+                  </p>
+                </div>
+              )}
             </div>
           </div>
 
