@@ -1,11 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../../../api";
 import ResultNav from "../../../components/ResultNav";
+import axios from "axios";
 
 const GetResult = () => {
   const navigate = useNavigate();
   const [selectedClass, setSelectedClass] = useState("");
+  const [classes, setClasses] = useState([]);
+  const url = import.meta.env.VITE_SERVER_BASE_URL;
   const [formData, setFormData] = useState({
     className: "",
     group: "",
@@ -20,7 +23,7 @@ const GetResult = () => {
   const currentYear = new Date().getFullYear();
   const shifts = ["Morning", "Day"];
   const sessions = [currentYear, currentYear - 1, currentYear - 2];
-  const terms = ["Annual", "Half Yearly"];
+  const terms = ["Annual", "Half Yearly", "Pretest", "Test", "Model Test"];
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -37,6 +40,22 @@ const GetResult = () => {
       }
     }
   };
+
+  useEffect(() => {
+    const fetchClasses = async () => {
+      try {
+        const response = await axios.get(`${url}/class`);
+        const classNames = response.data.classes.map((item) =>
+          typeof item === "string" ? item : item.name
+        );
+        setClasses(classNames);
+      } catch (error) {
+        toast.error("Failed to fetch classes");
+      }
+    };
+
+    fetchClasses();
+  }, [url]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -96,12 +115,7 @@ const GetResult = () => {
               <FormSelect
                 label="Select Class"
                 name="className"
-                options={[
-                  { value: "4", label: "Class 4" },
-                  { value: "5", label: "Class 5" },
-                  { value: "6", label: "Class 6" },
-                  { value: "10", label: "Class 10" },
-                ]}
+                options={classes}
               />
 
               {["9", "10"].includes(selectedClass) && (

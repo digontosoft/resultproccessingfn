@@ -1,7 +1,8 @@
 import React from "react";
 
 const NineToTenTranscript = () => {
-  return <div className="flex justify-end">
+  return 
+  <div className="flex justify-end">
           <button
             onClick={reactToPrintFn}
             className="bg-blue-600 text-white px-2 py-1"
