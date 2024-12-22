@@ -40,7 +40,7 @@ const StudentList = () => {
         setStudents(response.data.data);
         // console.log("students:", response.data.data);
 
-        setFilteredStudents(response.data.data); // Initialize filtered students
+        //setFilteredStudents(response.data.data); // Initialize filtered students
       }
     } catch (error) {
       //console.error(error);

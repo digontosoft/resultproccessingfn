@@ -104,7 +104,7 @@ const SubjectList = () => {
       // }
     } else {
       // setFilteredSubjects(subjects)
-     // setFilterGroup(groupData);
+      // setFilterGroup(groupData);
     }
   }, [getUser, subjects, selectedClass, selectedGroup]);
 
@@ -168,18 +168,19 @@ const SubjectList = () => {
     setIsDeleteModalOpen(false);
     setSubjectToDelete(null);
   };
-  const handelClass = (value) =>{
+  const handelClass = (value) => {
     //console.log("i am value",value);
-    const data = filterClass.filter((item)=>item._id===value &&(item.value==9||item.value==10)
-    )
+    const data = filterClass.filter(
+      (item) => item._id === value && (item.value == 9 || item.value == 10)
+    );
     //console.log(data);
-    
-     if (data.length>0) {
-          setFilterGroup(groupData.slice(1, 4));
-        } else {
-          setFilterGroup(groupData.slice(0, 1));
-        }
-  }
+
+    if (data.length > 0) {
+      setFilterGroup(groupData.slice(1, 4));
+    } else {
+      setFilterGroup(groupData.slice(0, 1));
+    }
+  };
 
   return (
     <div>
@@ -188,8 +189,11 @@ const SubjectList = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <select
             name="className"
-            onChange={(e) => {handleFilterChange(e.target.value, null),handelClass(e.target.value)}}
-            className="w-full rounded-lg border py-2 px-4" 
+            onChange={(e) => {
+              handleFilterChange(e.target.value, null),
+                handelClass(e.target.value);
+            }}
+            className="w-full rounded-lg border py-2 px-4"
           >
             <option value="">Select Class</option>
             {filterClass.map((cls) => (
@@ -228,7 +232,10 @@ const SubjectList = () => {
               {filteredSubjects.length > 0 ? (
                 filteredSubjects.map((subject) => (
                   <tr key={subject._id}>
-                    <td className="border px-4 py-2">{subject.name}</td>
+                    <td className="border px-4 py-2">
+                      {subject.name}{" "}
+                      {subject.isFourthSubject && <span className="font-bold">(4th subject)</span>}
+                    </td>
                     <td className="border px-4 py-2">{subject.subjectCode}</td>
                     <td className="border px-4 py-2">
                       {subject?.class?.value}
