@@ -11,6 +11,7 @@ const SubjectEntry = () => {
   const [classes, setClasses] = useState([]);
   const url = import.meta.env.VITE_SERVER_BASE_URL;
   const { filterClass } = useUserProtectFilter();
+  const [filterGroup, setFilterGroup] = useState([]);
 
   const {
     control,
@@ -23,6 +24,18 @@ const SubjectEntry = () => {
       isFourthSubject: false,
     },
   });
+  const handelClass = (value) =>{
+    //console.log("i am value",value);
+    const data = filterClass.filter((item)=>item._id===value &&(item.value==9||item.value==10)
+    )
+    //console.log(data);
+    
+     if (data.length>0) {
+          setFilterGroup(groupData.slice(1, 4));
+        } else {
+          setFilterGroup(groupData.slice(0, 1));
+        }
+  }
 
   useEffect(() => {
     const fetchClasses = async () => {
@@ -164,7 +177,7 @@ const SubjectEntry = () => {
                 required: `class is required`,
               })}
               // onChange={(e) => handleFilterChange(e.target.value)} // Pass the selected value
-              className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+              className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" onChange={(e)=>handelClass(e.target.value)}
             >
               <option value="">Select Class</option>
               {filterClass.map((option, i) => (
@@ -179,7 +192,7 @@ const SubjectEntry = () => {
               </span>
             )}
           </div>
-          <FormSelect label="Group" name="group" options={groupData} />
+          <FormSelect label="Group" name="group" options={filterGroup} />
           <FormCheckbox label="Is 4th Subject?" name="isFourthSubject" />
           <button
             type="submit"

@@ -1,4 +1,6 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { groupData } from "../../data/data";
 
 const FilterStudents = ({ classes, onFilter, shift, section, sessions }) => {
   const {
@@ -6,10 +8,20 @@ const FilterStudents = ({ classes, onFilter, shift, section, sessions }) => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const [filterGroup, setFilterGroup] = useState([]);
 
   const onSubmit = (data) => {
     onFilter(data); // Pass the filter criteria to the parent component
   };
+
+  const handelClass = (value) =>{
+    console.log(value);
+     if (value == 9 || value == 10) {
+          setFilterGroup(groupData.slice(1, 4));
+        } else {
+          setFilterGroup(groupData.slice(0, 1));
+        }
+  }
 
   return (
     <div>
@@ -49,7 +61,7 @@ const FilterStudents = ({ classes, onFilter, shift, section, sessions }) => {
           <div className="col-span-1">
             <select
               {...register("class")}
-              className="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" onChange={(e)=>handelClass(e.target.value)}
             >
               <option value="">Class</option>
               {classes.map((className) => (
@@ -67,10 +79,11 @@ const FilterStudents = ({ classes, onFilter, shift, section, sessions }) => {
               className="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="">Group</option>
-              <option value="General">General</option>
-              <option value="Science">Science</option>
-              <option value="Commerce">Commerce</option>
-              <option value="Arts">Arts</option>
+              {filterGroup.map((item) => (
+                  <option key={item} value={item}>
+                    {item}
+                  </option>
+                ))}
             </select>
           </div>
 

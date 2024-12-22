@@ -22,6 +22,7 @@ const AddResult = () => {
   const [rollRangeStudent, setRollRangeStudent] = useState([]);
   const [rollRangeStudentData, setRollRangeStudentData] = useState({});
   const { getUser } = useSingleUser();
+  const [filterGroup, setFilterGroup] = useState([]);
   const { filterClass, filterSection, filterShift, sessions } =
     useUserProtectFilter();
 
@@ -33,6 +34,19 @@ const AddResult = () => {
     reset,
     formState: { errors },
   } = useForm();
+
+  const handelClass = (value) =>{
+    //console.log("i am value",value);
+    const data = filterClass.filter((item)=>item._id===value &&(item.value==9||item.value==10)
+    )
+    //console.log(data);
+    
+     if (data.length>0) {
+          setFilterGroup(groupData.slice(1, 4));
+        } else {
+          setFilterGroup(groupData.slice(0, 1));
+        }
+  }
 
   useEffect(() => {
     const fetchSubjects = async () => {
@@ -149,8 +163,9 @@ const AddResult = () => {
                   })}
                   onChange={(e) => {
                     handleFilterChange(e);
+                    handelClass(e.target.value)
                   }}
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" 
                 >
                   <option value="" hidden>
                     Select Class
@@ -176,7 +191,7 @@ const AddResult = () => {
                 label="Select Group"
                 name="group"
 
-                options={groupData}
+                options={filterGroup}
               />
 
               <div className="mb-4.5">

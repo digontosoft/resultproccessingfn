@@ -23,6 +23,8 @@ const AddResultsBulk = () => {
     register,
   } = useForm();
 
+  
+
   const classes = Array.from({ length: 5 }, (_, i) => `${i + 6}`);
   const subjects = [
     "Bangla1st",

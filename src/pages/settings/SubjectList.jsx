@@ -97,14 +97,14 @@ const SubjectList = () => {
         (item) => item.class.name === getUser.class_id.name
       );
       setFilteredSubjects(data);
-      if (getUser.class_id.value !== "9" || getUser.class_id.value !== "10") {
-        setFilterGroup(groupData.slice(0, 1));
-      } else {
-        setFilterGroup(groupData.slice(1, 4));
-      }
+      // if (getUser.class_id.value !== "9" || getUser.class_id.value !== "10") {
+      //   setFilterGroup(groupData.slice(0, 1));
+      // } else {
+      //   setFilterGroup(groupData.slice(1, 4));
+      // }
     } else {
       // setFilteredSubjects(subjects)
-      setFilterGroup(groupData);
+     // setFilterGroup(groupData);
     }
   }, [getUser, subjects, selectedClass, selectedGroup]);
 
@@ -168,6 +168,18 @@ const SubjectList = () => {
     setIsDeleteModalOpen(false);
     setSubjectToDelete(null);
   };
+  const handelClass = (value) =>{
+    //console.log("i am value",value);
+    const data = filterClass.filter((item)=>item._id===value &&(item.value==9||item.value==10)
+    )
+    //console.log(data);
+    
+     if (data.length>0) {
+          setFilterGroup(groupData.slice(1, 4));
+        } else {
+          setFilterGroup(groupData.slice(0, 1));
+        }
+  }
 
   return (
     <div>
@@ -176,8 +188,8 @@ const SubjectList = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <select
             name="className"
-            onChange={(e) => handleFilterChange(e.target.value, null)}
-            className="w-full rounded-lg border py-2 px-4"
+            onChange={(e) => {handleFilterChange(e.target.value, null),handelClass(e.target.value)}}
+            className="w-full rounded-lg border py-2 px-4" 
           >
             <option value="">Select Class</option>
             {filterClass.map((cls) => (
