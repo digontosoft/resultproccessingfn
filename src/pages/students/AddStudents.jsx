@@ -353,7 +353,7 @@ const AddStudents = () => {
             {fourthSubject.length > 0 && (
               <div>
                 <label className="mb-3 block text-black dark:text-white">
-                  Group
+                  4th Subject
                 </label>
                 <select
                   {...register("fourthSubjectCode", {
@@ -361,7 +361,7 @@ const AddStudents = () => {
                   })}
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 >
-                  <option value="">Select Group</option>
+                  <option value="">Select 4th Subject</option>
                   {fourthSubject.map((item) => (
                     <option key={item._id} value={item.subjectCode}>
                       {item.name}
