@@ -208,6 +208,19 @@ const StudentEditModal = ({ student, onSubmit, onChange, onClose }) => {
               className="border rounded p-2 w-full mb-4"
             />
           </div>
+          <div>
+            <label className="block mb-2 text-sm font-medium">
+              Mother's Name
+            </label>
+            <input
+              type="text"
+              value={student?.motherName}
+              onChange={(e) =>
+                onChange({ ...student, motherName: e.target.value })
+              }
+              className="border rounded p-2 w-full mb-4"
+            />
+          </div>
           {/* Other Information */}
           <div>
             <label className="block mb-2 text-sm font-medium">Religion</label>

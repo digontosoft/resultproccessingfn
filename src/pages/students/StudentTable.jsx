@@ -32,6 +32,9 @@ const StudentTable = ({ students, onView, onEdit, onDelete }) => {
                 Father Name
               </th>
               <th className="py-4 px-4 font-medium text-black dark:text-white">
+                Mother Name
+              </th>
+              <th className="py-4 px-4 font-medium text-black dark:text-white">
                 Sex
               </th>
               <th className="py-4 px-4 font-medium text-black dark:text-white">

@@ -35,10 +35,11 @@ import { PDFViewer } from "@react-pdf/renderer";
 import Logo from "../../assets/school-logo.png";
 import TabulationPdf from "./TabulationPdf";
 import { groupData } from "../../data/data";
+import React from "react";
 const TabulationSheet = () => {
   return (
     <div>
-      <div className="w-full h-auto min-h-180 border rounded-md">
+      {/* <div className="w-full h-auto min-h-180 border rounded-md">
         <div className="p-4 border-b">
           <span className="text-2xl font-semibold leading-normal">
             Mark Sheet
@@ -672,6 +673,107 @@ const TabulationSheet = () => {
                 5.0
               </td>
             </tr>
+          </tbody>
+        </table>
+      </div> */}
+
+      <div className="overflow-x-auto">
+        <table className="table-auto w-full border-collapse border border-gray-300">
+          <thead className="text-xs">
+            <tr>
+              <th
+                rowSpan={2}
+                className="border border-gray-300 px-2 py-1 text-center"
+              >
+                Roll
+              </th>
+              <th
+                rowSpan={2}
+                className="border border-gray-300 px-2 py-1 text-center"
+              >
+                Student Name
+              </th>
+              {[
+                "Bengali 1st Paper",
+                "Bengali 2nd Paper",
+                "Total",
+                "English 1st Paper",
+                "English 2nd Paper",
+                "Mathematics",
+              ].map((subject) => (
+                <th
+                  key={subject}
+                  className="border border-gray-300 px-2 py-1 text-center"
+                  colSpan={2}
+                >
+                  {subject}
+                </th>
+              ))}
+              <th
+                rowSpan={2}
+                className="border border-gray-300 px-2 py-1 text-center"
+              >
+                Total Marks & GPA
+              </th>
+              <th
+                rowSpan={2}
+                className="border border-gray-300 px-2 py-1 text-center"
+              >
+                Merit
+              </th>
+            </tr>
+            <tr>
+              {Array(10)
+                .fill(null)
+                .map((_, index) => (
+                  <React.Fragment key={index}>
+                    <th className="px-2 py-1 text-center">
+                      <div className="grid gap-1">
+                        <span>Cre</span> <span>MCQ</span> <span>Pra</span>
+                      </div>
+                    </th>
+                    <th className="border border-gray-300 px-2 py-1 text-center">
+                      <div className="grid gap-1">
+                        <span>To</span> <span>LG</span> <span>GP</span>
+                      </div>
+                    </th>
+                  </React.Fragment>
+                ))}
+            </tr>
+          </thead>
+          <tbody className="text-xs">
+            {[
+              {
+                roll: 1,
+                name: "Ahnaf Zahin",
+                details: "Student ID: 231702 | Shift: Morning | Section: A",
+                scores: [27, 30, 57, "A", 4.0],
+              },
+              {
+                roll: 2,
+                name: "John Doe",
+                details: "Student ID: 123456 | Shift: Day | Section: B",
+                scores: [25, 28, 53, "B", 3.5],
+              },
+            ].map((student, idx) => (
+              <tr key={idx}>
+                <td className="border border-gray-300 px-2 py-1 text-center">
+                  {student.roll}
+                </td>
+                <td className="border border-gray-300 px-2 py-1 text-left">
+                  <p>{student.name}</p>
+                  <p>{student.details}</p>
+                </td>
+                {student.scores.map((score, index) => (
+                  <td
+                    key={index}
+                    className="border border-gray-300 px-2 py-1 text-center"
+                  >
+                    {score}
+                  </td>
+                ))}
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
