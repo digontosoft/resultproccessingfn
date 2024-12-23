@@ -148,12 +148,12 @@ const StudentList = () => {
     }
   }, [getUser, students]);
 
-  if (isLoading) return <LoadingState />;
+  if (isLoading) return <GlobalLoadingState />;
 
   if (isLoading) return <GlobalLoadingState />;
 
   if (error) return <ErrorState error={error} />;
-  if (!filteredStudents.length) return <EmptyState />;
+  // if (!filteredStudents.length) return <EmptyState />;
 
   return (
     <>
@@ -178,12 +178,16 @@ const StudentList = () => {
             shift={filterShift}
             sessions={sessions}
           />
-          <StudentTable
-            students={filteredStudents}
-            onView={handleView}
-            onEdit={handleEdit}
-            onDelete={handleDelete}
-          />
+          {filteredStudents.length > 0 ? (
+            <StudentTable
+              students={filteredStudents}
+              onView={handleView}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+            />
+          ) : (
+            <EmptyState />
+          )}
 
           {selectedStudent && openModal && !isEditing && (
             <StudentViewModal
