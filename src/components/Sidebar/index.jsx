@@ -105,7 +105,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
       links: [
         { to: "/tabulation-sheet", label: "Tabulation Sheet" },
         { to: "/mark-sheet", label: "Mark Sheet" },
-        { to: "/merit-list", label: "Merit List" },
+        { to: "/filter-merit-list", label: "Merit List" },
         { to: "/fail-list", label: "Fail List" },
         { to: "/result-summary", label: "Result Summary" },
       ],

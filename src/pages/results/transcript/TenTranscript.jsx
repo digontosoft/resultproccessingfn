@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { useReactToPrint } from "react-to-print";
 import { transcriptData } from "./transcriptData";
 import signature from "../../../assets/signature.png";
-const SixToEightTranscript = () => {
+const TenTranscript = () => {
   const contentRef = useRef(null);
   const reactToPrintFn = useReactToPrint({ contentRef });
 
@@ -75,7 +75,7 @@ const SixToEightTranscript = () => {
               <span className="font-semibold">Type:</span>{" "}
               {transcriptData.student.studentType}
             </p>
-            {studentInfo?.class === "9" ||
+            {/* {studentInfo?.class === "9" ||
               (studentInfo?.class === "10" && (
                 <p>
                   <span className="font-semibold">
@@ -83,7 +83,7 @@ const SixToEightTranscript = () => {
                   </span>{" "}
                   {transcriptData.student.fourthSubject}
                 </p>
-              ))}
+              ))} */}
           </div>
         </div>
 
@@ -119,29 +119,11 @@ const SixToEightTranscript = () => {
                 <th className="border px-1 py-1">Subjects</th>
                 <th className="border px-1 py-1">Full Marks</th>
                 <th className="border px-1 py-1">Subjective</th>
-                {(studentInfo?.class === "9" ||
-                  studentInfo?.class === "10") && (
-                  <>
-                    <th className="border px-1 py-1">Objective</th>
-                    <th className="border px-1 py-1">Practical</th>
-                    <th className="border px-1 py-1">70%</th>
-                    <th className="border px-1 py-1">CA(30%)</th>
-                  </>
-                )}
-                {/* {studentInfo?.class === "6" ||
-                  studentInfo?.class === "7" ||
-                  (studentInfo?.class === "8" && (
-                    <>
-                      <th className="border px-1 py-1">70%</th>
-                      <th className="border px-1 py-1">CA(30%)</th>
-                    </>
-                  ))} */}
-                {["6", "7", "8"].includes(studentInfo?.class) && (
-                  <>
-                    <th className="border px-1 py-1">70%</th>
-                    <th className="border px-1 py-1">CA(30%)</th>
-                  </>
-                )}
+
+                <th className="border px-1 py-1">Objective</th>
+                <th className="border px-1 py-1">Practical</th>
+                <th className="border px-1 py-1">70%</th>
+                <th className="border px-1 py-1">CA(30%)</th>
 
                 <th className="border px-1 py-1">Total(100%)</th>
                 <th className="border px-1 py-1">LG</th>
@@ -159,33 +141,20 @@ const SixToEightTranscript = () => {
                   <td className="border px-1 py-1 text-center">
                     {result.subjective}
                   </td>
-                  {(studentInfo?.class === "9" ||
-                    studentInfo?.class === "10") && (
-                    <>
-                      <td className="border px-1 py-1 text-center">
-                        {result.objective}
-                      </td>
-                      <td className="border px-1 py-1 text-center">
-                        {result.practical}
-                      </td>
-                      <td className="border px-1 py-1 text-center">
-                        {result["70%"]}
-                      </td>
-                      <td className="border px-1 py-1 text-center">
-                        {result["CA(30%)"]}
-                      </td>
-                    </>
-                  )}
-                  {["6", "7", "8"].includes(studentInfo?.class) && (
-                    <>
-                      <td className="border px-1 py-1 text-center">
-                        {result["80%"]}
-                      </td>
-                      <td className="border px-1 py-1 text-center">
-                        {result["CA(20%)"]}
-                      </td>
-                    </>
-                  )}
+
+                  <td className="border px-1 py-1 text-center">
+                    {result.objective}
+                  </td>
+                  <td className="border px-1 py-1 text-center">
+                    {result.practical}
+                  </td>
+                  <td className="border px-1 py-1 text-center">
+                    {result["70%"]}
+                  </td>
+                  <td className="border px-1 py-1 text-center">
+                    {result["CA(30%)"]}
+                  </td>
+
                   <td className="border px-1 py-1 text-center">
                     {result.totalMarks}
                   </td>
@@ -207,17 +176,17 @@ const SixToEightTranscript = () => {
                 <td className="border px-1 py-1 text-center">
                   {summary?.totalMarks}
                 </td>
-                {/* <td className="border px-1 py-1 text-center"></td>
-                  <td className="border px-1 py-1 text-center"></td>
-                  <td className="border px-1 py-1 text-center"></td> */}
+                <td className="border px-1 py-1 text-center"></td>
+                <td className="border px-1 py-1 text-center"></td>
+                <td className="border px-1 py-1 text-center"></td>
                 <td className="border px-1 py-1 text-center">
                   {summary?.obtainedMarks}
                 </td>
                 <td className="border px-1 py-1 text-center"></td>
                 <td className="border px-1 py-1 text-center"></td>
                 <td className="border px-1 py-1 text-center"></td>
-                {/* <td className="border px-1 py-1 text-center"></td>
-                  <td className="border px-1 py-1 text-center"></td> */}
+                <td className="border px-1 py-1 text-center"></td>
+                <td className="border px-1 py-1 text-center"></td>
               </tr>
 
               {/* Working days row */}
@@ -231,7 +200,7 @@ const SixToEightTranscript = () => {
                 <td className="border px-1 py-1 font-semibold text-right">
                   Present:
                 </td>
-                {/* <td className="border px-1 py-1 text-center"></td> */}
+                <td className="border px-1 py-1 text-center"></td>
                 <td className="border px-1 py-1 font-semibold text-right ">
                   {/* Present count here */}
                 </td>
@@ -239,9 +208,9 @@ const SixToEightTranscript = () => {
                 <td className="border px-1 py-1 text-center">
                   {/* Max. Present count here */}
                 </td>
-                {/* <td className="border px-1 py-1 text-center"></td>
-                  <td className="border px-1 py-1 text-center"></td>
-                  <td className="border px-1 py-1 text-center"></td> */}
+                <td className="border px-1 py-1 text-center"></td>
+                <td className="border px-1 py-1 text-center"></td>
+                <td className="border px-1 py-1 text-center"></td>
                 <td className="border px-1 py-1 text-center"></td>
               </tr>
 
@@ -253,17 +222,14 @@ const SixToEightTranscript = () => {
                 <td className="border px-1 py-1 text-center">
                   {summary.studentsCount}
                 </td>
-                {(studentInfo?.class === "9" ||
-                  studentInfo?.class === "10") && (
-                  <>
-                    <td className="border px-1 py-1 font-semibold text-right">
-                      GPA Without 4th:
-                    </td>
-                    <td className="border px-1 py-1 text-center">
-                      {summary?.gpaWithout4th}
-                    </td>
-                  </>
-                )}
+
+                <td className="border px-1 py-1 font-semibold text-right">
+                  GPA Without 4th:
+                </td>
+                <td className="border px-1 py-1 text-center">
+                  {summary?.gpaWithout4th}
+                </td>
+
                 <td className="border px-1 py-1 font-semibold text-right">
                   GPA:
                 </td>
@@ -305,4 +271,4 @@ const SixToEightTranscript = () => {
   );
 };
 
-export default SixToEightTranscript;
+export default TenTranscript;

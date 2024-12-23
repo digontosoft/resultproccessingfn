@@ -5,6 +5,7 @@ import useAuth from "../../hooks/useAuth";
 import { GridLoader } from "react-spinners";
 import { toast } from "react-toastify";
 import useUserProtectFilter from "../../hooks/useUserProtectFilter";
+import { groupData } from "../../data/data";
 const AddUser = () => {
   const { auth } = useAuth();
   const [classes, setClasses] = useState([]);
@@ -161,10 +162,11 @@ const AddUser = () => {
                     className="w-full px-3 py-2 border border-gray-300 rounded-md  focus:outline-none focus:ring-1 focus:ring-blue-500"
                   >
                     <option value="">Select Group</option>
-                    <option value="general">General</option>
-                    <option value="science">Science</option>
-                    <option value="business">Commerce</option>
-                    <option value="humanities">Humanities</option>
+                    {groupData.map((group, index) => (
+                      <option key={index} value={group}>
+                        {group}
+                      </option>
+                    ))}
                   </select>
                   {errors.group && (
                     <p className="text-red-500 text-sm mt-1">

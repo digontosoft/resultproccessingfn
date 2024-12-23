@@ -33,6 +33,7 @@ import TabulationSheet from "../pages/TabulationSheet/TabulationSheet";
 import TeacherList from "../pages/Teachers/TeacherList";
 import PrivateRoute from "./PrivateRoute";
 import AddUser from "../pages/userList/AddUser";
+import FilterMeritList from "../pages/MeritList/FilterMeritList";
 
 const AppRoutes = () => {
   const { auth } = useAuth();
@@ -49,7 +50,7 @@ const AppRoutes = () => {
     { path: "/result-list", element: <ResultList /> },
     { path: "/tabulation-sheet", element: <TabulationSheet /> },
     { path: "/mark-sheet", element: <MarkSheet /> },
-    { path: "/merit-list", element: <MeritList /> },
+    { path: "/filter-merit-list", element: <FilterMeritList /> },
     { path: "/fail-list", element: <FailList /> },
     { path: "/result-summary", element: <ResultSummary /> },
     { path: "/teachers", element: <TeacherList /> },
@@ -134,6 +135,7 @@ const AppRoutes = () => {
         </Route>
       </Route>
       <Route path="*" element={<NotFound />} />
+      <Route path="/merit-list" element={<MeritList />} />
     </Routes>
   );
 };

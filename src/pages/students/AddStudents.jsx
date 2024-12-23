@@ -192,6 +192,11 @@ const AddStudents = () => {
               placeholder="Enter Father's Name"
             />
             <InputField
+              label="Mother's Name"
+              name="motherName"
+              placeholder="Enter Mother's Name"
+            />
+            <InputField
               label="Phone Number"
               name="mobile"
               placeholder="Enter Phone Number"
