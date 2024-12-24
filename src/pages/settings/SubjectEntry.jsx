@@ -28,7 +28,7 @@ const SubjectEntry = () => {
   const handelClass = (value) => {
     //console.log("i am value",value);
     const data = filterClass.filter(
-      (item) => item._id === value && (item.value == 9 || item.value == 10)
+      (item) => item._id === value && ( item.value == 10)
     );
     //console.log(data);
 
