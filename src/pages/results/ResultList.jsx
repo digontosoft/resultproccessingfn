@@ -185,7 +185,7 @@ const ResultList = () => {
           />
         </div>
 
-        <div className="p-4 w-full overflow-x-auto h-auto max-h-screen overflow-y-auto">
+        <div className="p-4 w-full overflow-x-auto max-h-screen overflow-y-auto">
           <table className="w-full table-auto">
             <thead>
               <tr className="bg-gray-2 text-left dark:bg-meta-4">
