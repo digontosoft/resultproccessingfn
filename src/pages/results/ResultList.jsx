@@ -237,9 +237,7 @@ const ResultList = () => {
                 );
                 const isLast = i === filteredResults.length - 1;
 
-                const classes = isLast
-                  ? "p-4"
-                  : "p-4 border-b border-blue-gray-50";
+                const classes = "p-4 border-b border-blue-gray-50";
 
                 return (
                   <tr key={result._id}>
