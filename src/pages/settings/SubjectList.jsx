@@ -171,7 +171,7 @@ const SubjectList = () => {
   const handelClass = (value) => {
     //console.log("i am value",value);
     const data = filterClass.filter(
-      (item) => item._id === value && ( item.value == 10)
+      (item) => item._id === value && item.value == 10
     );
     //console.log(data);
 
@@ -234,7 +234,9 @@ const SubjectList = () => {
                   <tr key={subject._id}>
                     <td className="border px-4 py-2">
                       {subject.name}{" "}
-                      {subject.isFourthSubject && <span className="font-bold">(4th subject)</span>}
+                      {subject.isFourthSubject && (
+                        <span className="font-bold">(4th subject)</span>
+                      )}
                     </td>
                     <td className="border px-4 py-2">{subject.subjectCode}</td>
                     <td className="border px-4 py-2">
@@ -246,13 +248,23 @@ const SubjectList = () => {
                         onClick={() => openEditModal(subject)}
                         className="mr-2 text-blue-500 hover:underline"
                       >
-                        Edit
+                        <img
+                          src="/edit.svg"
+                          alt="edit icon"
+                          width={25}
+                          height={25}
+                        />
                       </button>
                       <button
                         onClick={() => handleDeleteConfirmation(subject._id)}
                         className="text-red-500 hover:underline"
                       >
-                        Delete
+                        <img
+                          src="/delete.svg"
+                          alt="delete icon"
+                          width={25}
+                          height={25}
+                        />
                       </button>
                     </td>
                   </tr>
@@ -327,13 +339,13 @@ const SubjectList = () => {
                 <button
                   type="button"
                   onClick={closeEditModal}
-                  className="px-4 py-2 bg-gray-300 rounded-lg hover:bg-gray-400"
+                  className="bg-gray-200 text-gray-800 py-2 px-4 rounded hover:bg-gray-300"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                  className="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700"
                 >
                   Save Changes
                 </button>
@@ -354,11 +366,16 @@ const SubjectList = () => {
             <div className="flex justify-end space-x-2">
               <button
                 onClick={closeDeleteModal}
-                className="px-4 py-2 bg-gray-300 rounded-lg hover:bg-gray-400"
+                className="bg-gray-300 text-gray-800 py-2 px-4"
               >
                 Cancel
               </button>
-              <button onClick={handleDelete}>Delete</button>
+              <button
+                onClick={handleDelete}
+                className="bg-danger text-white py-2 px-4"
+              >
+                Delete
+              </button>
             </div>
           </div>
         </div>
