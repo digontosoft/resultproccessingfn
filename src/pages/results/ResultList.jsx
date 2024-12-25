@@ -233,6 +233,9 @@ const ResultList = () => {
                   Practical
                 </th>
                 <th className="py-4 px-4 font-medium text-black dark:text-white ">
+                  CA
+                </th>
+                <th className="py-4 px-4 font-medium text-black dark:text-white ">
                   Action
                 </th>
               </tr>
@@ -262,6 +265,7 @@ const ResultList = () => {
                     <td className={classes}>{result?.subjective}</td>
                     <td className={classes}>{result?.objective}</td>
                     <td className={classes}>{result?.practical}</td>
+                    <td className={classes}>{result?.classAssignment}</td>
                     <td className={classes}>
                       <div className="flex gap-3">
                         <button
