@@ -108,9 +108,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
       label: "Reports",
       icon: Report,
       links: [
-        { to: "/tabulation-sheet", label: "Tabulation Sheet" },
         { to: "/mark-sheet", label: "Mark Sheet" },
-        { to: "/filter-merit-list", label: "Merit List" },
+        { to: "/tabulation-sheet", label: "Tabulation Sheet" },
+        { to: "/merit-list", label: "Merit List" },
         { to: "/fail-list", label: "Fail List" },
         { to: "/result-summary", label: "Result Summary" },
       ],
@@ -146,8 +146,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
       label: "Reports",
       icon: Report,
       links: [
-        { to: "/tabulation-sheet", label: "Tabulation Sheet" },
         { to: "/mark-sheet", label: "Mark Sheet" },
+        { to: "/tabulation-sheet", label: "Tabulation Sheet" },
         { to: "/merit-list", label: "Merit List" },
         { to: "/fail-list", label: "Fail List" },
         { to: "/result-summary", label: "Result Summary" },

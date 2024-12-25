@@ -36,7 +36,7 @@ const AddResult = () => {
   const handelClass = (value) => {
     //console.log("i am value",value);
     const data = filterClass.filter(
-      (item) => item._id === value && ( item.value == 10)
+      (item) => item._id === value && item.value == 10
     );
     //console.log(data);
 
@@ -90,6 +90,7 @@ const AddResult = () => {
         payload
       );
       setRollRangeStudent(reseponse.data.data);
+      reset();
     } catch (error) {
       toast.error(
         error.response?.data?.message || "Failed to fetch student data"

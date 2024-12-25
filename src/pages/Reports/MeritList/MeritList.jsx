@@ -1,5 +1,5 @@
 import FilterMeritList from "./FilterMeritList";
-import Logo from "../../assets/school-logo.png";
+import Logo from "../../../assets/school-logo.png";
 import { useRef } from "react";
 import { useReactToPrint } from "react-to-print";
 import { useNavigate } from "react-router-dom";

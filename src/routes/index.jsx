@@ -19,9 +19,9 @@ import {
 } from "../pages";
 
 import SignUp from "../pages/auth/SignUp";
-import FailList from "../pages/FailList/FailList";
-import MarkSheet from "../pages/MarkSheet/MarkSheet";
-import MeritList from "../pages/MeritList/MeritList";
+// import FailList from "../pages/FailList/FailList";
+// import MarkSheet from "../pages/MarkSheet/MarkSheet";
+// import MeritList from "../pages/MeritList/MeritList";
 import GetResult from "../pages/results/GetResult/GetResult";
 import MarksInput from "../pages/results/MarksInput";
 import Transcript from "../pages/results/transcript/Transcript";
@@ -29,11 +29,15 @@ import ResultSummary from "../pages/ResultSummary/ResultSummary";
 import SubjectEntry from "../pages/settings/SubjectEntry";
 import SubjectList from "../pages/settings/SubjectList";
 import TeacherSubjectListAdmin from "../pages/settings/TeacherSubjectListAdmin";
-import TabulationSheet from "../pages/TabulationSheet/TabulationSheet";
+// import TabulationSheet from "../pages/TabulationSheet/TabulationSheet";
 import TeacherList from "../pages/Teachers/TeacherList";
 import PrivateRoute from "./PrivateRoute";
 import AddUser from "../pages/userList/AddUser";
-import FilterMeritList from "../pages/MeritList/FilterMeritList";
+// import FilterMeritList from "../pages/MeritList/FilterMeritList";
+import FailList from "../pages/Reports/FailList/FailList";
+import MeritList from "../pages/Reports/MeritList/MeritList";
+import MarkSheet from "../pages/Reports/MarkSheet/MarkSheet";
+import TabulationSheet from "../pages/Reports/TabulationSheet/TabulationSheet";
 
 const AppRoutes = () => {
   const { auth } = useAuth();
@@ -50,8 +54,9 @@ const AppRoutes = () => {
     { path: "/result-list", element: <ResultList /> },
     { path: "/tabulation-sheet", element: <TabulationSheet /> },
     { path: "/mark-sheet", element: <MarkSheet /> },
-    { path: "/filter-merit-list", element: <FilterMeritList /> },
+    // { path: "/filter-merit-list", element: <FilterMeritList /> },
     { path: "/fail-list", element: <FailList /> },
+    { path: "/merit-list", element: <MeritList /> },
     { path: "/result-summary", element: <ResultSummary /> },
     { path: "/teachers", element: <TeacherList /> },
     { path: "/subject-entry", element: <SubjectEntry /> },
@@ -135,7 +140,7 @@ const AppRoutes = () => {
         </Route>
       </Route>
       <Route path="*" element={<NotFound />} />
-      <Route path="/merit-list" element={<MeritList />} />
+      {/* <Route path="/merit-list" element={<MeritList />} /> */}
     </Routes>
   );
 };

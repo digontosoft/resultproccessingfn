@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { groupData } from "../../data/data";
+import { groupData } from "../../../data/data";
 
 const students = [
   {

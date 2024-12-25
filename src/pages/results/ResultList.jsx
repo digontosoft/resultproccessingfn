@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import FilterResult from "./FilterResult";
 import useUserProtectFilter from "../../hooks/useUserProtectFilter";
 import useSingleUser from "../../hooks/useSingleUser";
+import GlobalLoadingState from "../../components/GlobalLoadingState/GlobalLoadingState";
 
 const ResultList = () => {
   const [results, setResults] = useState([]);
@@ -22,14 +23,19 @@ const ResultList = () => {
     useUserProtectFilter();
   const { getUser } = useSingleUser();
 
+  const [isLoading, setIsLoading] = useState(false);
+
   //   // Fetch students
   useEffect(() => {
     const fetchStudents = async () => {
+      setIsLoading(true);
       try {
         const response = await axios.get(`${url}/getAllStudent`);
         setStudents(response.data.data);
       } catch (error) {
         console.error("Error fetching students:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -166,6 +172,7 @@ const ResultList = () => {
     setFilteredSubjects(filtered);
   };
   console.log("subjects:", results);
+  if (isLoading) return <GlobalLoadingState />;
 
   return (
     <div>
