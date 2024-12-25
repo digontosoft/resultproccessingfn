@@ -264,8 +264,7 @@ const ResultList = () => {
                           <img
                             src="/edit.svg"
                             alt="edit icon"
-                            width={25}
-                            height={25}
+                            className="h-5 w-5"
                           />
                         </button>
                         <button
@@ -275,8 +274,7 @@ const ResultList = () => {
                           <img
                             src="/delete.svg"
                             alt="delete icon"
-                            width={25}
-                            height={25}
+                            className="h-5 w-5"
                           />
                         </button>
                       </div>
