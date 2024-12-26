@@ -41,6 +41,7 @@ import TabulationSheet from "../pages/Reports/TabulationSheet/TabulationSheet";
 import Promotion from "../pages/students/Promotion";
 import GetTabulationPdf from "../pages/Reports/TabulationSheet/GetTabulationPdf";
 import TenTabulation from "../pages/Reports/TabulationSheet/TenTabulation";
+import MergeTranscript from "../pages/results/transcript/MergeTranscript";
 
 const AppRoutes = () => {
   const { auth } = useAuth();
@@ -137,8 +138,9 @@ const AppRoutes = () => {
 
       <Route path="/get-result" element={<GetResult />} />
       <Route path="/get-result/transcript" element={<Transcript />} />
-      {/* <Route path="/get-tabulation-sheet" element={<GetTabulationPdf />} /> */}
-      <Route path="/get-tabulation-sheet" element={<TenTabulation />} />
+      <Route path="/get-tabulation-sheet" element={<GetTabulationPdf />} />
+      {/* <Route path="/get-tabulation-sheet" element={<TenTabulation />} /> */}
+      <Route path="/merge-transcript" element={<MergeTranscript />} />
 
       <Route element={<PrivateRoute />}>
         <Route element={<DefaultLayout />}>

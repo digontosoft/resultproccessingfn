@@ -36,14 +36,9 @@ const StudentList = () => {
       const response = await gurdedApi.get("/getAllStudent");
 
       if (response.status === 200) {
-        //const data =
         setStudents(response.data.data);
-        // console.log("students:", response.data.data);
-
-        //setFilteredStudents(response.data.data); // Initialize filtered students
       }
     } catch (error) {
-      //console.error(error);
       setError(error.response?.data?.message || "Failed to fetch students");
       toast.error(`Error: ${error.response?.data?.message || "Unknown error"}`);
     } finally {
@@ -72,7 +67,6 @@ const StudentList = () => {
     }
 
     setFilteredStudents(filtered);
-    // console.log("filter:", filtered);
   };
 
   const handleView = (student) => {

@@ -85,9 +85,20 @@ const ResultList = () => {
       );
       if (response.status === 200) {
         toast.success("Marks updated successfully");
-        setTimeout(() => {
-          window.location.reload();
-        }, 500);
+
+        // Update results state
+        setResults((prevResults) =>
+          prevResults.map((result) =>
+            result._id === selectedStudent._id ? { ...result, ...data } : result
+          )
+        );
+
+        // Update filteredResults state
+        setFilteredResults((prevFilteredResults) =>
+          prevFilteredResults.map((result) =>
+            result._id === selectedStudent._id ? { ...result, ...data } : result
+          )
+        );
       }
     } catch (error) {
       toast.error("Failed to update marks");
