@@ -90,7 +90,6 @@ const AddResult = () => {
         payload
       );
       setRollRangeStudent(reseponse.data.data);
-      reset();
     } catch (error) {
       toast.error(
         error.response?.data?.message || "Failed to fetch student data"

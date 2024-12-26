@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { api } from "../../../api";
-import ResultNav from "../../../components/ResultNav";
-import axios from "axios";
-import { groupData, termsData } from "../../../data/data";
-import useUserProtectFilter from "../../../hooks/useUserProtectFilter";
+import { api } from "../../api";
+import { groupData, termsData } from "../../data/data";
+import PromotionTo from "./PromotionTo";
 
-const MarkSheet = () => {
+const Promotion = () => {
   const navigate = useNavigate();
   const [selectedClass, setSelectedClass] = useState("");
   const [formData, setFormData] = useState({
@@ -114,45 +112,6 @@ const MarkSheet = () => {
               <FormSelect label="Section" name="section" options={["A", "B"]} />
               <FormSelect label="Shift" name="shift" options={shifts} />
               <FormSelect label="Session" name="session" options={sessions} />
-              <FormSelect label="Term" name="term" options={termsData} />
-              <div className="mb-4.5">
-                <label className="mb-3 block text-black dark:text-white">
-                  Student Id
-                </label>
-                <input
-                  name="studentId"
-                  type="number"
-                  min="0"
-                  value={formData.studentId}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                />
-              </div>
-              <div className="flex flex-col space-y-2">
-                <label className="text-lg font-semibold">Merge Result?</label>
-                <div className="flex items-center space-x-4">
-                  <label className="flex items-center space-x-2">
-                    <input
-                      type="radio"
-                      name="mergeResult"
-                      value="yes"
-                      className="form-radio text-blue-600"
-                    />
-                    <span>Yes</span>
-                  </label>
-                  <label className="flex items-center space-x-2">
-                    <input
-                      type="radio"
-                      name="mergeResult"
-                      value="no"
-                      className="form-radio text-blue-600"
-                    />
-                    <span>No</span>
-                  </label>
-                </div>
-              </div>
-
               <div className="">
                 <label className="mb-3 block text-black dark:text-white">
                   Roll From
@@ -183,9 +142,10 @@ const MarkSheet = () => {
             </button>
           </form>
         </div>
+        <PromotionTo />
       </div>
     </div>
   );
 };
 
-export default MarkSheet;
+export default Promotion;

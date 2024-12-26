@@ -354,6 +354,22 @@ const ResultList = () => {
                   )}
                 />
               </div>
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700">
+                  CA
+                </label>
+                <Controller
+                  name="classAssignment"
+                  control={control}
+                  render={({ field }) => (
+                    <input
+                      type="number"
+                      {...field}
+                      className="mt-1 w-full rounded-lg border border-gray-300 p-3 focus:border-blue-500 focus:ring focus:ring-blue-200"
+                    />
+                  )}
+                />
+              </div>
               <div className="flex justify-end gap-3">
                 <button
                   type="button"

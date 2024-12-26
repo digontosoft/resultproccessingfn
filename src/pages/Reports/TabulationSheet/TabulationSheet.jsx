@@ -1,159 +1,122 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { api } from "../../../api";
+import { groupData, termsData } from "../../../data/data";
+
 const TabulationSheet = () => {
+  const navigate = useNavigate();
+  const [selectedClass, setSelectedClass] = useState("");
+  const [formData, setFormData] = useState({
+    className: "",
+    section: "",
+    shift: "",
+    session: "",
+    term: "",
+  });
+
+  const currentYear = new Date().getFullYear();
+  const shifts = ["Morning", "Day"];
+  const sessions = [currentYear, currentYear - 1, currentYear - 2];
+  const classes = ["4", "5", "6", "7", "8", "9", "10"];
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+
+    if (name === "className") {
+      setSelectedClass(value);
+      // Reset group when class changes
+      if (!["9", "10"].includes(value)) {
+        setFormData((prev) => ({ ...prev, group: "" }));
+      }
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log("Form submitted:", formData);
+    try {
+      const response = await api.post("/result/tebulation-sheet", formData);
+      console.log("individual-result:", response.data);
+
+      if (response.status === 200) {
+        localStorage.setItem("tabulation", JSON.stringify(response.data));
+        navigate("/get-tabulation-sheet");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const FormSelect = ({ label, name, options, required = true }) => (
+    <div className="mb-4.5">
+      <label className="mb-3 block text-black dark:text-white">{label}</label>
+      <select
+        name={name}
+        value={formData[name]}
+        onChange={handleInputChange}
+        required={required}
+        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+      >
+        <option value="">Select {label}</option>
+        {Array.isArray(options)
+          ? options.map((option) => (
+              <option
+                key={typeof option === "object" ? option.value : option}
+                value={typeof option === "object" ? option.value : option}
+              >
+                {typeof option === "object" ? option.label : option}
+              </option>
+            ))
+          : null}
+      </select>
+    </div>
+  );
+
   return (
-    <div>
-      <div className="overflow-x-auto">
-        <table className="table-auto w-full border-collapse border border-gray-300">
-          <thead className="text-xs">
-            <tr>
-              <th
-                rowSpan={2}
-                className="border border-gray-300 px-2 py-1 text-center"
-              >
-                Roll
-              </th>
-              <th
-                rowSpan={2}
-                className="border border-gray-300 px-2 py-1 text-center"
-              >
-                Student Name
-              </th>
-              {[
-                "Bengali 1st Paper",
-                "Bengali 2nd Paper",
-                "English 1st Paper",
-                "English 2nd Paper",
-                "Mathematics",
-              ].map((subject) => (
-                <th
-                  key={subject}
-                  colSpan={2}
-                  className="border border-gray-300 px-2 py-1 text-center"
-                >
-                  {subject}
-                </th>
-              ))}
-              <th
-                rowSpan={2}
-                className="border border-gray-300 px-2 py-1 text-center"
-              >
-                Total Marks & GPA
-              </th>
-              <th
-                rowSpan={2}
-                className="border border-gray-300 px-2 py-1 text-center"
-              >
-                Merit
-              </th>
-            </tr>
-            <tr>
-              {Array(5)
-                .fill(null)
-                .map((_, index) => (
-                  <>
-                    <th
-                      key={`ca-mcq-pra-${index}`}
-                      className="border border-gray-300 px-2 py-1 text-center"
-                    >
-                      <div className="grid gap-1">
-                        <span>CA</span> <span>MCQ</span> <span>PRA</span>
-                      </div>
-                    </th>
-                    <th
-                      key={`to-lg-gp-${index}`}
-                      className="border border-gray-300 px-2 py-1 text-center"
-                    >
-                      <div className="grid gap-1">
-                        <span>To</span> <span>LG</span> <span>GP</span>
-                      </div>
-                    </th>
-                  </>
-                ))}
-            </tr>
-          </thead>
-          <tbody className="text-xs">
-            {[
-              {
-                roll: 1,
-                name: "Ahnaf Zahin",
-                studentId: "231702",
-                shift: "Morning",
-                section: "A",
-                subjects: [
-                  { ca: 10, mcq: 15, pra: 2, total: 27, lg: "A+", gp: 5.0 },
-                  { ca: 12, mcq: 10, pra: 5, total: 27, lg: "A+", gp: 5.0 },
-                  { ca: 8, mcq: 13, pra: 4, total: 25, lg: "A", gp: 4.5 },
-                  { ca: 9, mcq: 12, pra: 3, total: 24, lg: "A", gp: 4.0 },
-                  { ca: 11, mcq: 14, pra: 4, total: 29, lg: "A+", gp: 5.0 },
-                ],
-                totalMarks: 500,
-                gpa: "5.0",
-                merit: 1,
-              },
-              {
-                roll: 2,
-                name: "John Doe",
-                studentId: "123456",
-                shift: "Day",
-                section: "B",
-                subjects: [
-                  { ca: 9, mcq: 12, pra: 3, total: 24, lg: "A", gp: 4.0 },
-                  { ca: 10, mcq: 14, pra: 4, total: 28, lg: "A+", gp: 5.0 },
-                  { ca: 11, mcq: 13, pra: 5, total: 29, lg: "A+", gp: 5.0 },
-                  { ca: 12, mcq: 10, pra: 4, total: 26, lg: "A", gp: 4.5 },
-                  { ca: 8, mcq: 15, pra: 3, total: 26, lg: "A", gp: 4.5 },
-                ],
-                totalMarks: 470,
-                gpa: "4.5",
-                merit: 2,
-              },
-            ].map((student, idx) => (
-              <tr key={idx}>
-                <td className="border border-gray-300 px-2 py-1 text-center">
-                  {student.roll}
-                </td>
-                <td className="border border-gray-300 px-2 py-1 text-left">
-                  <p>{student.name}</p>
-                  <p>Student ID: {student.studentId}</p>
-                  <p>
-                    Shift: {student.shift} | Section: {student.section}
-                  </p>
-                </td>
-                {student.subjects.map((subject, index) => (
-                  <>
-                    <td
-                      key={`ca-mcq-pra-${index}`}
-                      className="border border-gray-300 px-2 py-1 text-center"
-                    >
-                      <div className="grid gap-1">
-                        <span>{subject.ca}</span> <span>{subject.mcq}</span>{" "}
-                        <span>{subject.pra}</span>
-                      </div>
-                    </td>
-                    <td
-                      key={`to-lg-gp-${index}`}
-                      className="border border-gray-300 px-2 py-1 text-center"
-                    >
-                      <div className="grid gap-1">
-                        <span>{subject.total}</span>
-                        <span> {subject.lg}</span>
-                        <span> {subject.gp}</span>
-                      </div>
-                    </td>
-                  </>
-                ))}
-                <td className="border border-gray-300 px-2 py-1 text-center">
-                  <div className="grid gap-1">
-                    <span>{student.totalMarks}</span>
-                    <span>{student.gpa}</span>
-                  </div>
-                </td>
-                <td className="border border-gray-300 px-2 py-1 text-center">
-                  {student.merit}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+    <div className="container mx-auto px-4">
+      <div className="mt-4 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+        <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
+          <h3 className="font-medium text-black dark:text-white">
+            Get Student Result
+          </h3>
+        </div>
+
+        <div className="p-6.5">
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <FormSelect
+                label="Select Class"
+                name="className"
+                options={classes}
+              />
+
+              {["9", "10"].includes(selectedClass) && (
+                <FormSelect
+                  label="Select Group"
+                  name="group"
+                  options={groupData}
+                />
+              )}
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <FormSelect label="Section" name="section" options={["A", "B"]} />
+              <FormSelect label="Shift" name="shift" options={shifts} />
+              <FormSelect label="Session" name="session" options={sessions} />
+              <FormSelect label="Term" name="term" options={termsData} />
+            </div>
+            <button
+              type="submit"
+              className="inline-flex items-center justify-center bg-primary py-3 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
+            >
+              Search
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   );

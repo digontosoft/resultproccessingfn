@@ -66,6 +66,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
         { to: "/add-student", label: "Add Student" },
         { to: "/add-student-bulk", label: "Add Student Bulk" },
         { to: "/student-list", label: "Student List" },
+        { to: "/promotion", label: "Promotion" },
       ],
       activeCondition:
         pathname.includes === "student" || pathname.includes("dashboard"),
@@ -112,7 +113,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
         { to: "/tabulation-sheet", label: "Tabulation Sheet" },
         { to: "/merit-list", label: "Merit List" },
         { to: "/fail-list", label: "Fail List" },
-        { to: "/result-summary", label: "Result Summary" },
+        // { to: "/result-summary", label: "Result Summary" },
       ],
       activeCondition:
         pathname.includes === "report" || pathname.includes("dashboard"),
@@ -127,6 +128,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
         { to: "/add-student", label: "Add Student" },
         { to: "/add-student-bulk", label: "Add Student Bulk" },
         { to: "/student-list", label: "Student List" },
+        { to: "/promotion", label: "Promotion" },
       ],
       activeCondition:
         pathname.includes === "student" || pathname.includes("dashboard"),
@@ -150,7 +152,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
         { to: "/tabulation-sheet", label: "Tabulation Sheet" },
         { to: "/merit-list", label: "Merit List" },
         { to: "/fail-list", label: "Fail List" },
-        { to: "/result-summary", label: "Result Summary" },
+        // { to: "/result-summary", label: "Result Summary" },
       ],
       activeCondition:
         pathname.includes === "report" || pathname.includes("dashboard"),

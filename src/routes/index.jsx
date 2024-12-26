@@ -38,6 +38,9 @@ import FailList from "../pages/Reports/FailList/FailList";
 import MeritList from "../pages/Reports/MeritList/MeritList";
 import MarkSheet from "../pages/Reports/MarkSheet/MarkSheet";
 import TabulationSheet from "../pages/Reports/TabulationSheet/TabulationSheet";
+import Promotion from "../pages/students/Promotion";
+import GetTabulationPdf from "../pages/Reports/TabulationSheet/GetTabulationPdf";
+import TenTabulation from "../pages/Reports/TabulationSheet/TenTabulation";
 
 const AppRoutes = () => {
   const { auth } = useAuth();
@@ -48,11 +51,13 @@ const AppRoutes = () => {
     { path: "/add-student", element: <AddStudents /> },
     { path: "/add-student-bulk", element: <AddStudentsBulk /> },
     { path: "/student-list", element: <StudentList /> },
+    { path: "/promotion", element: <Promotion /> },
     { path: "/add-result", element: <AddResult /> },
     { path: "/add-result/marks-input", element: <MarksInput /> },
     { path: "/add-result-bulk", element: <AddResultsBulk /> },
     { path: "/result-list", element: <ResultList /> },
     { path: "/tabulation-sheet", element: <TabulationSheet /> },
+    // { path: "/get-tabulation-sheet", element: <GetTabulationPdf /> },
     { path: "/mark-sheet", element: <MarkSheet /> },
     // { path: "/filter-merit-list", element: <FilterMeritList /> },
     { path: "/fail-list", element: <FailList /> },
@@ -132,6 +137,8 @@ const AppRoutes = () => {
 
       <Route path="/get-result" element={<GetResult />} />
       <Route path="/get-result/transcript" element={<Transcript />} />
+      {/* <Route path="/get-tabulation-sheet" element={<GetTabulationPdf />} /> */}
+      <Route path="/get-tabulation-sheet" element={<TenTabulation />} />
 
       <Route element={<PrivateRoute />}>
         <Route element={<DefaultLayout />}>
