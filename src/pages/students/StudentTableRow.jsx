@@ -54,7 +54,7 @@ const StudentTableRow = ({ student, onView, onEdit, onDelete,setSelectStudent,se
       <td className={classes}>
         <p className="text-black dark:text-white">{student?.mobile}</p>
       </td>
-      <td className={classes}>
+      <td className="">
         <div className="flex gap-3">
           <button
             className="hover:text-primary"
