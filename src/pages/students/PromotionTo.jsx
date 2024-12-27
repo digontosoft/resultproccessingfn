@@ -1,123 +1,186 @@
-import React from "react";
+import axios from "axios";
+import { useState } from "react";
+import { toast } from "react-toastify";
+import useUserProtectFilter from "../../hooks/useUserProtectFilter";
 
-const PromotionTo = () => {
-  const fields = ["Class", "Section", "Shift", "Group", "Roll"];
+const PromotionTo = ({ rollRangeStudent }) => {
+  const url = import.meta.env.VITE_SERVER_BASE_URL;
+  const { filterClass, filterSection, filterShift } = useUserProtectFilter();
+
+  // Initialize formData state with default values
+  const [formData, setFormData] = useState(
+    rollRangeStudent.map((student) => ({
+      id: student._id,
+      class: "",
+      section: "",
+      shift: "",
+      roll: "",
+    }))
+  );
+
+  // Handle input changes dynamically
+  const handleChange = (id, field, value) => {
+    setFormData((prevData) =>
+      prevData.map((data) =>
+        data.id === id
+          ? {
+              ...data,
+              [field]: field === "roll" ? Number(value) : value, // Convert roll to number
+            }
+          : data
+      )
+    );
+  };
+
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const payload = { promotedStudent: formData };
+      const response = await axios.post(`${url}/student-promotion`, payload);
+
+      if (response.status === 200) {
+        toast.success("Students promoted successfully!");
+        console.log("Response Data:", response.data);
+      }
+    } catch (err) {
+      console.error("Promotion Error:", err);
+      toast.error("Failed to promote students.");
+    }
+  };
 
   return (
     <div className="flex flex-col md:flex-row gap-6 p-4">
       {/* From Column */}
       <div className="w-1/2">
         <h2 className="text-lg font-semibold mb-4">From</h2>
-        <div className="flex flex-wrap gap-2 border p-4 rounded-lg shadow-md">
-          <div>
-            <label htmlFor="">Class</label>
+        {rollRangeStudent.map((student) => (
+          <div
+            key={student._id}
+            className="flex flex-wrap gap-2 border p-4 rounded-lg shadow-md mb-4"
+          >
             <div>
-              <input type="text" defaultValue="4" disabled />
+              <label>Class</label>
+              <input
+                type="text"
+                value={student.class}
+                disabled
+                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm"
+              />
+            </div>
+            <div>
+              <label>Section</label>
+              <input
+                type="text"
+                value={student.section}
+                disabled
+                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm"
+              />
+            </div>
+            <div>
+              <label>Shift</label>
+              <input
+                type="text"
+                value={student.shift}
+                disabled
+                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm"
+              />
+            </div>
+            <div>
+              <label>Roll</label>
+              <input
+                type="text"
+                value={student.roll}
+                disabled
+                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm"
+              />
             </div>
           </div>
-          <div>
-            <label htmlFor="">Section</label>
-            <div>
-              <input type="text" defaultValue="A" disabled />
-            </div>
-          </div>
-          <div>
-            <label htmlFor="">Shift</label>
-            <div>
-              <input type="text" defaultValue="Morning" disabled />
-            </div>
-          </div>
-          <div>
-            <label htmlFor="">Group</label>
-            <div>
-              <input type="text" defaultValue="General" disabled />
-            </div>
-          </div>
-          <div>
-            <label htmlFor="">Roll</label>
-            <div>
-              <input type="text" defaultValue="1" disabled />
-            </div>
-          </div>
-        </div>
+        ))}
       </div>
 
       {/* To Column */}
       <div className="w-1/2">
         <h2 className="text-lg font-semibold mb-4">To</h2>
-        <div className="flex gap-4 border p-4 rounded-lg shadow-md">
-          <div>
-            <label htmlFor="class">Class</label>
-            <div>
-              <select
-                id="class"
-                name="class"
-                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              >
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-              </select>
+        <form onSubmit={handleSubmit}>
+          {formData.map((data) => (
+            <div
+              key={data.id}
+              className="flex flex-wrap gap-2 border p-4 rounded-lg shadow-md mb-4"
+            >
+              <div>
+                <label>Class</label>
+                <select
+                  value={data.class}
+                  onChange={(e) =>
+                    handleChange(data.id, "class", e.target.value)
+                  }
+                  className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm"
+                >
+                  <option value="">Select Class</option>
+                  {filterClass.map((classData) => (
+                    <option key={classData.value} value={classData.value}>
+                      {classData.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label>Section</label>
+                <select
+                  value={data.section}
+                  onChange={(e) =>
+                    handleChange(data.id, "section", e.target.value)
+                  }
+                  className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm"
+                >
+                  <option value="">Select Section</option>
+                  {filterSection.map((sectionData) => (
+                    <option key={sectionData} value={sectionData}>
+                      {sectionData}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label>Shift</label>
+                <select
+                  value={data.shift}
+                  onChange={(e) =>
+                    handleChange(data.id, "shift", e.target.value)
+                  }
+                  className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm"
+                >
+                  <option value="">Select Shift</option>
+                  {filterShift.map((shiftData) => (
+                    <option key={shiftData} value={shiftData}>
+                      {shiftData}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label>Roll</label>
+                <input
+                  type="number"
+                  value={data.roll}
+                  onChange={(e) =>
+                    handleChange(data.id, "roll", e.target.value)
+                  }
+                  className="block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm"
+                  placeholder="Enter Roll"
+                />
+              </div>
             </div>
-          </div>
-
-          <div>
-            <label htmlFor="section">Section</label>
-            <div>
-              <select
-                id="section"
-                name="section"
-                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              >
-                <option value="A">A</option>
-                <option value="B">B</option>
-                <option value="C">C</option>
-              </select>
-            </div>
-          </div>
-
-          <div>
-            <label htmlFor="shift">Shift</label>
-            <div>
-              <select
-                id="shift"
-                name="shift"
-                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              >
-                <option value="Morning">Morning</option>
-                <option value="Afternoon">Afternoon</option>
-                <option value="Evening">Evening</option>
-              </select>
-            </div>
-          </div>
-
-          <div>
-            <label htmlFor="group">Group</label>
-            <div>
-              <select
-                id="group"
-                name="group"
-                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              >
-                <option value="General">General</option>
-                <option value="Science">Science</option>
-                <option value="Commerce">Commerce</option>
-              </select>
-            </div>
-          </div>
-
-          <div>
-            <label htmlFor="roll">Roll</label>
-            <div>
-              <input
-                type="number"
-                id="numberInput"
-                className="block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                placeholder="Enter Roll"
-              />
-            </div>
-          </div>
-        </div>
+          ))}
+          <button
+            type="submit"
+            className="bg-indigo-500 text-white px-4 py-2 w-full rounded-md shadow hover:bg-indigo-600 focus:outline-none"
+          >
+            Submit
+          </button>
+        </form>
       </div>
     </div>
   );
