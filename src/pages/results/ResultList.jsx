@@ -74,10 +74,20 @@ const ResultList = () => {
   const deleteManyResult = async () =>{
     try {
       const response = await axios.post(`${url}/delete-many-result`,{ids:selectedMark})
-      toast.success(response.data.message)
-      setTimeout(() => {
-        window.location.reload();
-      }, 500);
+      if (response.status === 200) {
+        toast.success(response.data.message);
+  
+        // Remove the deleted results from the state without reloading the page
+        setResults((prevResults) =>
+          prevResults.filter((result) => !selectedMark.includes(result._id))
+        );
+        setFilteredResults((prevFilteredResults) =>
+          prevFilteredResults.filter((result) => !selectedMark.includes(result._id))
+        );
+  
+        // Clear the selected marks
+        setSelectedMark([]);
+      }
     } catch (error) {
       toast.error(response.data.message)
       
@@ -138,11 +148,14 @@ const ResultList = () => {
     try {
       const response = await axios.delete(`${url}/result/delete/${deleteId}`);
       if (response.status === 200) {
-        toast.success("Marks deleted successfully");
-        setTimeout(() => {
-          window.location.reload();
-        }, 500);
+        toast.success("Marks deleted successfully");  
       }
+      setResults((prevResults) =>
+        prevResults.filter((result) => result._id !== deleteId)
+      );
+      setFilteredResults((prevFilteredResults) =>
+        prevFilteredResults.filter((result) => result._id !== deleteId)
+      );
       closeDeleteModal();
     } catch (error) {
       toast.error("Failed to delete marks");
