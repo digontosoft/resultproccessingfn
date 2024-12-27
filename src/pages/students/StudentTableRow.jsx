@@ -1,8 +1,21 @@
-const StudentTableRow = ({ student, onView, onEdit, onDelete }) => {
+const StudentTableRow = ({ student, onView, onEdit, onDelete,setSelectStudent,selectStudent}) => {
   console.log("student:", student);
   const classes = "p-4 border-b border-blue-gray-50";
+  const handleCheckboxChange = (e) => {
+    if (e.target.checked) {
+      // Add student ID to selectedStudents
+      setSelectStudent((prev) => [...prev, student._id]);
+    } else {
+      // Remove student ID from selectedStudents
+      setSelectStudent((prev) => prev.filter((id) => id !== student._id));
+    }
+  };
   return (
     <tr>
+      <td className={classes}>
+        <p className="text-black dark:text-white"><input type="checkbox"  onChange={handleCheckboxChange}
+            checked={selectStudent.includes(student._id)} /></p>
+      </td>
       <td className={classes}>
         <p className="text-black dark:text-white">{student?.studentId}</p>
       </td>
