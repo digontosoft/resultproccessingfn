@@ -19,16 +19,15 @@ const ResultList = () => {
   const [subjects, setSubjects] = useState([]);
   const [filteredSubjects, setFilteredSubjects] = useState([]);
   const { control, handleSubmit, reset } = useForm();
-  const [selectedMark,selSelectedMark] = useState([])
+  const [selectedMark, selSelectedMark] = useState([]);
   const { filterClass, filterSection, filterShift, sessions } =
     useUserProtectFilter();
   const { getUser } = useSingleUser();
-  console.log("jdidj",selectedMark);
-  
+  console.log("jdidj", selectedMark);
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleCheckboxChange = (e,id) => {
+  const handleCheckboxChange = (e, id) => {
     if (e.target.checked) {
       // Add student ID to selectedStudents
       selSelectedMark((prev) => [...prev, id]);
@@ -55,8 +54,6 @@ const ResultList = () => {
     fetchStudents();
   }, [url]);
 
-
-
   const getAllResult = async () => {
     try {
       const response = await axios.get(`${url}/result/get_all`);
@@ -71,7 +68,7 @@ const ResultList = () => {
     getAllResult();
   }, [url]);
 
-  const deleteManyResult = async () =>{
+  const deleteManyResult = async () => {
     try {
       const response = await axios.post(`${url}/delete-many-result`,{ids:selectedMark})
       if (response.status === 200) {
@@ -88,11 +85,11 @@ const ResultList = () => {
         // Clear the selected marks
         setSelectedMark([]);
       }
+
     } catch (error) {
-      toast.error(response.data.message)
-      
+      toast.error(response.data.message);
     }
-  }
+  };
 
   const openEditModal = (student) => {
     setSelectedStudent(student);
@@ -225,7 +222,7 @@ const ResultList = () => {
   };
   console.log("subjects:", results);
   if (isLoading) return <GlobalLoadingState />;
-// console.log("filtert fjf",filteredResults);
+  // console.log("filtert fjf",filteredResults);
 
   return (
     <div>
@@ -244,15 +241,20 @@ const ResultList = () => {
             sessions={sessions}
           />
         </div>
-        {selectedMark.length>0&&<button className="w-42 bg-blue-500 text-white px-4 py-3 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500  " onClick={deleteManyResult}>Delete selected</button>}
+        {selectedMark.length > 0 && (
+          <button
+            className="w-42 bg-blue-500 text-white px-4 py-3 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500  "
+            onClick={deleteManyResult}
+          >
+            Delete selected
+          </button>
+        )}
 
         <div className="p-4 w-full overflow-x-auto h-full max-h-[500px] overflow-y-auto">
           <table className="w-full table-auto">
             <thead>
               <tr className="bg-gray-2 text-left dark:bg-meta-4">
-                <th className="py-4 px-4 font-medium text-black dark:text-white">
-                  
-                </th>
+                <th className="py-4 px-4 font-medium text-black dark:text-white"></th>
                 <th className="py-4 px-4 font-medium text-black dark:text-white">
                   SI.No
                 </th>
@@ -298,55 +300,62 @@ const ResultList = () => {
               </tr>
             </thead>
             <tbody>
-              {filteredResults.sort((a,b)=>a.roll-b.roll)?.map((result, i) => {
-                const classes = "p-4 border-b border-blue-gray-50";
+              {filteredResults
+                .sort((a, b) => a.roll - b.roll)
+                ?.map((result, i) => {
+                  const classes = "p-4 border-b border-blue-gray-50";
 
-                return (
-                  <tr key={result._id}>
-                    <td className={classes}><input type="checkbox"  onChange={(e)=>handleCheckboxChange(e,result._id)}
-            checked={selectedMark.includes(result._id)} /></td>
-                    <td className={classes}>{i + 1}</td>
-                    <td className={classes}>{result?.studentId}</td>
-                    <td className={classes}>{result?.roll}</td>
-                    <td className={classes}>{result?.className}</td>
-                    <td className={classes}>
-                      {result?.studentName || "Unknown"}
-                    </td>
-                    <td className={classes}>{result?.shift}</td>
-                    <td className={classes}>{result?.section}</td>
-                    <td className={classes}>{result?.term}</td>
-                    <td className={classes}>{result?.subjectName}</td>
-                    <td className={classes}>{result?.subjective}</td>
-                    <td className={classes}>{result?.objective}</td>
-                    <td className={classes}>{result?.practical}</td>
-                    <td className={classes}>{result?.classAssignment}</td>
-                    <td className={classes}>
-                      <div className="flex gap-3">
-                        <button
-                          className="text-blue-500"
-                          onClick={() => openEditModal(result)}
-                        >
-                          <img
-                            src="/edit.svg"
-                            alt="edit icon"
-                            className="h-5 w-5"
-                          />
-                        </button>
-                        <button
-                          className="text-red-500"
-                          onClick={() => openDeleteModal(result._id)}
-                        >
-                          <img
-                            src="/delete.svg"
-                            alt="delete icon"
-                            className="h-5 w-5"
-                          />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                );
-              })}
+                  return (
+                    <tr key={result._id}>
+                      <td className={classes}>
+                        <input
+                          type="checkbox"
+                          onChange={(e) => handleCheckboxChange(e, result._id)}
+                          checked={selectedMark.includes(result._id)}
+                        />
+                      </td>
+                      <td className={classes}>{i + 1}</td>
+                      <td className={classes}>{result?.studentId}</td>
+                      <td className={classes}>{result?.roll}</td>
+                      <td className={classes}>{result?.className}</td>
+                      <td className={classes}>
+                        {result?.studentName || "Unknown"}
+                      </td>
+                      <td className={classes}>{result?.shift}</td>
+                      <td className={classes}>{result?.section}</td>
+                      <td className={classes}>{result?.term}</td>
+                      <td className={classes}>{result?.subjectName}</td>
+                      <td className={classes}>{result?.subjective}</td>
+                      <td className={classes}>{result?.objective}</td>
+                      <td className={classes}>{result?.practical}</td>
+                      <td className={classes}>{result?.classAssignment}</td>
+                      <td className={classes}>
+                        <div className="flex gap-3">
+                          <button
+                            className="text-blue-500"
+                            onClick={() => openEditModal(result)}
+                          >
+                            <img
+                              src="/edit.svg"
+                              alt="edit icon"
+                              className="h-5 w-5"
+                            />
+                          </button>
+                          <button
+                            className="text-red-500"
+                            onClick={() => openDeleteModal(result._id)}
+                          >
+                            <img
+                              src="/delete.svg"
+                              alt="delete icon"
+                              className="h-5 w-5"
+                            />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
             </tbody>
           </table>
         </div>
