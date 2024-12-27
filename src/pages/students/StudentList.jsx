@@ -27,7 +27,23 @@ const StudentList = () => {
   const [confirmDelete, setConfirmDelete] = useState(false);
   const { filterClass, filterSection, filterShift, sessions } =
     useUserProtectFilter();
+    const [selectStudent,setSelectStudent] = useState([])
   const { getUser, loading } = useSingleUser();
+
+  const deleteManyStudent = async () =>{
+    try {
+      const response = await gurdedApi.post('/student/many-delete',{ids:selectStudent})
+      toast.success(response.data.message)
+      console.log(response.data.message);
+      getStudents()
+      
+    } catch (error) {
+      console.log(error);
+      toast.error(response.data.message)
+      
+    }
+  }
+  
 
   const getStudents = async () => {
     try {
@@ -172,12 +188,15 @@ const StudentList = () => {
             shift={filterShift}
             sessions={sessions}
           />
+          {selectStudent.length>0&&<button className="w-42 bg-blue-500 text-white px-4 py-3 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500  " onClick={deleteManyStudent}>Delete selected</button>}
           {filteredStudents.length > 0 ? (
             <StudentTable
               students={filteredStudents}
               onView={handleView}
               onEdit={handleEdit}
               onDelete={handleDelete}
+              setSelectStudent={setSelectStudent}
+              selectStudent={selectStudent}
             />
           ) : (
             <EmptyState />
