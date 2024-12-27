@@ -256,8 +256,6 @@ const ResultList = () => {
                 const student = students.find(
                   (s) => s.studentId === result.studentId
                 );
-                const isLast = i === filteredResults.length - 1;
-
                 const classes = "p-4 border-b border-blue-gray-50";
 
                 return (

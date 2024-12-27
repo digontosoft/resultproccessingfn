@@ -42,6 +42,9 @@ import Promotion from "../pages/students/Promotion";
 import GetTabulationPdf from "../pages/Reports/TabulationSheet/GetTabulationPdf";
 import TenTabulation from "../pages/Reports/TabulationSheet/TenTabulation";
 import MergeTranscript from "../pages/results/transcript/MergeTranscript";
+import MarkSheetFilter from "../pages/Reports/MarkSheet/MarksheetFilter";
+import MergeMarksheet from "../pages/Reports/MarkSheet/MergeMarksheet";
+import WithoutMergeMarksheet from "../pages/Reports/MarkSheet/WithoutMergeMarksheet";
 
 const AppRoutes = () => {
   const { auth } = useAuth();
@@ -59,7 +62,7 @@ const AppRoutes = () => {
     { path: "/result-list", element: <ResultList /> },
     { path: "/tabulation-sheet", element: <TabulationSheet /> },
     // { path: "/get-tabulation-sheet", element: <GetTabulationPdf /> },
-    { path: "/mark-sheet", element: <MarkSheet /> },
+    { path: "/mark-sheet", element: <MarkSheetFilter /> },
     // { path: "/filter-merit-list", element: <FilterMeritList /> },
     { path: "/fail-list", element: <FailList /> },
     { path: "/merit-list", element: <MeritList /> },
@@ -140,7 +143,9 @@ const AppRoutes = () => {
       <Route path="/get-result/transcript" element={<Transcript />} />
       <Route path="/get-tabulation-sheet" element={<GetTabulationPdf />} />
       {/* <Route path="/get-tabulation-sheet" element={<TenTabulation />} /> */}
-      <Route path="/merge-transcript" element={<MergeTranscript />} />
+      {/* <Route path="/marksheet" element={<MergeTranscript />} /> */}
+      <Route path="/get-merge-marksheet" element={<MergeMarksheet />} />
+      <Route path="/get-marksheet" element={<WithoutMergeMarksheet />} />
 
       <Route element={<PrivateRoute />}>
         <Route element={<DefaultLayout />}>
