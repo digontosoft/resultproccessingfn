@@ -43,7 +43,7 @@ const StudentEditModal = ({ student, onSubmit, onChange, onClose }) => {
   const handelClass = (value) => {
     console.log("value:", value);
 
-    if (value == 9 || value == 10) {
+    if (value == 10) {
       setFilterGroup(groupData.slice(1, 4));
     } else {
       setFilterGroup(groupData.slice(0, 1));

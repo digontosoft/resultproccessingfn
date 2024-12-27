@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { api } from "../../api";
 import useAuth from "../../hooks/useAuth";
-import Logo from "/logo.png";
+import Logo from "../../assets/school-logo.png";
 
 const SignIn = () => {
   const [showPass, setShowPass] = useState(false);
@@ -25,7 +25,7 @@ const SignIn = () => {
     try {
       const response = await api.post("/login", { ...data });
       console.log(response);
-      
+
       if (response.status === 202) {
         toast.warn("User with given email is not registered yet.", {
           autoClose: 2500,
@@ -38,7 +38,6 @@ const SignIn = () => {
         setAuth({ ...response.data });
         navigate("/");
       }
-     
     } catch (error) {
       console.log(error);
       toast.error(`Error: ${error.response.data.message}`);
@@ -64,7 +63,13 @@ const SignIn = () => {
         <div className="hidden w-full xl:block xl:w-1/2">
           <div className="py-17.5 px-26 text-center flex flex-col items-center">
             <Link className="mb-5.5 inline-block" to="/">
-              <img src={Logo} alt="Logo" className="invert" />
+              <img
+                src={Logo}
+                alt="Logo"
+                className="object-cover"
+                width={100}
+                height={100}
+              />
             </Link>
 
             <span className="mt-15 inline-block">

@@ -328,7 +328,7 @@ const Transcript = () => {
       )}{" "}
       {studentInfo?.class >= "6" && studentInfo?.class <= "9" && (
         <SixToNineTranscript />
-      )}{" "}
+      )}
       {studentInfo.class === "10" && <TenTranscript />}
     </>
   );

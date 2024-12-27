@@ -1,67 +1,23 @@
-import { useNavigate } from "react-router-dom";
+import React from "react";
+import Logo from "../../assets/school-logo.png";
 import { groupData } from "../../data/data";
-
-const students = [
-  {
-    serial: 1,
-    merit: 5,
-    name: "Ahnaf Zahin",
-    roll: 231702,
-    section: "A",
-    noOfFail: 0,
-    gpa: 4.0,
-    total: 500,
-  },
-  {
-    serial: 2,
-    merit: 10,
-    name: "John Doe",
-    roll: 231703,
-    section: "B",
-    noOfFail: 1,
-    gpa: 3.5,
-    total: 450,
-  },
-  {
-    serial: 3,
-    merit: 15,
-    name: "Jane Smith",
-    roll: 231704,
-    section: "A",
-    noOfFail: 2,
-    gpa: 3.0,
-    total: 400,
-  },
+const data = [
+  { title: "Session", value: "2024" },
+  { title: "Examination", value: "Test" },
+  { title: "Shift", value: "Morning" },
+  { title: "Class", value: "X" },
+  { title: "Section", value: "A" },
+  { title: "Group", value: "Science" },
 ];
-
-const FilterMeritList = () => {
-  const navigate = useNavigate();
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    // console.log("Form submitted:", formData);
-    try {
-      // const response = await api.post("/result/individual", formData);
-      // console.log("individual-result:", response.data);
-
-      // if (response.status === 200) {
-      //   localStorage.setItem("result", JSON.stringify(response.data));
-      //   navigate("/get-result/transcript");
-      // }
-      localStorage.setItem("merit", JSON.stringify(students));
-      navigate("/merit-list");
-    } catch (error) {
-      console.log(error);
-    }
-  };
+const TebulationTable = () => {
   return (
-    <div className="w-full h-auto min-h-180 border rounded-md">
-      <div className="p-4 border-b">
-        <span className="text-2xl font-semibold leading-normal">
-          Merit List
-        </span>
-      </div>
-      <form onSubmit={handleSubmit}>
+    <div>
+      <div className="w-full h-auto min-h-180 border rounded-md">
+        <div className="p-4 border-b">
+          <span className="text-2xl font-semibold leading-normal">
+            Mark Sheet
+          </span>
+        </div>
         <div className="space-y-4 px-40 py-5">
           <div>
             <label
@@ -154,8 +110,8 @@ const FilterMeritList = () => {
               <option value="" disabled selected>
                 Select Section
               </option>
-              <option value="A">A</option>
-              <option value="B">B</option>
+              <option value="a">A</option>
+              <option value="b">B</option>
             </select>
           </div>
 
@@ -212,15 +168,108 @@ const FilterMeritList = () => {
               </label>
             </div>
           </div>
+          <div>
+            <label
+              htmlFor="fromRoll"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Roll
+            </label>
+            <div className="flex space-x-4">
+              <div className="relative rounded-md shadow-sm">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5 text-gray-400"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path d="M5 3a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2V5a2 2 0 00-2-2H5zm3 6a1 1 0 011-1h4a1 1 0 110 2H9a1 1 0 01-1-1z" />
+                  </svg>
+                </div>
+                <input
+                  type="number"
+                  id="fromRoll"
+                  name="fromRoll"
+                  placeholder="From"
+                  className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                />
+              </div>
+              <div>
+                <div className="relative rounded-md shadow-sm">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5 text-gray-400"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path d="M3 10a7 7 0 1114 0 7 7 0 01-14 0zm7-3a1 1 0 100 2 1 1 0 000-2zm-2 6a1 1 0 102 0v-1a1 1 0 00-2 0v1z" />
+                    </svg>
+                  </div>
+                  <input
+                    type="number"
+                    id="toRoll"
+                    name="toRoll"
+                    placeholder="To"
+                    className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div className="flex justify-center items-center">
             <button className="text-base font-normal uppercase py-2 px-4 rounded-md bg-blue-900 hover:bg-blue-700 text-white">
               Serach
             </button>
           </div>
         </div>
-      </form>
+      </div>
+      <div className="w-full h-auto min-h-180 border rounded-md">
+        <div className="p-4 border-b">
+          <span className="text-2xl font-semibold leading-normal">
+            Tabulation Sheet
+          </span>
+        </div>
+      </div>
+
+      <section className="flex justify-between items-center space-y-10">
+        <div>
+          <img
+            src={Logo}
+            alt="viddamoty school logo"
+            className="h-32 w-32 object-cover"
+          />
+        </div>
+        <div className="grid justify-items-center gap-4">
+          <h1 className="text-2xl font-bold">
+            Vidyamayee Govt. Girls High School
+          </h1>
+          <p className="text-lg font-bold">Sadar, Mymensingh</p>
+          <p className="border border-gray-400 rounded-md p-2 text-lg font-semibold text-center uppercase">
+            Tabulation Sheet
+          </p>
+        </div>
+        <div className="h-60">
+          <table className="min-w-full table-auto border-collapse border border-gray-300">
+            <tbody>
+              {data.map((row, index) => (
+                <tr key={index} className="border border-gray-300">
+                  <td className="px-4 py-2 border border-gray-300 text-start text-sm">
+                    {row.title}
+                  </td>
+                  <td className="px-4 py-2 border border-gray-300 text-start text-sm">
+                    {row.value}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
     </div>
   );
 };
 
-export default FilterMeritList;
+export default TebulationTable;

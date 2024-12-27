@@ -2,6 +2,11 @@ import { useEffect, useRef, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 
 import Logo from "../../assets/school-logo.png";
+import User from "../../assets/user.png";
+import Students from "../../assets/students.png";
+import result from "../../assets/result.png";
+import Setting from "../../assets/Setting.png";
+import Report from "../../assets/report.png";
 import useAuth from "../../hooks/useAuth";
 import SidebarItem from "./SidebarItem";
 import SidebarLinkGroup from "./SidebarLinkGroup";
@@ -56,18 +61,19 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
   const adminMenuItems = [
     {
       label: "Students",
-      icon: "/user.svg",
+      icon: Students,
       links: [
         { to: "/add-student", label: "Add Student" },
         { to: "/add-student-bulk", label: "Add Student Bulk" },
         { to: "/student-list", label: "Student List" },
+        { to: "/promotion", label: "Promotion" },
       ],
       activeCondition:
         pathname.includes === "student" || pathname.includes("dashboard"),
     },
     {
       label: "Results",
-      icon: "/text-grammar.svg",
+      icon: result,
       links: [
         { to: "/add-result", label: "Add Result" },
         { to: "/add-result-bulk", label: "Add Result Bulk" },
@@ -78,7 +84,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
     },
     {
       label: "Manage Users",
-      icon: "/users.svg",
+      icon: User,
       links: [
         // { to: "/add-user", label: "Add User" },
         { to: "/user-list", label: "User List" },
@@ -89,7 +95,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
     },
     {
       label: "Settings",
-      icon: "/users.svg",
+      icon: Setting,
       links: [
         { to: "/subject-entry", label: "Subject Entry" },
         { to: "/subject-List", label: "Subject List" },
@@ -101,13 +107,13 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
     },
     {
       label: "Reports",
-      icon: "/users.svg",
+      icon: Report,
       links: [
-        { to: "/tabulation-sheet", label: "Tabulation Sheet" },
         { to: "/mark-sheet", label: "Mark Sheet" },
-        { to: "/filter-merit-list", label: "Merit List" },
+        { to: "/tabulation-sheet", label: "Tabulation Sheet" },
+        { to: "/merit-list", label: "Merit List" },
         { to: "/fail-list", label: "Fail List" },
-        { to: "/result-summary", label: "Result Summary" },
+        // { to: "/result-summary", label: "Result Summary" },
       ],
       activeCondition:
         pathname.includes === "report" || pathname.includes("dashboard"),
@@ -117,18 +123,19 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
   const teacherMenuItems = [
     {
       label: "Students",
-      icon: "/user.svg",
+      icon: Students,
       links: [
         { to: "/add-student", label: "Add Student" },
         { to: "/add-student-bulk", label: "Add Student Bulk" },
         { to: "/student-list", label: "Student List" },
+        { to: "/promotion", label: "Promotion" },
       ],
       activeCondition:
         pathname.includes === "student" || pathname.includes("dashboard"),
     },
     {
       label: "Results",
-      icon: "/text-grammar.svg",
+      icon: result,
       links: [
         { to: "/add-result", label: "Add Result" },
         { to: "/add-result-bulk", label: "Add Result Bulk" },
@@ -139,20 +146,20 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
     },
     {
       label: "Reports",
-      icon: "/users.svg",
+      icon: Report,
       links: [
-        { to: "/tabulation-sheet", label: "Tabulation Sheet" },
         { to: "/mark-sheet", label: "Mark Sheet" },
+        { to: "/tabulation-sheet", label: "Tabulation Sheet" },
         { to: "/merit-list", label: "Merit List" },
         { to: "/fail-list", label: "Fail List" },
-        { to: "/result-summary", label: "Result Summary" },
+        // { to: "/result-summary", label: "Result Summary" },
       ],
       activeCondition:
         pathname.includes === "report" || pathname.includes("dashboard"),
     },
     {
       label: "Settings",
-      icon: "/users.svg",
+      icon: Setting,
       links: [
         { to: "/subject-entry", label: "Subject Entry" },
         { to: "/subject-List", label: "Subject List" },
@@ -199,7 +206,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
         sidebarOpen ? "translate-x-0" : "-translate-x-full"
       }`}
     >
-      <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
+      <div className="flex items-center justify-between sm:justify-center gap-2 px-6 py-5.5 lg:py-6.5">
         <NavLink to="/">
           <img src={Logo} alt="Logo" className="h-30 w-30 object-cover" />
         </NavLink>

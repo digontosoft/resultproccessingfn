@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Controller, useForm } from "react-hook-form";
-import useAxios from "../../hooks/useAxios";
 import { toast } from "react-toastify";
 import FilterResult from "./FilterResult";
 import useUserProtectFilter from "../../hooks/useUserProtectFilter";
 import useSingleUser from "../../hooks/useSingleUser";
+import GlobalLoadingState from "../../components/GlobalLoadingState/GlobalLoadingState";
 
 const ResultList = () => {
-  const { gurdedApi } = useAxios();
   const [results, setResults] = useState([]);
   const [filteredResults, setFilteredResults] = useState([]);
   const [students, setStudents] = useState([]);
@@ -24,14 +23,19 @@ const ResultList = () => {
     useUserProtectFilter();
   const { getUser } = useSingleUser();
 
+  const [isLoading, setIsLoading] = useState(false);
+
   //   // Fetch students
   useEffect(() => {
     const fetchStudents = async () => {
+      setIsLoading(true);
       try {
         const response = await axios.get(`${url}/getAllStudent`);
         setStudents(response.data.data);
       } catch (error) {
         console.error("Error fetching students:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -81,9 +85,20 @@ const ResultList = () => {
       );
       if (response.status === 200) {
         toast.success("Marks updated successfully");
-        setTimeout(() => {
-          window.location.reload();
-        }, 500);
+
+        // Update results state
+        setResults((prevResults) =>
+          prevResults.map((result) =>
+            result._id === selectedStudent._id ? { ...result, ...data } : result
+          )
+        );
+
+        // Update filteredResults state
+        setFilteredResults((prevFilteredResults) =>
+          prevFilteredResults.map((result) =>
+            result._id === selectedStudent._id ? { ...result, ...data } : result
+          )
+        );
       }
     } catch (error) {
       toast.error("Failed to update marks");
@@ -152,8 +167,6 @@ const ResultList = () => {
     fetchSubjects();
   }, [url]);
 
-  //console.log("subject",subjects);
-
   const handleFilterChange = (event) => {
     const selectedValue = event.target.value;
     console.log("selected value", selectedValue);
@@ -168,9 +181,9 @@ const ResultList = () => {
     );
 
     setFilteredSubjects(filtered);
-    // setClassData(selectedOption.value);
   };
   console.log("subjects:", results);
+  if (isLoading) return <GlobalLoadingState />;
 
   return (
     <div>
@@ -190,47 +203,50 @@ const ResultList = () => {
           />
         </div>
 
-        <div className="p-6.5 w-full overflow-x-auto">
+        <div className="p-4 w-full overflow-x-auto h-full max-h-[500px] overflow-y-auto">
           <table className="w-full table-auto">
             <thead>
               <tr className="bg-gray-2 text-left dark:bg-meta-4">
-                <th className="py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
+                <th className="py-4 px-4 font-medium text-black dark:text-white">
                   SI.No
                 </th>
-                <th className="py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
+                <th className="py-4 px-4 font-medium text-black dark:text-white">
                   ST.ID
                 </th>
-                <th className="py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
+                <th className="py-4 px-4 font-medium text-black dark:text-white">
                   Roll
                 </th>
-                <th className="py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
+                <th className="py-4 px-4 font-medium text-black dark:text-white">
                   Class
                 </th>
-                <th className="py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
+                <th className="py-4 px-4 font-medium text-black dark:text-white">
                   Name
                 </th>
-                <th className="py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
+                <th className="py-4 px-4 font-medium text-black dark:text-white">
                   Shift
                 </th>
-                <th className="py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
+                <th className="py-4 px-4 font-medium text-black dark:text-white">
                   Section
                 </th>
-                <th className="py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
+                <th className="py-4 px-4 font-medium text-black dark:text-white">
                   Term
                 </th>
-                <th className="py-4 px-4 font-medium text-black dark:text-white  xl:pl-11">
+                <th className="py-4 px-4 font-medium text-black dark:text-white ">
                   Subject
                 </th>
-                <th className="py-4 px-4 font-medium text-black dark:text-white  xl:pl-11">
+                <th className="py-4 px-4 font-medium text-black dark:text-white ">
                   Subjective
                 </th>
-                <th className="py-4 px-4 font-medium text-black dark:text-white  xl:pl-11">
+                <th className="py-4 px-4 font-medium text-black dark:text-white ">
                   Objective
                 </th>
-                <th className="py-4 px-4 font-medium text-black dark:text-white  xl:pl-11">
+                <th className="py-4 px-4 font-medium text-black dark:text-white ">
                   Practical
                 </th>
-                <th className="py-4 px-4 font-medium text-black dark:text-white  xl:pl-11">
+                <th className="py-4 px-4 font-medium text-black dark:text-white ">
+                  CA
+                </th>
+                <th className="py-4 px-4 font-medium text-black dark:text-white ">
                   Action
                 </th>
               </tr>
@@ -240,57 +256,50 @@ const ResultList = () => {
                 const student = students.find(
                   (s) => s.studentId === result.studentId
                 );
+                const isLast = i === filteredResults.length - 1;
+
+                const classes = "p-4 border-b border-blue-gray-50";
+
                 return (
                   <tr key={result._id}>
-                    <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                      {i + 1}
-                    </td>
-                    <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                      {result?.studentId}
-                    </td>
-                    <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                      {student?.roll}
-                    </td>
-                    <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                      {result?.className}
-                    </td>
-                    <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                    <td className={classes}>{i + 1}</td>
+                    <td className={classes}>{result?.studentId}</td>
+                    <td className={classes}>{student?.roll}</td>
+                    <td className={classes}>{result?.className}</td>
+                    <td className={classes}>
                       {student?.studentName || "Unknown"}
                     </td>
-                    <td className="border-b border-[#eee] py-5 px-4  dark:border-strokedark xl:pl-11">
-                      {result?.shift}
-                    </td>
-                    <td className="border-b border-[#eee] py-5 px-4  dark:border-strokedark xl:pl-11">
-                      {result?.section}
-                    </td>
-                    <td className="border-b border-[#eee] py-5 px-4  dark:border-strokedark xl:pl-11">
-                      {result?.term}
-                    </td>
-                    <td className="border-b border-[#eee] py-5 px-4  dark:border-strokedark xl:pl-11">
-                      {result?.subjectName}
-                    </td>
-                    <td className="border-b border-[#eee] py-5 px-4  dark:border-strokedark xl:pl-11">
-                      {result?.subjective}
-                    </td>
-                    <td className="border-b border-[#eee] py-5 px-4  dark:border-strokedark xl:pl-11">
-                      {result?.objective}
-                    </td>
-                    <td className="border-b border-[#eee] py-5 px-4  dark:border-strokedark xl:pl-11">
-                      {result?.practical}
-                    </td>
-                    <td className="border-b border-[#eee] py-5 px-4  dark:border-strokedark flex gap-5">
-                      <button
-                        className="text-blue-500"
-                        onClick={() => openEditModal(result)}
-                      >
-                        Edit
-                      </button>
-                      <button
-                        className="text-red-500"
-                        onClick={() => openDeleteModal(result._id)}
-                      >
-                        Delete
-                      </button>
+                    <td className={classes}>{result?.shift}</td>
+                    <td className={classes}>{result?.section}</td>
+                    <td className={classes}>{result?.term}</td>
+                    <td className={classes}>{result?.subjectName}</td>
+                    <td className={classes}>{result?.subjective}</td>
+                    <td className={classes}>{result?.objective}</td>
+                    <td className={classes}>{result?.practical}</td>
+                    <td className={classes}>{result?.classAssignment}</td>
+                    <td className={classes}>
+                      <div className="flex gap-3">
+                        <button
+                          className="text-blue-500"
+                          onClick={() => openEditModal(result)}
+                        >
+                          <img
+                            src="/edit.svg"
+                            alt="edit icon"
+                            className="h-5 w-5"
+                          />
+                        </button>
+                        <button
+                          className="text-red-500"
+                          onClick={() => openDeleteModal(result._id)}
+                        >
+                          <img
+                            src="/delete.svg"
+                            alt="delete icon"
+                            className="h-5 w-5"
+                          />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 );
@@ -346,6 +355,22 @@ const ResultList = () => {
                 </label>
                 <Controller
                   name="practical"
+                  control={control}
+                  render={({ field }) => (
+                    <input
+                      type="number"
+                      {...field}
+                      className="mt-1 w-full rounded-lg border border-gray-300 p-3 focus:border-blue-500 focus:ring focus:ring-blue-200"
+                    />
+                  )}
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700">
+                  CA
+                </label>
+                <Controller
+                  name="classAssignment"
                   control={control}
                   render={({ field }) => (
                     <input

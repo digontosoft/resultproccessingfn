@@ -19,9 +19,9 @@ import {
 } from "../pages";
 
 import SignUp from "../pages/auth/SignUp";
-import FailList from "../pages/FailList/FailList";
-import MarkSheet from "../pages/MarkSheet/MarkSheet";
-import MeritList from "../pages/MeritList/MeritList";
+// import FailList from "../pages/FailList/FailList";
+// import MarkSheet from "../pages/MarkSheet/MarkSheet";
+// import MeritList from "../pages/MeritList/MeritList";
 import GetResult from "../pages/results/GetResult/GetResult";
 import MarksInput from "../pages/results/MarksInput";
 import Transcript from "../pages/results/transcript/Transcript";
@@ -29,11 +29,19 @@ import ResultSummary from "../pages/ResultSummary/ResultSummary";
 import SubjectEntry from "../pages/settings/SubjectEntry";
 import SubjectList from "../pages/settings/SubjectList";
 import TeacherSubjectListAdmin from "../pages/settings/TeacherSubjectListAdmin";
-import TabulationSheet from "../pages/TabulationSheet/TabulationSheet";
+// import TabulationSheet from "../pages/TabulationSheet/TabulationSheet";
 import TeacherList from "../pages/Teachers/TeacherList";
 import PrivateRoute from "./PrivateRoute";
 import AddUser from "../pages/userList/AddUser";
-import FilterMeritList from "../pages/MeritList/FilterMeritList";
+// import FilterMeritList from "../pages/MeritList/FilterMeritList";
+import FailList from "../pages/Reports/FailList/FailList";
+import MeritList from "../pages/Reports/MeritList/MeritList";
+import MarkSheet from "../pages/Reports/MarkSheet/MarkSheet";
+import TabulationSheet from "../pages/Reports/TabulationSheet/TabulationSheet";
+import Promotion from "../pages/students/Promotion";
+import GetTabulationPdf from "../pages/Reports/TabulationSheet/GetTabulationPdf";
+import TenTabulation from "../pages/Reports/TabulationSheet/TenTabulation";
+import MergeTranscript from "../pages/results/transcript/MergeTranscript";
 
 const AppRoutes = () => {
   const { auth } = useAuth();
@@ -44,14 +52,17 @@ const AppRoutes = () => {
     { path: "/add-student", element: <AddStudents /> },
     { path: "/add-student-bulk", element: <AddStudentsBulk /> },
     { path: "/student-list", element: <StudentList /> },
+    { path: "/promotion", element: <Promotion /> },
     { path: "/add-result", element: <AddResult /> },
     { path: "/add-result/marks-input", element: <MarksInput /> },
     { path: "/add-result-bulk", element: <AddResultsBulk /> },
     { path: "/result-list", element: <ResultList /> },
     { path: "/tabulation-sheet", element: <TabulationSheet /> },
+    // { path: "/get-tabulation-sheet", element: <GetTabulationPdf /> },
     { path: "/mark-sheet", element: <MarkSheet /> },
-    { path: "/filter-merit-list", element: <FilterMeritList /> },
+    // { path: "/filter-merit-list", element: <FilterMeritList /> },
     { path: "/fail-list", element: <FailList /> },
+    { path: "/merit-list", element: <MeritList /> },
     { path: "/result-summary", element: <ResultSummary /> },
     { path: "/teachers", element: <TeacherList /> },
     { path: "/subject-entry", element: <SubjectEntry /> },
@@ -127,6 +138,9 @@ const AppRoutes = () => {
 
       <Route path="/get-result" element={<GetResult />} />
       <Route path="/get-result/transcript" element={<Transcript />} />
+      <Route path="/get-tabulation-sheet" element={<GetTabulationPdf />} />
+      {/* <Route path="/get-tabulation-sheet" element={<TenTabulation />} /> */}
+      <Route path="/merge-transcript" element={<MergeTranscript />} />
 
       <Route element={<PrivateRoute />}>
         <Route element={<DefaultLayout />}>
@@ -135,7 +149,7 @@ const AppRoutes = () => {
         </Route>
       </Route>
       <Route path="*" element={<NotFound />} />
-      <Route path="/merit-list" element={<MeritList />} />
+      {/* <Route path="/merit-list" element={<MeritList />} /> */}
     </Routes>
   );
 };
