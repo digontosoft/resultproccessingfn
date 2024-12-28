@@ -8,6 +8,7 @@ const MarksInput = ({ rollRangeStudent, rollRangeStudentData }) => {
   const url = import.meta.env.VITE_SERVER_BASE_URL;
   const { control, handleSubmit, reset } = useForm();
   const navigate = useNavigate();
+  const [loading,setLoading] = useState(false)
 
   const {
     section,
@@ -18,6 +19,8 @@ const MarksInput = ({ rollRangeStudent, rollRangeStudentData }) => {
     term,
   } = rollRangeStudentData;
   const onSubmit = async (data) => {
+    if (loading) return; // Prevent double submission
+    setLoading(true);
     const formattedResults = rollRangeStudent.map((student, index) => ({
       subjective: parseInt(data.students[index].subjective) || 0,
       objective: parseInt(data.students[index].objective) || 0,
@@ -39,16 +42,19 @@ const MarksInput = ({ rollRangeStudent, rollRangeStudentData }) => {
 
     try {
       console.log("payload", payload);
+
       const response = await axios.post(`${url}/result/create`, payload);
       if (response.status === 201) {
         reset();
         toast.success("Marks added successfully");
-        setTimeout(() => {
+        //setTimeout(() => {
           window.location.reload();
-        }, 500);
+        //}, 50);
       }
     } catch (error) {
       toast.error("Failed to add marks");
+    } finally{
+      setLoading(false)
     }
   };
 
@@ -181,7 +187,8 @@ const MarksInput = ({ rollRangeStudent, rollRangeStudentData }) => {
 
             <button
               type="submit"
-              className="mt-4 w-full rounded bg-blue-500 py-3 px-5 font-medium text-white hover:bg-blue-600"
+              className={`mt-4 w-full rounded bg-blue-500 py-3 px-5 font-medium text-white hover:bg-blue-600 ${loading ? "opacity-50 disabled: cursor-not-allowed" : ""}`}
+              disabled={loading}
             >
               Submit
             </button>
