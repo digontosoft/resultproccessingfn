@@ -33,7 +33,6 @@ import TeacherSubjectListAdmin from "../pages/settings/TeacherSubjectListAdmin";
 import TeacherList from "../pages/Teachers/TeacherList";
 import PrivateRoute from "./PrivateRoute";
 import AddUser from "../pages/userList/AddUser";
-// import FilterMeritList from "../pages/MeritList/FilterMeritList";
 import FailList from "../pages/Reports/FailList/FailList";
 import MeritList from "../pages/Reports/MeritList/MeritList";
 import MarkSheet from "../pages/Reports/MarkSheet/MarkSheet";
@@ -46,6 +45,8 @@ import MarkSheetFilter from "../pages/Reports/MarkSheet/MarksheetFilter";
 import MergeMarksheet from "../pages/Reports/MarkSheet/MergeMarksheet";
 import WithoutMergeMarksheet from "../pages/Reports/MarkSheet/WithoutMergeMarksheet";
 import FourtoFiveMarksheet from "../pages/Reports/MarkSheet/FourtoFiveMarksheet";
+import FilterMeritList from "../pages/Reports/MeritList/FilterMeritList";
+import FilterFailList from "../pages/Reports/FailList/FilterFailList";
 
 const AppRoutes = () => {
   const { auth } = useAuth();
@@ -64,9 +65,9 @@ const AppRoutes = () => {
     { path: "/tabulation-sheet", element: <TabulationSheet /> },
     // { path: "/get-tabulation-sheet", element: <GetTabulationPdf /> },
     { path: "/mark-sheet", element: <MarkSheetFilter /> },
-    // { path: "/filter-merit-list", element: <FilterMeritList /> },
-    { path: "/fail-list", element: <FailList /> },
-    { path: "/merit-list", element: <MeritList /> },
+    { path: "/filter-merit-list", element: <FilterMeritList /> },
+    { path: "/filter-fail-list", element: <FilterFailList /> },
+    // { path: "/merit-list", element: <MeritList /> },
     { path: "/result-summary", element: <ResultSummary /> },
     { path: "/teachers", element: <TeacherList /> },
     { path: "/subject-entry", element: <SubjectEntry /> },
@@ -156,7 +157,8 @@ const AppRoutes = () => {
         </Route>
       </Route>
       <Route path="*" element={<NotFound />} />
-      {/* <Route path="/merit-list" element={<MeritList />} /> */}
+      <Route path="/merit-list" element={<MeritList />} />
+      <Route path="/fail-list" element={<FailList />} />
     </Routes>
   );
 };

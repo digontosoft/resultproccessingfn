@@ -4,7 +4,7 @@ import { groupData, termsData } from "../../../data/data";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const FilterMeritList = () => {
+const FilterFailList = () => {
   const navigate = useNavigate();
   const url = import.meta.env.VITE_SERVER_BASE_URL;
   const [selectedClass, setSelectedClass] = useState("");
@@ -55,11 +55,11 @@ const FilterMeritList = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Form submitted:", formData);
-    const response = await axios.post(`${url}/result/merit-list`, formData);
+    const response = await axios.post(`${url}/result/fail-list`, formData);
     if (response.status === 200) {
       toast.success("Merit list generated successfully!");
       localStorage.setItem("meritList", JSON.stringify(response.data));
-      navigate("/merit-list");
+      navigate("/fail-list");
     }
     console.log("individual-result:", response.data);
   };
@@ -183,4 +183,4 @@ const FilterMeritList = () => {
   );
 };
 
-export default FilterMeritList;
+export default FilterFailList;

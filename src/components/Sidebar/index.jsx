@@ -111,8 +111,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
       links: [
         { to: "/mark-sheet", label: "Mark Sheet" },
         { to: "/tabulation-sheet", label: "Tabulation Sheet" },
-        { to: "/merit-list", label: "Merit List" },
-        { to: "/fail-list", label: "Fail List" },
+        { to: "/filter-merit-list", label: "Merit List" },
+        { to: "/filter-fail-list", label: "Fail List" },
         // { to: "/result-summary", label: "Result Summary" },
       ],
       activeCondition:
@@ -150,8 +150,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
       links: [
         { to: "/mark-sheet", label: "Mark Sheet" },
         { to: "/tabulation-sheet", label: "Tabulation Sheet" },
-        { to: "/merit-list", label: "Merit List" },
-        { to: "/fail-list", label: "Fail List" },
+        { to: "/filter-merit-list", label: "Merit List" },
+        { to: "/filter-fail-list", label: "Fail List" },
         // { to: "/result-summary", label: "Result Summary" },
       ],
       activeCondition:
