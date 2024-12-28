@@ -74,23 +74,45 @@ const Promotion = () => {
     setClassData(selectedOption.value);
   };
 
-  const onSubmit = async (data) => {
-    console.log(data);
+  // const onSubmit = async (data) => {
+  //   console.log(data);
 
+  //   const payload = {
+  //     ...data,
+  //     class: classData,
+  //   };
+  //   console.log("Form Data:", payload);
+  //   setRollRangeStudentData(payload);
+  //   setIsLoading(true);
+
+  //   try {
+  //     const reseponse = await gurdedApi.post(`/get-student-list`, payload);
+  //     setRollRangeStudent(reseponse.data.data);
+  //   } catch (error) {
+  //     toast.error(
+  //       error.response?.data?.message || "Failed to fetch student data"
+  //     );
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+
+  const onSubmit = async (data) => {
+    // Convert startRoll and endRoll to numbers
     const payload = {
       ...data,
+      startRoll: Number(data.startRoll),
+      endRoll: Number(data.endRoll),
       class: classData,
     };
+
     console.log("Form Data:", payload);
     setRollRangeStudentData(payload);
     setIsLoading(true);
 
     try {
-      const reseponse = await gurdedApi.post(
-        `/get-student-by-roll-range`,
-        payload
-      );
-      setRollRangeStudent(reseponse.data.data);
+      const response = await gurdedApi.post(`/get-student-list`, payload);
+      setRollRangeStudent(response.data.data);
     } catch (error) {
       toast.error(
         error.response?.data?.message || "Failed to fetch student data"
@@ -150,7 +172,7 @@ const Promotion = () => {
         <div className="p-6.5">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <FormSelect label="Year" name="session" options={sessions} />
+              <FormSelect label="Year" name="year" options={sessions} />
               {/* <FormSelect label="Exam" name="term" options={termsData} /> */}
               <FormSelect label="Shift" name="shift" options={filterShift} />
               <div className="mb-4.5">

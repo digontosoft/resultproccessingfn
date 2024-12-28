@@ -393,7 +393,7 @@ const GetTabulationPdf = () => {
                     </div>
                   </td>
                   <td className="border border-gray-300 px-2 py-1 text-center">
-                    {idx + 1}
+                    {student.meritPosition}
                   </td>
                 </tr>
               ))}
