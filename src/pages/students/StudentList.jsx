@@ -34,7 +34,7 @@ const StudentList = () => {
     try {
       const response = await gurdedApi.post('/student/many-delete',{ids:selectStudent})
       toast.success(response.data.message)
-      console.log(response.data.message);
+      // console.log(response.data.message);
       getStudents()
       
     } catch (error) {
@@ -43,6 +43,9 @@ const StudentList = () => {
       
     }
   }
+
+  console.log(selectStudent);
+  
   
 
   const getStudents = async () => {
@@ -111,7 +114,7 @@ const StudentList = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    console.log(selectedStudent);
+    // console.log(selectedStudent);
 
     try {
       await gurdedApi.put(`/student/${selectedStudent?._id}`, selectedStudent);
@@ -131,7 +134,7 @@ const StudentList = () => {
   };
 
   const confirmDeleteStudent = async () => {
-    console.log("selectedStudent:", selectedStudent);
+    // console.log("selectedStudent:", selectedStudent);
 
     try {
       await gurdedApi.delete(`/student/${selectedStudent._id}`);

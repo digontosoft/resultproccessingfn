@@ -32,9 +32,10 @@ const ResultList = () => {
       selSelectedMark((prev) => [...prev, id]);
     } else {
       // Remove student ID from selectedStudents
-      selSelectedMark((prev) => prev.filter((id) => id !== id));
+      selSelectedMark((prev) => prev.filter((item) => item!== id));
     }
   };
+console.log(selectedMark);
 
   //   // Fetch students
   useEffect(() => {
@@ -57,7 +58,7 @@ const ResultList = () => {
     try {
       const response = await axios.get(`${url}/result/get_all`);
       setResults(response.data.data);
-      console.log("result:", response.data.data);
+     // console.log("result:", response.data.data);
     } catch (error) {
       console.error("Error fetching results:", error);
     }
@@ -175,8 +176,8 @@ const ResultList = () => {
       );
     });
     setFilteredResults(filtered);
-    console.log("filtered", filtered);
-    console.log("criteria", criteria);
+    // console.log("filtered", filtered);
+    // console.log("criteria", criteria);
   };
 
   useEffect(() => {
@@ -198,7 +199,7 @@ const ResultList = () => {
       try {
         const response = await axios.get(`${url}/subjects`);
         setSubjects(response.data.subjects);
-        console.log("subjects:", response.data.subjects);
+        // console.log("subjects:", response.data.subjects);
       } catch (error) {
         toast.error("Failed to fetch subjects");
       }
@@ -209,12 +210,12 @@ const ResultList = () => {
 
   const handleFilterChange = (event) => {
     const selectedValue = event.target.value;
-    console.log("selected value", selectedValue);
+    // console.log("selected value", selectedValue);
 
     const selectedOption = filterClass.find(
       (option) => option.value === selectedValue
     );
-    console.log(selectedOption);
+    // console.log(selectedOption);
 
     const filtered = subjects.filter(
       (subject) => subject.class._id === selectedOption._id
@@ -222,7 +223,7 @@ const ResultList = () => {
 
     setFilteredSubjects(filtered);
   };
-  console.log("subjects:", results);
+  // console.log("subjects:", results);
   if (isLoading) return <GlobalLoadingState />;
   // console.log("filtert fjf",filteredResults);
 
