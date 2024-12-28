@@ -11,6 +11,8 @@ const WithoutMergeMarksheet = () => {
   //   } = JSON.parse(localStorage.getItem("mergeResult"));
   const { Data } = JSON.parse(localStorage.getItem("withoutMerge"));
   console.log("marksheet", Data);
+  const allStudentInfo = Data.map((item) => item.studentInfo);
+  console.log("allStudentInfo", allStudentInfo);
   return (
     <>
       <div className="flex justify-end">
@@ -238,12 +240,12 @@ const WithoutMergeMarksheet = () => {
                       {summary.studentsCount}
                     </td>
 
-                    <td className="border px-1 py-1 font-semibold text-right">
+                    {/* <td className="border px-1 py-1 font-semibold text-right">
                       GPA Without 4th:
                     </td>
                     <td className="border px-1 py-1 text-center">
                       {summary?.gpaWithout4th}
-                    </td>
+                    </td> */}
 
                     <td className="border px-1 py-1 font-semibold text-right">
                       GPA:

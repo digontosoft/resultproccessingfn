@@ -7,6 +7,7 @@ const TabulationSheet = () => {
   const navigate = useNavigate();
   const [selectedClass, setSelectedClass] = useState("");
   const [formData, setFormData] = useState({
+    group: "",
     className: "",
     section: "",
     shift: "",
@@ -94,13 +95,11 @@ const TabulationSheet = () => {
                 options={classes}
               />
 
-              {["9", "10"].includes(selectedClass) && (
-                <FormSelect
-                  label="Select Group"
-                  name="group"
-                  options={groupData}
-                />
-              )}
+              <FormSelect
+                label="Select Group"
+                name="group"
+                options={groupData}
+              />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

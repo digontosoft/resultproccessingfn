@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 const MarkSheetFilter = () => {
   const url = import.meta.env.VITE_SERVER_BASE_URL;
   const [formData, setFormData] = useState({
-    session: "2024",
+    session: "",
     term: "",
     className: "",
     section: "",
@@ -29,7 +29,11 @@ const MarkSheetFilter = () => {
       [name]: type === "checkbox" ? checked : value,
     }));
   };
-
+  const schoolInfo = {
+    session: formData.session,
+    term: formData.term,
+    shift: formData.shift,
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -42,6 +46,7 @@ const MarkSheetFilter = () => {
         navigate(
           formData.is_merged ? "/get-merge-marksheet" : "/get-marksheet"
         );
+        localStorage.setItem("schoolInfo", JSON.stringify(schoolInfo));
         toast.success("Marksheet Generated Successfully");
         console.log("marksheet:", response.data);
       }
