@@ -45,6 +45,7 @@ import MergeTranscript from "../pages/results/transcript/MergeTranscript";
 import MarkSheetFilter from "../pages/Reports/MarkSheet/MarksheetFilter";
 import MergeMarksheet from "../pages/Reports/MarkSheet/MergeMarksheet";
 import WithoutMergeMarksheet from "../pages/Reports/MarkSheet/WithoutMergeMarksheet";
+import FourtoFiveMarksheet from "../pages/Reports/MarkSheet/FourtoFiveMarksheet";
 
 const AppRoutes = () => {
   const { auth } = useAuth();
@@ -146,6 +147,7 @@ const AppRoutes = () => {
       {/* <Route path="/marksheet" element={<MergeTranscript />} /> */}
       <Route path="/get-merge-marksheet" element={<MergeMarksheet />} />
       <Route path="/get-marksheet" element={<WithoutMergeMarksheet />} />
+      <Route path="/get" element={<FourtoFiveMarksheet />} />
 
       <Route element={<PrivateRoute />}>
         <Route element={<DefaultLayout />}>

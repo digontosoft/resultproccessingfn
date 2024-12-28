@@ -161,7 +161,7 @@ const Transcript = () => {
                     <th className="border px-1 py-1">Subjects</th>
                     <th className="border px-1 py-1">Full Marks</th>
                     <th className="border px-1 py-1">Subjective</th>
-                    {(studentInfo?.class === "9" ||
+                    {/* {(studentInfo?.class === "9" ||
                       studentInfo?.class === "10") && (
                       <>
                         <th className="border px-1 py-1">Objective</th>
@@ -169,7 +169,7 @@ const Transcript = () => {
                         <th className="border px-1 py-1">70%</th>
                         <th className="border px-1 py-1">CA(30%)</th>
                       </>
-                    )}
+                    )} */}
                     <th className="border px-1 py-1">Total(100%)</th>
                     <th className="border px-1 py-1">LG</th>
                     <th className="border px-1 py-1">GP</th>
@@ -186,7 +186,7 @@ const Transcript = () => {
                       <td className="border px-1 py-1 text-center">
                         {result.subjective}
                       </td>
-                      {(studentInfo?.class === "9" ||
+                      {/* {(studentInfo?.class === "9" ||
                         studentInfo?.class === "10") && (
                         <>
                           <td className="border px-1 py-1 text-center">
@@ -202,7 +202,7 @@ const Transcript = () => {
                             {result["CA(30%)"]}
                           </td>
                         </>
-                      )}
+                      )} */}
                       <td className="border px-1 py-1 text-center">
                         {result.totalMarks}
                       </td>
@@ -274,7 +274,7 @@ const Transcript = () => {
                     <td className="border px-1 py-1 text-center">
                       {summary.studentsCount}
                     </td>
-                    {(studentInfo?.class === "9" ||
+                    {/* {(studentInfo?.class === "9" ||
                       studentInfo?.class === "10") && (
                       <>
                         <td className="border px-1 py-1 font-semibold text-right">
@@ -284,7 +284,7 @@ const Transcript = () => {
                           {summary?.gpaWithout4th}
                         </td>
                       </>
-                    )}
+                    )} */}
                     <td className="border px-1 py-1 font-semibold text-right">
                       GPA:
                     </td>
