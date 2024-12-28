@@ -33,7 +33,7 @@ const ResultList = () => {
       selSelectedMark((prev) => [...prev, id]);
     } else {
       // Remove student ID from selectedStudents
-      selSelectedMark((prev) => prev.filter((i) => i!== id));
+      selSelectedMark((prev) => prev.filter((item) => item!== id));
     }
   };
 console.log(selectedMark);
