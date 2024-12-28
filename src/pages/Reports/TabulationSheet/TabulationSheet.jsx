@@ -2,9 +2,11 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../../../api";
 import { groupData, termsData } from "../../../data/data";
+import GlobalLoadingState from "../../../components/GlobalLoadingState/GlobalLoadingState";
 
 const TabulationSheet = () => {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
   const [selectedClass, setSelectedClass] = useState("");
   const [formData, setFormData] = useState({
     group: "",
@@ -36,21 +38,41 @@ const TabulationSheet = () => {
     }
   };
 
+  const schoolInfo = {
+    session: formData.session,
+    term: formData.term,
+    shift: formData.shift,
+    section: formData.section,
+    group: formData.group,
+    className: formData.className,
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Form submitted:", formData);
+    setIsLoading(true);
     try {
       const response = await api.post("/result/tebulation-sheet", formData);
       console.log("individual-result:", response.data);
 
       if (response.status === 200) {
         localStorage.setItem("tabulation", JSON.stringify(response.data));
+        localStorage.setItem(
+          "tabulation-schoolInfo",
+          JSON.stringify(schoolInfo)
+        );
         navigate("/get-tabulation-sheet");
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   };
+
+  if (isLoading) {
+    return <GlobalLoadingState />;
+  }
 
   const FormSelect = ({ label, name, options, required = true }) => (
     <div className="mb-4.5">

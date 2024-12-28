@@ -4,9 +4,11 @@ import useUserProtectFilter from "../../../hooks/useUserProtectFilter";
 import { groupData, termsData } from "../../../data/data";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import GlobalLoadingState from "../../../components/GlobalLoadingState/GlobalLoadingState";
 
 const MarkSheetFilter = () => {
   const url = import.meta.env.VITE_SERVER_BASE_URL;
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     session: "",
     term: "",
@@ -33,9 +35,13 @@ const MarkSheetFilter = () => {
     session: formData.session,
     term: formData.term,
     shift: formData.shift,
+    section: formData.section,
+    group: formData.group,
+    className: formData.className,
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     try {
       const response = await axios.post(`${url}/result/marksheet`, formData);
       if (response.status === 200) {
@@ -53,9 +59,15 @@ const MarkSheetFilter = () => {
     } catch (error) {
       console.error("Error submitting form:", error);
       toast.error("Please Enter Valid Details");
+    } finally {
+      setIsLoading(false);
     }
     console.log("merge-result:", formData);
   };
+
+  if (isLoading) {
+    return <GlobalLoadingState />;
+  }
 
   return (
     <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">

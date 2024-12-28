@@ -3,12 +3,13 @@ import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import GlobalLoadingState from "../../components/GlobalLoadingState/GlobalLoadingState";
 
 const MarksInput = ({ rollRangeStudent, rollRangeStudentData }) => {
   const url = import.meta.env.VITE_SERVER_BASE_URL;
   const { control, handleSubmit, reset } = useForm();
   const navigate = useNavigate();
-  const [loading,setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   const {
     section,
@@ -19,8 +20,8 @@ const MarksInput = ({ rollRangeStudent, rollRangeStudentData }) => {
     term,
   } = rollRangeStudentData;
   const onSubmit = async (data) => {
-    if (loading) return; // Prevent double submission
-    setLoading(true);
+    // Prevent double submission
+
     const formattedResults = rollRangeStudent.map((student, index) => ({
       subjective: parseInt(data.students[index].subjective) || 0,
       objective: parseInt(data.students[index].objective) || 0,
@@ -39,6 +40,7 @@ const MarksInput = ({ rollRangeStudent, rollRangeStudentData }) => {
       results: formattedResults,
     };
     console.log("result:", payload);
+    setLoading(true);
 
     try {
       console.log("payload", payload);
@@ -47,16 +49,20 @@ const MarksInput = ({ rollRangeStudent, rollRangeStudentData }) => {
       if (response.status === 201) {
         reset();
         toast.success("Marks added successfully");
-        //setTimeout(() => {
-          window.location.reload();
-        //}, 50);
       }
     } catch (error) {
       toast.error("Failed to add marks");
-    } finally{
-      setLoading(false)
+    } finally {
+      setLoading(false);
+      setTimeout(() => {
+        window.location.reload();
+      }, 50);
     }
   };
+
+  if (loading) {
+    return <GlobalLoadingState />;
+  }
 
   // Error Handling
   const validateMarks = (value) => {
@@ -187,7 +193,7 @@ const MarksInput = ({ rollRangeStudent, rollRangeStudentData }) => {
 
             <button
               type="submit"
-              className={`mt-4 w-full rounded bg-blue-500 py-3 px-5 font-medium text-white hover:bg-blue-600 ${loading ? "opacity-50 disabled: cursor-not-allowed" : ""}`}
+              className="mt-4 w-full rounded bg-blue-500 py-3 px-5 font-medium text-white hover:bg-blue-600"
               disabled={loading}
             >
               Submit
