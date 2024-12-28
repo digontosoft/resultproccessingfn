@@ -10,27 +10,30 @@ const MergeMarksheet = () => {
   console.log("mergeResult", Data);
   return (
     <div>
-      {Data.map(
-        ({
-          studentInfo,
-          TotalResult,
-          summary,
-          annualResults,
-          halfYearlyResults,
-        }) => (
-          <>
-            <div className="flex justify-end">
-              <button
-                onClick={reactToPrintFn}
-                className="bg-blue-600 text-white px-2 py-1"
-              >
-                Print
-              </button>
-            </div>
-            <div
-              ref={contentRef}
-              className="relative max-w-full mx-auto py-6 px-1 bg-white printable-content"
-            >
+      <div className="flex justify-end">
+        <button
+          onClick={reactToPrintFn}
+          className="bg-blue-600 text-white px-2 py-1"
+        >
+          Print
+        </button>
+      </div>
+      <div
+        ref={contentRef}
+        className="relative max-w-full mx-auto py-6 px-1 bg-white"
+      >
+        {Data.map(
+          (
+            {
+              studentInfo,
+              TotalResult,
+              summary,
+              annualResults,
+              halfYearlyResults,
+            },
+            index
+          ) => (
+            <div key={index} className="min-h-screen">
               <div className="mb-8 flex flex-col items-center">
                 <h1 className="text-xl font-bold">
                   {transcriptData.school.name}
@@ -328,7 +331,6 @@ const MergeMarksheet = () => {
                       </tr>
                     ))}
 
-                    {/* Totla marks row */}
                     <tr>
                       <td className="border px-1 py-1 font-semibold text-right ">
                         Total Marks:
@@ -350,27 +352,20 @@ const MergeMarksheet = () => {
                       <td className="border px-1 py-1 text-center"></td>
                     </tr>
 
-                    {/* Working days row */}
                     <tr>
                       <td className="border px-1 py-1 font-semibold text-right ">
                         Working days:
                       </td>
-                      <td className="border px-1 py-1 text-center">
-                        {/* Working days count here */}
-                      </td>
+                      <td className="border px-1 py-1 text-center"></td>
                       <td className="border px-1 py-1 font-semibold text-right">
                         Present:
                       </td>
                       <td className="border px-1 py-1 text-center"></td>
-                      <td className="border px-1 py-1 font-semibold text-right ">
-                        {/* Present count here */}
-                      </td>
+                      <td className="border px-1 py-1 font-semibold text-right "></td>
                       <td className="border px-1 py-1 text-center">
                         Max. Present:
                       </td>
-                      <td className="border px-1 py-1 text-center">
-                        {/* Max. Present count here */}
-                      </td>
+                      <td className="border px-1 py-1 text-center"></td>
                       <td className="border px-1 py-1 text-center"></td>
                       <td className="border px-1 py-1 text-center"></td>
                       <td className="border px-1 py-1 text-center"></td>
@@ -378,7 +373,6 @@ const MergeMarksheet = () => {
                       <td className="border px-1 py-1 text-center"></td>
                     </tr>
 
-                    {/* summary of results */}
                     <tr>
                       <td className="border px-1 py-1 font-semibold text-right ">
                         No. of Students:
@@ -469,7 +463,6 @@ const MergeMarksheet = () => {
                       </tr>
                     ))}
 
-                    {/* Totla marks row */}
                     <tr>
                       <td className="border px-1 py-1 font-semibold text-right ">
                         Total Marks:
@@ -490,34 +483,26 @@ const MergeMarksheet = () => {
                       <td className="border px-1 py-1 text-center"></td>
                     </tr>
 
-                    {/* Working days row */}
                     <tr>
                       <td className="border px-1 py-1 font-semibold text-right ">
                         Working days:
                       </td>
-                      <td className="border px-1 py-1 text-center">
-                        {/* Working days count here */}
-                      </td>
+                      <td className="border px-1 py-1 text-center"></td>
                       <td className="border px-1 py-1 font-semibold text-right">
                         Present:
                       </td>
                       <td className="border px-1 py-1 text-center"></td>
-                      <td className="border px-1 py-1 font-semibold text-right ">
-                        {/* Present count here */}
-                      </td>
+                      <td className="border px-1 py-1 font-semibold text-right "></td>
                       <td className="border px-1 py-1 text-center">
                         Max. Present:
                       </td>
-                      <td className="border px-1 py-1 text-center">
-                        {/* Max. Present count here */}
-                      </td>
+                      <td className="border px-1 py-1 text-center"></td>
                       <td className="border px-1 py-1 text-center"></td>
                       <td className="border px-1 py-1 text-center"></td>
                       <td className="border px-1 py-1 text-center"></td>
                       <td className="border px-1 py-1 text-center"></td>
                     </tr>
 
-                    {/* summary of results */}
                     <tr>
                       <td className="border px-1 py-1 font-semibold text-right ">
                         No. of Students:
@@ -572,9 +557,9 @@ const MergeMarksheet = () => {
                 </div>
               </div>
             </div>
-          </>
-        )
-      )}
+          )
+        )}
+      </div>
     </div>
   );
 };

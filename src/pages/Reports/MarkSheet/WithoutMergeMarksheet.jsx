@@ -9,7 +9,7 @@ const WithoutMergeMarksheet = () => {
   //   const {
   //     Data: { studentInfo, TotalResult, summary },
   //   } = JSON.parse(localStorage.getItem("mergeResult"));
-  const { Data } = JSON.parse(localStorage.getItem("result"));
+  const { Data } = JSON.parse(localStorage.getItem("withoutMerge"));
   console.log("marksheet", Data);
   return (
     <>
@@ -26,7 +26,7 @@ const WithoutMergeMarksheet = () => {
         className="relative max-w-full mx-auto py-6 px-1 bg-white printable-content"
       >
         {Data.map(({ studentInfo, TotalResult, summary }, index) => (
-          <div key={index}>
+          <div key={index} className="min-h-screen">
             <div className="mb-8 flex flex-col items-center">
               <h1 className="text-xl font-bold">
                 {transcriptData.school.name}
