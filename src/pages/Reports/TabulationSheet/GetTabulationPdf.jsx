@@ -272,23 +272,24 @@ const GetTabulationPdf = () => {
       data.flatMap((student) => student.TotalResult.map((sub) => sub.subject))
     )
   );
+  console.log(data.length);
+  
   // const result = data.filter((student) =>
   //   ["4", "5"].includes(student.studentInfo.class)
   // );
   const className = data[0].studentInfo.class;
 
-  // console.log("data:", data);
+   console.log("data:", data);
   console.log("tabulation:", className);
 
-  // if (!className) {
-  //   return <p>Data not found!!!</p>;
-  // }
+ 
+ 
 
   return (
     <div>
-      {className === 4 || (className === 5 && <h1>Class 4 & 5</h1>)}
+      { (className == 5 ||className==4) ?<h1>Class 4 & 5</h1>:
 
-      <div className="mt-20">
+       <div className="mt-20">
         <div className="overflow-x-auto">
           <table className="table-auto w-full border-collapse border border-gray-300">
             <thead className="text-xs">
@@ -400,7 +401,7 @@ const GetTabulationPdf = () => {
             </tbody>
           </table>
         </div>
-      </div>
+      </div> }
     </div>
   );
 };
