@@ -38,7 +38,7 @@ const MergeMarksheet = () => {
                 <h1 className="text-xl font-bold">
                   {transcriptData.school.name}
                 </h1>
-                <p className="text-lg font-semibold">Sadar Mymensingh</p>
+                <p className="text-lg font-semibold">Mymensingh</p>
                 <img
                   src="/vidyamoyee_logo.png"
                   alt="school logo"
