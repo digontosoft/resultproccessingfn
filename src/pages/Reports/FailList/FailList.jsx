@@ -269,39 +269,48 @@ const FailList = () => {
                     <th className="border border-gray-300 px-4 py-2">
                       Practical
                     </th>
+                    <th className="border border-gray-300 px-4 py-2">CA</th>
                     <th className="border border-gray-300 px-4 py-2">Total</th>
                     <th className="border border-gray-300 px-4 py-2">Fail</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {subjects.map((subject, i) => (
-                    <tr key={i}>
-                      <td className="border border-gray-300 px-4 py-2">
-                        {i + 1}
-                      </td>
-                      <td className="border border-gray-300 px-4 py-2">
-                        {subject?.subjectCode}
-                      </td>
-                      <td className="border border-gray-300 px-4 py-2">
-                        {subject?.subjectName}
-                      </td>
-                      <td className="border border-gray-300 px-4 py-2">
-                        {subject?.subjective}
-                      </td>
-                      <td className="border border-gray-300 px-4 py-2">
-                        {subject?.objective}
-                      </td>
-                      <td className="border border-gray-300 px-4 py-2">
-                        {subject?.practical}
-                      </td>
-                      <td className="border border-gray-300 px-4 py-2">
-                        {subject?.total}
-                      </td>
-                      <td className="border border-gray-300 px-4 py-2">
-                        {subject?.fail}
-                      </td>
-                    </tr>
-                  ))}
+                  {subjects.map(
+                    (subject, i) => (
+                      console.log("ca:", subject),
+                      (
+                        <tr key={i}>
+                          <td className="border border-gray-300 px-4 py-2">
+                            {i + 1}
+                          </td>
+                          <td className="border border-gray-300 px-4 py-2">
+                            {subject?.subjectCode}
+                          </td>
+                          <td className="border border-gray-300 px-4 py-2">
+                            {subject?.subjectName}
+                          </td>
+                          <td className="border border-gray-300 px-4 py-2">
+                            {subject?.subjective}
+                          </td>
+                          <td className="border border-gray-300 px-4 py-2">
+                            {subject?.objective}
+                          </td>
+                          <td className="border border-gray-300 px-4 py-2">
+                            {subject?.practical}
+                          </td>
+                          <td className="border border-gray-300 px-4 py-2">
+                            {subject?.ca}
+                          </td>
+                          <td className="border border-gray-300 px-4 py-2">
+                            {subject?.total}
+                          </td>
+                          <td className="border border-gray-300 px-4 py-2">
+                            {subject?.fail}
+                          </td>
+                        </tr>
+                      )
+                    )
+                  )}
                 </tbody>
               </table>
             </div>
