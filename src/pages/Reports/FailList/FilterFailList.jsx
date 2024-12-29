@@ -239,7 +239,7 @@ const FilterFailList = () => {
         // navigate(
         //   formData.is_merged ? "/get-merge-marksheet" : "/get-marksheet"
         // );
-        // localStorage.setItem("schoolInfo", JSON.stringify(schoolInfo));
+        localStorage.setItem("schoolInfo", JSON.stringify(schoolInfo));
         localStorage.setItem("failList", JSON.stringify(response.data));
         navigate("/fail-list");
         toast.success("Marksheet Generated Successfully");

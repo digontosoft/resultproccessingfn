@@ -125,7 +125,7 @@ import Logo from "../../../assets/school-logo.png";
 import { useEffect, useRef } from "react";
 import { useReactToPrint } from "react-to-print";
 
-const data = [
+const dataInfo = [
   { title: "Session", value: "2024" },
   { title: "Examination", value: "Test" },
   { title: "Shift", value: "Morning" },
@@ -136,21 +136,24 @@ const data = [
 
 const FailList = () => {
   const contentRef = useRef(null);
-  const reactToPrintFn = useReactToPrint({ content: () => contentRef.current });
+  const reactToPrintFn = useReactToPrint({ contentRef });
 
   // Retrieve data from localStorage
   // const storedData = localStorage.getItem("failList");
   const { data } = JSON.parse(localStorage.getItem("failList"));
+  const { className, group, section, session, shift, term } = JSON.parse(
+    localStorage.getItem("schoolInfo")
+  );
   // console.log("first", subjectInfo);
   // const subjects = parsedData.subjects || [];
   // const subjectName = parsedData.map((subject) => {
   //   subject.subjects;
   // });
   // const results = subjectName.map((result) => result);
-  // console.log("subjects:", subjectName);
+  console.log("failList:", data.length);
   return (
     <div className="p-6">
-      <div className="flex justify-end mt-20">
+      <div className="flex justify-end">
         <button
           onClick={reactToPrintFn}
           className="bg-blue-600 text-white px-2 py-1"
@@ -158,10 +161,7 @@ const FailList = () => {
           Print
         </button>
       </div>
-      <div
-        ref={contentRef}
-        className="relative max-w-full mx-auto p-6 bg-white"
-      >
+      <div ref={contentRef} className="relative max-w-full mx-auto bg-white">
         <section className="flex justify-between items-center space-y-10">
           <div>
             <img
@@ -174,29 +174,67 @@ const FailList = () => {
             <h1 className="text-2xl font-bold">
               Vidyamayee Govt. Girls High School
             </h1>
-            <p className="text-lg font-bold">Sadar, Mymensingh</p>
+            <p className="text-lg font-bold">Mymensingh</p>
             <p className="border border-gray-400 rounded-md p-2 text-lg font-semibold text-center uppercase">
-              Merit List
+              Fail List
             </p>
           </div>
-          {/* <div className="h-60">
-            <table className="min-w-full table-auto border-collapse border border-gray-300">
-              <tbody>
-                {data.map((row, index) => (
-                  <tr key={index} className="border border-gray-300">
-                    <td className="px-4 py-2 border border-gray-300 text-start text-sm">
-                      {row.title}
-                    </td>
-                    <td className="px-4 py-2 border border-gray-300 text-start text-sm">
-                      {row.value}
+          <div className="h-auto">
+            <div className="overflow-x-auto">
+              <table className="table-auto border-collapse border border-gray-300 w-full">
+                <tbody>
+                  <tr>
+                    <td className="border border-gray-300 px-4 py-2">Year</td>
+                    <td className="border border-gray-300 px-4 py-2">
+                      {session}
                     </td>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div> */}
+                  <tr>
+                    <td className="border border-gray-300 px-4 py-2">
+                      Examination
+                    </td>
+                    <td className="border border-gray-300 px-4 py-2">{term}</td>
+                  </tr>
+                  <tr>
+                    <td className="border border-gray-300 px-4 py-2">Class</td>
+                    <td className="border border-gray-300 px-4 py-2">
+                      {className}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="border border-gray-300 px-4 py-2">
+                      Section
+                    </td>
+                    <td className="border border-gray-300 px-4 py-2">
+                      {section}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="border border-gray-300 px-4 py-2">Shift</td>
+                    <td className="border border-gray-300 px-4 py-2">
+                      {shift}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="border border-gray-300 px-4 py-2">Group</td>
+                    <td className="border border-gray-300 px-4 py-2">
+                      {group}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="border border-gray-300 px-4 py-2">
+                      Fail Student
+                    </td>
+                    <td className="border border-gray-300 px-4 py-2">
+                      {data?.length}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </section>
-        <div className="container mx-auto px-4">
+        <div className="space-y-5">
           {data.map(({ studentInfo, subjects }, index) => (
             <div key={index} className="space-y-2">
               <div className="flex gap-5">
@@ -232,39 +270,34 @@ const FailList = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {subjects.map(
-                    (subject, i) => (
-                      console.log("first", subject?.subjectCode),
-                      (
-                        <tr key={i}>
-                          <td className="border border-gray-300 px-4 py-2">
-                            {i + 1}
-                          </td>
-                          <td className="border border-gray-300 px-4 py-2">
-                            {subject?.subjectCode}
-                          </td>
-                          <td className="border border-gray-300 px-4 py-2">
-                            {subject?.subjectName}
-                          </td>
-                          <td className="border border-gray-300 px-4 py-2">
-                            {subject?.subjective}
-                          </td>
-                          <td className="border border-gray-300 px-4 py-2">
-                            {subject?.objective}
-                          </td>
-                          <td className="border border-gray-300 px-4 py-2">
-                            {subject?.practical}
-                          </td>
-                          <td className="border border-gray-300 px-4 py-2">
-                            {subject?.total}
-                          </td>
-                          <td className="border border-gray-300 px-4 py-2">
-                            {subject?.fail}
-                          </td>
-                        </tr>
-                      )
-                    )
-                  )}
+                  {subjects.map((subject, i) => (
+                    <tr key={i}>
+                      <td className="border border-gray-300 px-4 py-2">
+                        {i + 1}
+                      </td>
+                      <td className="border border-gray-300 px-4 py-2">
+                        {subject?.subjectCode}
+                      </td>
+                      <td className="border border-gray-300 px-4 py-2">
+                        {subject?.subjectName}
+                      </td>
+                      <td className="border border-gray-300 px-4 py-2">
+                        {subject?.subjective}
+                      </td>
+                      <td className="border border-gray-300 px-4 py-2">
+                        {subject?.objective}
+                      </td>
+                      <td className="border border-gray-300 px-4 py-2">
+                        {subject?.practical}
+                      </td>
+                      <td className="border border-gray-300 px-4 py-2">
+                        {subject?.total}
+                      </td>
+                      <td className="border border-gray-300 px-4 py-2">
+                        {subject?.fail}
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
