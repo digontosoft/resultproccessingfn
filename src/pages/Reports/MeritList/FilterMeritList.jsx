@@ -19,7 +19,7 @@ const FilterMeritList = () => {
   });
 
   const currentYear = new Date().getFullYear();
-  const shifts = ["Morning", "Day"];
+  const shifts = ["All", "Morning", "Day"];
   const sessions = [currentYear, currentYear - 1, currentYear - 2];
   const classes = ["4", "5", "6", "7", "8", "9", "10"];
 
@@ -115,7 +115,11 @@ const FilterMeritList = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <FormSelect label="Section" name="section" options={["A", "B"]} />
+              <FormSelect
+                label="Section"
+                name="section"
+                options={["All", "A", "B"]}
+              />
               <FormSelect label="Shift" name="shift" options={shifts} />
               <FormSelect label="Session" name="session" options={sessions} />
               <FormSelect label="Term" name="term" options={termsData} />
