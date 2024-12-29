@@ -52,6 +52,15 @@ const FilterMeritList = () => {
     }));
   };
 
+  const schoolInfo = {
+    session: formData.session,
+    term: formData.term,
+    shift: formData.shift,
+    section: formData.section,
+    group: formData.group,
+    className: formData.className,
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Form submitted:", formData);

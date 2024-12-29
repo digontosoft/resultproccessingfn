@@ -3,8 +3,8 @@ import useSingleUser from "./useSingleUser";
 import { toast } from "react-toastify";
 import axios from "axios";
 
-const shifts = ["Morning", "Day"];
-const section = ["A", "B"];
+const shifts = ["All", "Morning", "Day"];
+const section = ["All", "A", "B"];
 
 const useUserProtectFilter = () => {
   const currentYear = new Date().getFullYear();
