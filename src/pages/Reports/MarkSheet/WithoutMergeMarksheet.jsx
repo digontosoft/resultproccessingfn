@@ -72,6 +72,14 @@ const WithoutMergeMarksheet = () => {
                         <span className="font-semibold">Name:</span>{" "}
                         {studentInfo.studentName}
                       </p>
+                      <p>
+                        <span className="font-semibold">Father's Name:</span>{" "}
+                        {studentInfo.fatherName}
+                      </p>
+                      <p>
+                        <span className="font-semibold">Mother's Name:</span>{" "}
+                        {studentInfo.motherName}
+                      </p>
                     </div>
 
                     <div className="mt-4 flex flex-wrap justify-between">

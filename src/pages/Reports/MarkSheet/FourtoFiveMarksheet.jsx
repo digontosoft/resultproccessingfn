@@ -351,6 +351,14 @@ const FourtoFiveMarksheet = () => {
                     <span className="font-semibold">Name:</span>{" "}
                     {studentInfo.studentName}
                   </p>
+                  <p>
+                    <span className="font-semibold">Father's Name:</span>{" "}
+                    {studentInfo.fatherName}
+                  </p>
+                  <p>
+                    <span className="font-semibold">Mother's Name:</span>{" "}
+                    {studentInfo?.motherName}
+                  </p>
                 </div>
 
                 <div className="mt-4 flex flex-wrap justify-between">
@@ -520,14 +528,26 @@ const FourtoFiveMarksheet = () => {
               </div>
 
               {/* Signature and Footer */}
-              <div className="mt-8 flex justify-between items-center">
-                <div>
-                  <p className="font-semibold">Date:</p>
-                  <p className="text-sm">{new Date().toLocaleDateString()}</p>
+              <div className="grid grid-cols-3 gap-4 mt-16 pt-8">
+                <div className="text-center flex flex-col items-center justify-end">
+                  <div className="border-t border-black mx-8 pt-1">
+                    Guardian's Signature
+                  </div>
                 </div>
-                <div className="flex flex-col items-center">
-                  <img src={signature} alt="Signature" className="w-16" />
-                  <p className="font-semibold">Principal</p>
+                <div className="text-center flex flex-col items-center justify-end">
+                  <div className="border-t border-black mx-8 pt-1">
+                    Class Teacher's Signature
+                  </div>
+                </div>
+                <div className="text-center flex flex-col items-center justify-end">
+                  <img
+                    src={signature}
+                    alt="signature"
+                    className="w-auto h-20 object-cover"
+                  />
+                  <div className="border-t border-black mx-8 pt-1">
+                    Headmaster's Signature
+                  </div>
                 </div>
               </div>
             </div>
