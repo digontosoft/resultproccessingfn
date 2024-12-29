@@ -124,6 +124,7 @@
 import Logo from "../../../assets/school-logo.png";
 import { useEffect, useRef } from "react";
 import { useReactToPrint } from "react-to-print";
+import signature from "../../../assets/signature.png";
 
 const dataInfo = [
   { title: "Session", value: "2024" },
@@ -161,7 +162,10 @@ const FailList = () => {
           Print
         </button>
       </div>
-      <div ref={contentRef} className="relative max-w-full mx-auto bg-white">
+      <div
+        ref={contentRef}
+        className="relative max-w-full mx-auto bg-white p-6"
+      >
         <section className="flex justify-between items-center space-y-10">
           <div>
             <img
@@ -302,6 +306,23 @@ const FailList = () => {
               </table>
             </div>
           ))}
+        </div>
+        <div className="grid grid-cols-2 gap-4 mt-16 pt-8">
+          <div className="text-center flex flex-col items-center justify-end">
+            <div className="border-t border-black mx-8 pt-1">
+              Class Teacher's Signature
+            </div>
+          </div>
+          <div className="text-center flex flex-col items-center justify-end">
+            <img
+              src={signature}
+              alt="signature"
+              className="w-auto h-20 object-cover"
+            />
+            <div className="border-t border-black mx-8 pt-1">
+              Headmaster's Signature
+            </div>
+          </div>
         </div>
       </div>
     </div>

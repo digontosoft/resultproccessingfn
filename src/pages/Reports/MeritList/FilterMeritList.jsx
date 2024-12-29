@@ -68,6 +68,7 @@ const FilterMeritList = () => {
     if (response.status === 200) {
       toast.success("Merit list generated successfully!");
       localStorage.setItem("meritList", JSON.stringify(response.data));
+      localStorage.setItem("meritListSchoolInfo", JSON.stringify(schoolInfo));
       navigate("/merit-list");
     }
     console.log("individual-result:", response.data);

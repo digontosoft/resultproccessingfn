@@ -1,6 +1,7 @@
 import Logo from "../../../assets/school-logo.png";
 import { useEffect, useRef, useState } from "react";
 import { useReactToPrint } from "react-to-print";
+import signature from "../../../assets/signature.png";
 
 const data = [
   { title: "Session", value: "2024" },
@@ -23,6 +24,9 @@ const MeritList = () => {
       setMeritList(parsedData.data || []); // Use the "data" field from the response
     }
   }, []);
+  const { className, group, section, session, shift, term } = JSON.parse(
+    localStorage.getItem("meritListSchoolInfo")
+  );
   return (
     <div className="p-6">
       <div className="flex justify-end mt-20">
@@ -37,16 +41,54 @@ const MeritList = () => {
         ref={contentRef}
         className="relative max-w-full mx-auto p-6 bg-white"
       >
-        <section className="flex justify-between items-center space-y-10">
-          <div>
-            <img
-              src={Logo}
-              alt="viddamoty school logo"
-              className="h-32 w-32 object-cover"
-            />
+        <section className="flex items-center justify-between">
+          <div className="h-auto">
+            <table className="table-auto border-collapse border border-gray-300 w-full">
+              <tbody>
+                <tr>
+                  <td className="border border-gray-300 px-4 py-2">Year</td>
+                  <td className="border border-gray-300 px-4 py-2">
+                    {session}
+                  </td>
+                </tr>
+                <tr>
+                  <td className="border border-gray-300 px-4 py-2">
+                    Examination
+                  </td>
+                  <td className="border border-gray-300 px-4 py-2">{term}</td>
+                </tr>
+                <tr>
+                  <td className="border border-gray-300 px-4 py-2">Class</td>
+                  <td className="border border-gray-300 px-4 py-2">
+                    {className}
+                  </td>
+                </tr>
+                <tr>
+                  <td className="border border-gray-300 px-4 py-2">Section</td>
+                  <td className="border border-gray-300 px-4 py-2">
+                    {section}
+                  </td>
+                </tr>
+                <tr>
+                  <td className="border border-gray-300 px-4 py-2">Shift</td>
+                  <td className="border border-gray-300 px-4 py-2">{shift}</td>
+                </tr>
+                <tr>
+                  <td className="border border-gray-300 px-4 py-2">Group</td>
+                  <td className="border border-gray-300 px-4 py-2">{group}</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
           <div className="grid justify-items-center gap-4">
-            <h1 className="text-2xl font-bold">
+            <div className="flex items-center justify-center">
+              <img
+                src={Logo}
+                alt="viddamoty school logo"
+                className="h-32 w-32 object-cover"
+              />
+            </div>
+            <h1 className="text-2xl font-bold text-center">
               Vidyamayee Govt. Girls High School
             </h1>
             <p className="text-lg font-bold">Sadar, Mymensingh</p>
@@ -54,24 +96,9 @@ const MeritList = () => {
               Merit List
             </p>
           </div>
-          <div className="h-60">
-            <table className="min-w-full table-auto border-collapse border border-gray-300">
-              <tbody>
-                {data.map((row, index) => (
-                  <tr key={index} className="border border-gray-300">
-                    <td className="px-4 py-2 border border-gray-300 text-start text-sm">
-                      {row.title}
-                    </td>
-                    <td className="px-4 py-2 border border-gray-300 text-start text-sm">
-                      {row.value}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          <div></div>
         </section>
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto mt-10">
           <table className="min-w-full table-auto border-collapse border border-gray-300">
             <thead>
               <tr>
@@ -132,6 +159,23 @@ const MeritList = () => {
               ))}
             </tbody>
           </table>
+        </div>
+        <div className="grid grid-cols-2 gap-4 mt-16 pt-8">
+          <div className="text-center flex flex-col items-center justify-end">
+            <div className="border-t border-black mx-8 pt-1">
+              Class Teacher's Signature
+            </div>
+          </div>
+          <div className="text-center flex flex-col items-center justify-end">
+            <img
+              src={signature}
+              alt="signature"
+              className="w-auto h-20 object-cover"
+            />
+            <div className="border-t border-black mx-8 pt-1">
+              Headmaster's Signature
+            </div>
+          </div>
         </div>
       </div>
     </div>
