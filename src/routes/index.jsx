@@ -47,6 +47,7 @@ import WithoutMergeMarksheet from "../pages/Reports/MarkSheet/WithoutMergeMarksh
 import FourtoFiveMarksheet from "../pages/Reports/MarkSheet/FourtoFiveMarksheet";
 import FilterMeritList from "../pages/Reports/MeritList/FilterMeritList";
 import FilterFailList from "../pages/Reports/FailList/FilterFailList";
+import ResultSummaryFilter from "../pages/ResultSummary/ResultSummaryFilter";
 
 const AppRoutes = () => {
   const { auth } = useAuth();
@@ -68,7 +69,7 @@ const AppRoutes = () => {
     { path: "/filter-merit-list", element: <FilterMeritList /> },
     { path: "/filter-fail-list", element: <FilterFailList /> },
     // { path: "/merit-list", element: <MeritList /> },
-    { path: "/result-summary", element: <ResultSummary /> },
+    { path: "/result-summary", element: <ResultSummaryFilter /> },
     { path: "/teachers", element: <TeacherList /> },
     { path: "/subject-entry", element: <SubjectEntry /> },
     { path: "/subject-list", element: <SubjectList /> },
@@ -159,6 +160,7 @@ const AppRoutes = () => {
       <Route path="*" element={<NotFound />} />
       <Route path="/merit-list" element={<MeritList />} />
       <Route path="/fail-list" element={<FailList />} />
+      <Route path="/result-summary-list" element={<ResultSummary />} />
     </Routes>
   );
 };

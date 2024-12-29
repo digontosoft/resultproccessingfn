@@ -113,7 +113,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
         { to: "/tabulation-sheet", label: "Tabulation Sheet" },
         { to: "/filter-merit-list", label: "Merit List" },
         { to: "/filter-fail-list", label: "Fail List" },
-        // { to: "/result-summary", label: "Result Summary" },
+        { to: "/result-summary", label: "Result Summary" },
       ],
       activeCondition:
         pathname.includes === "report" || pathname.includes("dashboard"),
@@ -152,7 +152,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
         { to: "/tabulation-sheet", label: "Tabulation Sheet" },
         { to: "/filter-merit-list", label: "Merit List" },
         { to: "/filter-fail-list", label: "Fail List" },
-        // { to: "/result-summary", label: "Result Summary" },
+        { to: "/result-summary", label: "Result Summary" },
       ],
       activeCondition:
         pathname.includes === "report" || pathname.includes("dashboard"),
