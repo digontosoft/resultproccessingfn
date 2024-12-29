@@ -1,226 +1,288 @@
-import { useForm, Controller } from "react-hook-form";
-import useUserProtectFilter from "../../hooks/useUserProtectFilter";
-import { useState } from "react";
-import { groupData, termsData } from "../../data/data";
+// const data = [
+//   { serial: 1, information: "Class A", numberOfStudents: 30, percentage: 75 },
+//   { serial: 2, information: "Class B", numberOfStudents: 25, percentage: 62.5 },
+//   { serial: 3, information: "Class C", numberOfStudents: 20, percentage: 50 },
 
+import { useRef } from "react";
+import { useReactToPrint } from "react-to-print";
+import Logo from "../../assets/school-logo.png";
+import signature from "../../assets/signature.png";
+// ];
 const ResultSummary = () => {
-  const { filterClass, filterSection, filterShift, sessions } =
-    useUserProtectFilter();
-  const [filterGroup, setFilterGroup] = useState([]);
-  const [formData, setFormData] = useState({
-    // className: "",
-    // group: "",
-    // section: "",
-    // shift: "",
-    // session: "",
-    // term: "",
-    is_merged: false,
-  });
+  const contentRef = useRef(null);
+  const reactToPrintFn = useReactToPrint({ contentRef });
   const {
-    control,
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm();
-  const handelClass = (value) => {
-    // console.log(value);
-
-    if (value == 10) {
-      setFilterGroup(groupData.slice(1, 4));
-    } else {
-      setFilterGroup(groupData.slice(0, 1));
-    }
-  };
-
-  const onSubmit = (data) => {
-    console.log({ data, ...formData });
-  };
-  const handleInputChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]:
-        type === "checkbox"
-          ? checked
-          : name === "is_merged"
-          ? value === "true"
-          : value,
-    }));
-  };
-  const FormSelect = ({ label, name, options, onChange }) => (
-    <div className="mb-4.5">
-      <label className="mb-3 block text-black dark:text-white">{label}</label>
-      <Controller
-        name={name}
-        control={control}
-        rules={{ required: "This field is required" }}
-        render={({ field }) => (
-          <select
-            {...field}
-            onChange={(e) => {
-              field.onChange(e);
-              if (onChange) onChange(e.target.value);
-            }}
-            className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-          >
-            <option value="">Select {label}</option>
-            {Array.isArray(options)
-              ? options.map((option) => (
-                  <option
-                    key={typeof option === "object" ? option.value : option}
-                    value={typeof option === "object" ? option.value : option}
-                  >
-                    {typeof option === "object" ? option.label : option}
-                  </option>
-                ))
-              : null}
-          </select>
-        )}
-      />
-      {errors[name] && (
-        <span className="text-red-500 text-sm mt-1">
-          {errors[name].message}
-        </span>
-      )}
-    </div>
-  );
+    data: {
+      totalStudents,
+      totalExaminees,
+      totalPassed,
+      totalFailed,
+      passPercentage,
+      gpaBreakdown,
+      gpaPercentages,
+      failPercentage,
+      classInfo,
+    },
+  } = JSON.parse(localStorage.getItem("resultSummary"));
+  // console.log("resultSummary", data);
   return (
     <div>
-      <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-        <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
-          <h3 className="font-medium text-black dark:text-white">
-            Result Summary
-          </h3>
-        </div>
-        <form className="space-y-4 px-6" onSubmit={handleSubmit(onSubmit)}>
+      <div className="flex justify-end mt-20">
+        <button
+          onClick={reactToPrintFn}
+          className="bg-blue-600 text-white px-2 py-1"
+        >
+          Print
+        </button>
+      </div>
+      <div
+        ref={contentRef}
+        className="relative max-w-full mx-auto bg-white p-6 space-y-5"
+      >
+        <section className="flex justify-between items-center space-y-10">
           <div>
-            <label className="mb-3 block text-black dark:text-white">
-              Select Year
-            </label>
-            <select
-              {...register("year", { required: "Please select a year" })}
-              className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-            >
-              <option value="">Select Year</option>
-              {sessions.map((session) => (
-                <option key={session} value={session}>
-                  {session}
-                </option>
-              ))}
-            </select>
-            {errors.year && (
-              <span className="text-red-500 text-sm mt-1">
-                {errors.year.message}
-              </span>
-            )}
+            <img
+              src={Logo}
+              alt="vidyamayee school logo"
+              className="h-32 w-32 object-cover"
+            />
           </div>
-          <FormSelect label="Exam" name="term" options={termsData} />
-          <div>
-            <label className="mb-3 block text-black dark:text-white">
-              Select Shift
-            </label>
-            <select
-              {...register("shift", { required: "Please select a shift" })}
-              className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-            >
-              <option value="">Select Shift</option>
-              {filterShift.map((shift) => (
-                <option key={shift} value={shift}>
-                  {shift}
-                </option>
-              ))}
-            </select>
-            {errors.shift && (
-              <span className="text-red-500 text-sm mt-1">
-                {errors.shift.message}
-              </span>
-            )}
+          <div className="grid justify-items-center gap-4">
+            <h1 className="text-2xl font-bold">
+              Vidyamayee Govt. Girls High School
+            </h1>
+            <p className="text-lg font-bold">Mymensingh</p>
+            <p className="border border-gray-400 rounded-md p-2 text-lg font-semibold text-center uppercase">
+              Result Summary
+            </p>
           </div>
-          <div>
-            <label className="mb-3 block text-black dark:text-white">
-              Select Class
-            </label>
-            <select
-              {...register("class", { required: "Please select a class" })}
-              // onChange={(e) => handleFilterChange(e.target.value)}
-              className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-              onChange={(e) => handelClass(e.target.value)}
-            >
-              <option value="" hidden>
-                Select Class
-              </option>
-              {filterClass.map((option) => (
-                <option key={option._id} value={option.value}>
-                  {option.name}
-                </option>
-              ))}
-            </select>
-            {errors.class && (
-              <span className="text-red-500 text-sm mt-1">
-                {errors.class.message}
-              </span>
-            )}
-          </div>
-          <FormSelect label="Section" name="section" options={filterSection} />
-          <div>
-            <label className="mb-3 block text-black dark:text-white">
-              Group
-            </label>
-            <select
-              {...register("group", { required: "Group is required" })}
-              className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-              onChange={(e) => handleFourthSubjectFilter(e.target.value)}
-            >
-              <option value="">Select Group</option>
-              {groupData.map((item) => (
-                <option key={item} value={item}>
-                  {item}
-                </option>
-              ))}
-            </select>
-            {errors.group && (
-              <span className="text-red-500 text-sm mt-1">
-                {errors.group.message}
-              </span>
-            )}
-          </div>
-          <div>
-            <label className="mb-3 block text-black dark:text-white">
-              Marge Result
-            </label>
-            <div className="flex items-center space-x-4">
-              <label className="flex items-center space-x-2">
-                <input
-                  type="radio"
-                  name="is_merged"
-                  value="true"
-                  checked={formData.is_merged === true}
-                  onChange={handleInputChange}
-                  className="form-radio text-blue-600"
-                />
-                <span>Yes</span>
-              </label>
-              <label className="flex items-center space-x-2">
-                <input
-                  type="radio"
-                  name="is_merged"
-                  value="false"
-                  checked={formData.is_merged === false}
-                  onChange={handleInputChange}
-                  className="form-radio text-blue-600"
-                />
-                <span>No</span>
-              </label>
+          <div className="h-auto">
+            <div className="overflow-x-auto">
+              <table className="table-auto border-collapse border border-gray-300 w-full">
+                <tbody>
+                  <tr>
+                    <td className="border border-gray-300 px-4 py-2">Year</td>
+                    <td className="border border-gray-300 px-4 py-2">
+                      {classInfo?.session}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="border border-gray-300 px-4 py-2">
+                      Examination
+                    </td>
+                    <td className="border border-gray-300 px-4 py-2">
+                      {classInfo?.term}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="border border-gray-300 px-4 py-2">Class</td>
+                    <td className="border border-gray-300 px-4 py-2">
+                      {classInfo?.className}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="border border-gray-300 px-4 py-2">
+                      Section
+                    </td>
+                    <td className="border border-gray-300 px-4 py-2">
+                      {classInfo?.section}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="border border-gray-300 px-4 py-2">Shift</td>
+                    <td className="border border-gray-300 px-4 py-2">
+                      {classInfo?.shift}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="border border-gray-300 px-4 py-2">Group</td>
+                    <td className="border border-gray-300 px-4 py-2">
+                      {classInfo?.group}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
-          <button
-            className={`inline-flex items-center justify-center bg-primary py-3 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10`}
-            type="submit"
-          >
-            Submit
-          </button>
-        </form>
+        </section>
+
+        <div className="overflow-x-auto">
+          <table className="min-w-full border-collapse border border-gray-200">
+            <thead>
+              <tr>
+                <th className="border border-gray-300 px-4 py-2">Serial</th>
+                <th className="border border-gray-300 px-4 py-2">
+                  Information
+                </th>
+                <th className="border border-gray-300 px-4 py-2">
+                  Number of Students
+                </th>
+                <th className="border border-gray-300 px-4 py-2">
+                  Percentage (%)
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="hover:bg-gray-100">
+                <td className="border border-gray-300 px-4 py-2 text-center">
+                  1
+                </td>
+                <td className="border border-gray-300 px-4 py-2 text-center">
+                  Examinee
+                </td>
+                <td className="border border-gray-300 px-4 py-2 text-center">
+                  {totalExaminees}
+                </td>
+                <td className="border border-gray-300 px-4 py-2 text-center">
+                  {(totalExaminees / totalStudents) * 100}%
+                </td>
+              </tr>
+              <tr className="hover:bg-gray-100">
+                <td className="border border-gray-300 px-4 py-2 text-center">
+                  2
+                </td>
+                <td className="border border-gray-300 px-4 py-2 text-center">
+                  Absent
+                </td>
+                <td className="border border-gray-300 px-4 py-2 text-center">
+                  0
+                </td>
+                <td className="border border-gray-300 px-4 py-2 text-center">
+                  0%
+                </td>
+              </tr>
+              <tr className="hover:bg-gray-100">
+                <td className="border border-gray-300 px-4 py-2 text-center">
+                  3
+                </td>
+                <td className="border border-gray-300 px-4 py-2 text-center">
+                  Passed
+                </td>
+                <td className="border border-gray-300 px-4 py-2 text-center">
+                  {totalPassed}
+                </td>
+                <td className="border border-gray-300 px-4 py-2 text-center">
+                  {passPercentage}%
+                </td>
+              </tr>
+              <tr className="hover:bg-gray-100">
+                <td className="border border-gray-300 px-4 py-2 text-center">
+                  4
+                </td>
+                <td className="border border-gray-300 px-4 py-2 text-center">
+                  Not Passed
+                </td>
+                <td className="border border-gray-300 px-4 py-2 text-center">
+                  {totalFailed}
+                </td>
+                <td className="border border-gray-300 px-4 py-2 text-center">
+                  {failPercentage}%
+                </td>
+              </tr>
+              <tr className="hover:bg-gray-100">
+                <td className="border border-gray-300 px-4 py-2 text-center">
+                  5
+                </td>
+                <td className="border border-gray-300 px-4 py-2 text-center">
+                  GPA 5
+                </td>
+                <td className="border border-gray-300 px-4 py-2 text-center">
+                  {gpaBreakdown["GPA 5.00"]}
+                </td>
+                <td className="border border-gray-300 px-4 py-2 text-center">
+                  {gpaPercentages["GPA 5.00"]}%
+                </td>
+              </tr>
+              <tr className="hover:bg-gray-100">
+                <td className="border border-gray-300 px-4 py-2 text-center">
+                  6
+                </td>
+                <td className="border border-gray-300 px-4 py-2 text-center">
+                  GPA 4
+                </td>
+                <td className="border border-gray-300 px-4 py-2 text-center">
+                  {gpaBreakdown["GPA 4.00-4.99"]}
+                </td>
+                <td className="border border-gray-300 px-4 py-2 text-center">
+                  {gpaPercentages["GPA 4.00-4.99"]}%
+                </td>
+              </tr>
+              <tr className="hover:bg-gray-100">
+                <td className="border border-gray-300 px-4 py-2 text-center">
+                  7
+                </td>
+                <td className="border border-gray-300 px-4 py-2 text-center">
+                  GPA 3.50-3.99
+                </td>
+                <td className="border border-gray-300 px-4 py-2 text-center">
+                  {gpaBreakdown["GPA 3.50-3.99"]}
+                </td>
+                <td className="border border-gray-300 px-4 py-2 text-center">
+                  {gpaPercentages["GPA 3.50-3.99"]}%
+                </td>
+              </tr>
+              <tr className="hover:bg-gray-100">
+                <td className="border border-gray-300 px-4 py-2 text-center">
+                  8
+                </td>
+                <td className="border border-gray-300 px-4 py-2 text-center">
+                  GPA 3.00-3.49
+                </td>
+                <td className="border border-gray-300 px-4 py-2 text-center">
+                  {gpaBreakdown["GPA 3.00-3.49"]}
+                </td>
+                <td className="border border-gray-300 px-4 py-2 text-center">
+                  {gpaPercentages["GPA 3.00-3.49"]}%
+                </td>
+              </tr>
+              <tr className="hover:bg-gray-100">
+                <td className="border border-gray-300 px-4 py-2 text-center">
+                  9
+                </td>
+                <td className="border border-gray-300 px-4 py-2 text-center">
+                  GPA 2.00-2.99
+                </td>
+                <td className="border border-gray-300 px-4 py-2 text-center">
+                  {gpaBreakdown["GPA 2.00-2.99"]}
+                </td>
+                <td className="border border-gray-300 px-4 py-2 text-center">
+                  {gpaPercentages["GPA 2.00-2.99"]}%
+                </td>
+              </tr>
+              <tr className="hover:bg-gray-100">
+                <td className="border border-gray-300 px-4 py-2 text-center">
+                  10
+                </td>
+                <td className="border border-gray-300 px-4 py-2 text-center">
+                  Below GPA 2
+                </td>
+                <td className="border border-gray-300 px-4 py-2 text-center">
+                  {gpaBreakdown["Below GPA 2.00"]}
+                </td>
+                <td className="border border-gray-300 px-4 py-2 text-center">
+                  {gpaPercentages["Below GPA 2.00"]}%
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div className="grid grid-cols-2 gap-4 mt-16 pt-8">
+          <div className="text-center flex flex-col items-center justify-end">
+            <div className="border-t border-black mx-8 pt-1">
+              Class Teacher's Signature
+            </div>
+          </div>
+          <div className="text-center flex flex-col items-center justify-end">
+            <img
+              src={signature}
+              alt="signature"
+              className="w-auto h-20 object-cover"
+            />
+            <div className="border-t border-black mx-8 pt-1">
+              Headmaster's Signature
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

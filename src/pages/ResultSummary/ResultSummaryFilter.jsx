@@ -4,10 +4,12 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { groupData, termsData } from "../../data/data";
+import GlobalLoadingState from "../../components/GlobalLoadingState/GlobalLoadingState";
 
 const ResultSummaryFilter = () => {
   const navigate = useNavigate();
   const url = import.meta.env.VITE_SERVER_BASE_URL;
+  const [isLoading, setIsLoading] = useState(false);
   const [selectedClass, setSelectedClass] = useState("");
   const [formData, setFormData] = useState({
     className: "",
@@ -16,7 +18,6 @@ const ResultSummaryFilter = () => {
     shift: "",
     session: "",
     term: "",
-    is_merged: false,
   });
 
   const currentYear = new Date().getFullYear();
@@ -55,15 +56,21 @@ const ResultSummaryFilter = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     console.log("Form submitted:", formData);
-    const response = await axios.post(`${url}/result/merit-list`, formData);
+    const response = await axios.post(`${url}/result/result-summary`, formData);
     if (response.status === 200) {
-      toast.success("Merit list generated successfully!");
-      localStorage.setItem("meritList", JSON.stringify(response.data));
-      navigate("/merit-list");
+      toast.success("Result summary generated successfully!");
+      localStorage.setItem("resultSummary", JSON.stringify(response.data));
+      navigate("/result-summary-list");
+      console.log("individual-result:", response.data);
     }
-    console.log("individual-result:", response.data);
+    setIsLoading(false);
   };
+
+  if (isLoading) {
+    return <GlobalLoadingState />;
+  }
 
   const FormSelect = ({ label, name, options, required = true }) => (
     <div className="mb-4.5">
@@ -95,7 +102,7 @@ const ResultSummaryFilter = () => {
       <div className="mt-4 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
         <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
           <h3 className="font-medium text-black dark:text-white">
-            Get Student Result
+            Result Summary
           </h3>
         </div>
 
@@ -120,55 +127,6 @@ const ResultSummaryFilter = () => {
               <FormSelect label="Shift" name="shift" options={shifts} />
               <FormSelect label="Session" name="session" options={sessions} />
               <FormSelect label="Term" name="term" options={termsData} />
-              <div className="flex flex-col space-y-2">
-                <label className="text-lg font-semibold">Merge Result?</label>
-                <div className="flex items-center space-x-4">
-                  {/* <label className="flex items-center space-x-2">
-                    <input
-                      type="radio"
-                      name="is_merged"
-                      value={true}
-                      checked={formData.is_merged === true}
-                      onChange={handleInputChange}
-                      className="form-radio text-blue-600"
-                    />
-                    <span>Yes</span>
-                  </label>
-                  <label className="flex items-center space-x-2">
-                    <input
-                      type="radio"
-                      name="is_merged"
-                      value={false}
-                      checked={formData.is_merged === false}
-                      onChange={handleInputChange}
-                      className="form-radio text-blue-600"
-                    />
-                    <span>No</span>
-                  </label> */}
-                  <label className="flex items-center space-x-2">
-                    <input
-                      type="radio"
-                      name="is_merged"
-                      value="true"
-                      checked={formData.is_merged === true}
-                      onChange={handleInputChange}
-                      className="form-radio text-blue-600"
-                    />
-                    <span>Yes</span>
-                  </label>
-                  <label className="flex items-center space-x-2">
-                    <input
-                      type="radio"
-                      name="is_merged"
-                      value="false"
-                      checked={formData.is_merged === false}
-                      onChange={handleInputChange}
-                      className="form-radio text-blue-600"
-                    />
-                    <span>No</span>
-                  </label>
-                </div>
-              </div>
             </div>
 
             <button
