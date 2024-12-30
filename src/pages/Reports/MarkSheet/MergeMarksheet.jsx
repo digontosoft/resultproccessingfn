@@ -6,6 +6,10 @@ const MergeMarksheet = () => {
   const contentRef = useRef(null);
   const reactToPrintFn = useReactToPrint({ contentRef });
 
+  const { shift, session, term } = JSON.parse(
+    localStorage.getItem("schoolInfo")
+  );
+
   const { Data } = JSON.parse(localStorage.getItem("mergeResult"));
   console.log("mergeResult", Data);
   return (
@@ -20,7 +24,7 @@ const MergeMarksheet = () => {
       </div>
       <div
         ref={contentRef}
-        className="relative max-w-full mx-auto py-6 px-1 bg-white"
+        className="relative max-w-full mx-auto p-2 bg-white"
       >
         {Data.map(
           (
@@ -50,7 +54,9 @@ const MergeMarksheet = () => {
                 <h2 className="text-lg font-semibold border-[1px] border-black px-2 rounded-md">
                   ACADEMIC TRANSCRIPT
                 </h2>
-                <p className="text-md font-semibold">Pre-Test, 2024</p>
+                <p className="text-md font-semibold">
+                  {term}, {session}
+                </p>
               </div>
 
               <div className="">
@@ -286,8 +292,8 @@ const MergeMarksheet = () => {
                       </th>
                     </tr>
                     <tr>
-                      <th className="border px-1 py-1">Subjects</th>
-                      <th className="border px-1 py-1">Full Marks</th>
+                      {/* <th className="border px-1 py-1">Subjects</th>
+                      <th className="border px-1 py-1">Full Marks</th> */}
                       <th className="border px-1 py-1">Subjective</th>
 
                       <th className="border px-1 py-1">Objective</th>
@@ -305,10 +311,10 @@ const MergeMarksheet = () => {
                   <tbody>
                     {annualResults.map((result, index) => (
                       <tr key={index}>
-                        <td className="border px-1 py-1">{result.subject}</td>
+                        {/* <td className="border px-1 py-1">{result.subject}</td>
                         <td className="border px-1 py-1 text-center">
                           {result.fullMarks}
-                        </td>
+                        </td> */}
                         <td className="border px-1 py-1 text-center">
                           {result.subjective}
                         </td>
@@ -343,12 +349,12 @@ const MergeMarksheet = () => {
                     ))}
 
                     <tr>
-                      <td className="border px-1 py-1 font-semibold text-right ">
+                      {/* <td className="border px-1 py-1 font-semibold text-right ">
                         Total Marks:
                       </td>
                       <td className="border px-1 py-1 text-center">
                         {summary?.totalMarks}
-                      </td>
+                      </td> */}
                       <td className="border px-1 py-1 text-center"></td>
                       <td className="border px-1 py-1 text-center"></td>
                       <td className="border px-1 py-1 text-center"></td>
@@ -380,8 +386,8 @@ const MergeMarksheet = () => {
                       <td className="border px-1 py-1 text-center"></td>
                       <td className="border px-1 py-1 text-center"></td>
                       <td className="border px-1 py-1 text-center"></td>
-                      <td className="border px-1 py-1 text-center"></td>
-                      <td className="border px-1 py-1 text-center"></td>
+                      {/* <td className="border px-1 py-1 text-center"></td>
+                      <td className="border px-1 py-1 text-center"></td> */}
                     </tr>
 
                     <tr>
@@ -422,8 +428,8 @@ const MergeMarksheet = () => {
                       </th>
                     </tr>
                     <tr>
-                      <th className="border px-1 py-1">Subjects</th>
-                      <th className="border px-1 py-1">Full Marks</th>
+                      {/* <th className="border px-1 py-1">Subjects</th>
+                      <th className="border px-1 py-1">Full Marks</th> */}
                       <th className="border px-1 py-1">Subjective</th>
 
                       <th className="border px-1 py-1">Objective</th>
@@ -440,10 +446,10 @@ const MergeMarksheet = () => {
                   <tbody>
                     {TotalResult.map((result, index) => (
                       <tr key={index}>
-                        <td className="border px-1 py-1">{result.subject}</td>
+                        {/* <td className="border px-1 py-1">{result.subject}</td>
                         <td className="border px-1 py-1 text-center">
                           {result.fullMarks}
-                        </td>
+                        </td> */}
                         <td className="border px-1 py-1 text-center">
                           {result.subjective}
                         </td>
@@ -477,12 +483,12 @@ const MergeMarksheet = () => {
                     ))}
 
                     <tr>
-                      <td className="border px-1 py-1 font-semibold text-right ">
+                      {/* <td className="border px-1 py-1 font-semibold text-right ">
                         Total Marks:
                       </td>
                       <td className="border px-1 py-1 text-center">
                         {summary?.totalMarks}
-                      </td>
+                      </td> */}
                       <td className="border px-1 py-1 text-center"></td>
                       <td className="border px-1 py-1 text-center"></td>
                       <td className="border px-1 py-1 text-center"></td>
@@ -512,8 +518,8 @@ const MergeMarksheet = () => {
                       <td className="border px-1 py-1 text-center"></td>
                       <td className="border px-1 py-1 text-center"></td>
                       <td className="border px-1 py-1 text-center"></td>
-                      <td className="border px-1 py-1 text-center"></td>
-                      <td className="border px-1 py-1 text-center"></td>
+                      {/* <td className="border px-1 py-1 text-center"></td>
+                      <td className="border px-1 py-1 text-center"></td> */}
                     </tr>
 
                     <tr>
