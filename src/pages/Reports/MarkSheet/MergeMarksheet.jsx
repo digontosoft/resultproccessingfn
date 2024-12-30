@@ -12,6 +12,7 @@ const MergeMarksheet = () => {
 
   const { Data } = JSON.parse(localStorage.getItem("mergeResult"));
   console.log("mergeResult", Data);
+
   return (
     <div>
       <div className="flex justify-end">
@@ -164,44 +165,51 @@ const MergeMarksheet = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {halfYearlyResults.map((result, index) => (
-                      <tr key={index}>
-                        <td className="border px-1 py-1">{result.subject}</td>
-                        <td className="border px-1 py-1 text-center">
-                          {result.fullMarks}
-                        </td>
-                        <td className="border px-1 py-1 text-center">
-                          {result.subjective}
-                        </td>
+                    {halfYearlyResults.map(
+                      (result, index) => (
+                        console.log("totalMarks:", result.totalMarks),
+                        (
+                          <tr key={index}>
+                            <td className="border px-1 py-1">
+                              {result.subject}
+                            </td>
+                            <td className="border px-1 py-1 text-center">
+                              {result.fullMarks}
+                            </td>
+                            <td className="border px-1 py-1 text-center">
+                              {result.subjective}
+                            </td>
 
-                        <td className="border px-1 py-1 text-center">
-                          {result.objective}
-                        </td>
-                        <td className="border px-1 py-1 text-center">
-                          {result.practical}
-                        </td>
-                        <td className="border px-1 py-1 text-center">
-                          {result["70%"]}
-                        </td>
-                        <td className="border px-1 py-1 text-center">
-                          {result["CA(30%)"]}
-                        </td>
+                            <td className="border px-1 py-1 text-center">
+                              {result.objective}
+                            </td>
+                            <td className="border px-1 py-1 text-center">
+                              {result.practical}
+                            </td>
+                            <td className="border px-1 py-1 text-center">
+                              {result["70%"]}
+                            </td>
+                            <td className="border px-1 py-1 text-center">
+                              {result["CA(30%)"]}
+                            </td>
 
-                        <td className="border px-1 py-1 text-center">
-                          {result.totalMarks}
-                        </td>
-                        <td className="border px-1 py-1 text-center">
-                          {result.grade}
-                        </td>
-                        <td className="border px-1 py-1 text-center">
-                          {result.GP}
-                        </td>
-                        <td className="border px-1 py-1 text-center">
-                          {result.Highest}
-                        </td>
-                        <td className="border px-1 py-1 text-center"></td>
-                      </tr>
-                    ))}
+                            <td className="border px-1 py-1 text-center">
+                              {result.totalMarks}
+                            </td>
+                            <td className="border px-1 py-1 text-center">
+                              {result.grade}
+                            </td>
+                            <td className="border px-1 py-1 text-center">
+                              {result.GP}
+                            </td>
+                            <td className="border px-1 py-1 text-center">
+                              {result.Highest}
+                            </td>
+                            <td className="border px-1 py-1 text-center"></td>
+                          </tr>
+                        )
+                      )
+                    )}
 
                     {/* Totla marks row */}
                     <tr>
@@ -217,7 +225,10 @@ const MergeMarksheet = () => {
                       <td className="border px-1 py-1 text-center"></td>
                       <td className="border px-1 py-1 text-center"></td>
                       <td className="border px-1 py-1 text-center">
-                        {summary?.obtainedMarks}
+                        {halfYearlyResults.reduce(
+                          (sum, subject) => sum + subject.totalMarks,
+                          0
+                        )}
                       </td>
                       <td className="border px-1 py-1 text-center"></td>
                       <td className="border px-1 py-1 text-center"></td>
@@ -361,7 +372,10 @@ const MergeMarksheet = () => {
                       <td className="border px-1 py-1 text-center"></td>
                       <td className="border px-1 py-1 text-center"></td>
                       <td className="border px-1 py-1 text-center">
-                        {summary?.obtainedMarks}
+                        {annualResults.reduce(
+                          (sum, subject) => sum + subject.totalMarks,
+                          0
+                        )}
                       </td>
                       <td className="border px-1 py-1 text-center"></td>
                       <td className="border px-1 py-1 text-center"></td>
