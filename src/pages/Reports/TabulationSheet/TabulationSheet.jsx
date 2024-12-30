@@ -57,25 +57,24 @@ const TabulationSheet = () => {
       console.log("individual-result:", response.data);
 
       if (response.status === 200) {
-        // localStorage.setItem("tabulation", JSON.stringify(response.data));
-        // localStorage.setItem(
-        //   "tabulation-schoolInfo",
-        //   JSON.stringify(schoolInfo)
-        // );
-        const newTabUrl = "/get-tabulation-sheet";
-        const newTab = window.open(newTabUrl, "_blank");
-        if (newTab) {
-          localStorage.setItem("tabulation", JSON.stringify(response.data));
-          localStorage.setItem(
-            "tabulation-schoolInfo",
-            JSON.stringify(schoolInfo)
-          );
-          newTab.focus();
-        } else {
-          toast.error(
-            "Unable to open a new tab. Please allow pop-ups in your browser."
-          );
-        }
+        localStorage.setItem("tabulation", JSON.stringify(response.data));
+        localStorage.setItem(
+          "tabulation-schoolInfo",
+          JSON.stringify(schoolInfo)
+        );
+        navigate("/get-tabulation-sheet");
+        // const newTabUrl = "/get-tabulation-sheet";
+        // const newTab = window.open(newTabUrl, "_blank");
+        // if (newTab) {
+        //   localStorage.setItem("tabulation", JSON.stringify(response.data));
+        //   localStorage.setItem(
+        //     "tabulation-schoolInfo",
+        //     JSON.stringify(schoolInfo)
+        //   );
+        //   newTab.focus();
+        // } else {
+        //   alert("Please allow pop-ups in your browser.");
+        // }
       }
     } catch (error) {
       console.log(error);
