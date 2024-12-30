@@ -30,6 +30,7 @@ const MergeMarksheet = () => {
               summary,
               annualResults,
               halfYearlyResults,
+              meritPosition,
             },
             index
           ) => (
@@ -92,7 +93,7 @@ const MergeMarksheet = () => {
                   </p>
                   <p>
                     <span className="font-semibold">Merit:</span>{" "}
-                    {studentInfo?.merit}
+                    {meritPosition}
                   </p>
                   <p>
                     <span className="font-semibold">Type:</span>{" "}
@@ -207,11 +208,11 @@ const MergeMarksheet = () => {
                       <td className="border px-1 py-1 text-center"></td>
                       <td className="border px-1 py-1 text-center"></td>
                       <td className="border px-1 py-1 text-center"></td>
+                      <td className="border px-1 py-1 text-center"></td>
+                      <td className="border px-1 py-1 text-center"></td>
                       <td className="border px-1 py-1 text-center">
                         {summary?.obtainedMarks}
                       </td>
-                      <td className="border px-1 py-1 text-center"></td>
-                      <td className="border px-1 py-1 text-center"></td>
                       <td className="border px-1 py-1 text-center"></td>
                       <td className="border px-1 py-1 text-center"></td>
                       <td className="border px-1 py-1 text-center"></td>
@@ -271,7 +272,9 @@ const MergeMarksheet = () => {
                       <td className="border py-1 font-semibold text-right">
                         Remark:
                       </td>
-                      <td colSpan={4}>{summary?.remark}</td>
+                      <td colSpan={4} className="text-center">
+                        {summary?.remark}
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -349,11 +352,11 @@ const MergeMarksheet = () => {
                       <td className="border px-1 py-1 text-center"></td>
                       <td className="border px-1 py-1 text-center"></td>
                       <td className="border px-1 py-1 text-center"></td>
+                      <td className="border px-1 py-1 text-center"></td>
+                      <td className="border px-1 py-1 text-center"></td>
                       <td className="border px-1 py-1 text-center">
                         {summary?.obtainedMarks}
                       </td>
-                      <td className="border px-1 py-1 text-center"></td>
-                      <td className="border px-1 py-1 text-center"></td>
                       <td className="border px-1 py-1 text-center"></td>
                       <td className="border px-1 py-1 text-center"></td>
                       <td className="border px-1 py-1 text-center"></td>
@@ -405,7 +408,9 @@ const MergeMarksheet = () => {
                       <td className="border py-1 font-semibold text-right">
                         Remark:
                       </td>
-                      <td colSpan={4}>{summary?.remark}</td>
+                      <td colSpan={4} className="text-center">
+                        {summary?.remark}
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -481,11 +486,11 @@ const MergeMarksheet = () => {
                       <td className="border px-1 py-1 text-center"></td>
                       <td className="border px-1 py-1 text-center"></td>
                       <td className="border px-1 py-1 text-center"></td>
+                      <td className="border px-1 py-1 text-center"></td>
+                      <td className="border px-1 py-1 text-center"></td>
                       <td className="border px-1 py-1 text-center">
                         {summary?.obtainedMarks}
                       </td>
-                      <td className="border px-1 py-1 text-center"></td>
-                      <td className="border px-1 py-1 text-center"></td>
                       <td className="border px-1 py-1 text-center"></td>
                       <td className="border px-1 py-1 text-center"></td>
                       <td className="border px-1 py-1 text-center"></td>
@@ -535,7 +540,9 @@ const MergeMarksheet = () => {
                       <td className="border py-1 font-semibold text-right">
                         Remark:
                       </td>
-                      <td colSpan={4}>{summary?.remark}</td>
+                      <td colSpan={4} className="text-center">
+                        {summary?.remark}
+                      </td>
                     </tr>
                   </tbody>
                 </table>

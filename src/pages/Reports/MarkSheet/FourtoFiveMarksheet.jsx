@@ -521,7 +521,13 @@ const FourtoFiveMarksheet = () => {
                       <td className="border px-1 py-1 text-center">
                         {summary?.gpa}
                       </td>
-                      <td className="border px-1 py-1 text-center"></td>
+                      {/* <td className="border px-1 py-1 text-center"></td> */}
+                      <td className="border py-1 font-semibold text-right">
+                        Remark:
+                      </td>
+                      <td colSpan={4} className="text-center">
+                        {summary?.remark}
+                      </td>
                     </tr>
                   </tbody>
                 </table>

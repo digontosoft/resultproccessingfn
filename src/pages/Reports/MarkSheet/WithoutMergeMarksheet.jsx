@@ -287,7 +287,9 @@ const WithoutMergeMarksheet = () => {
                           <td className="border py-1 font-semibold text-right">
                             Remark:
                           </td>
-                          <td colSpan={4}>{summary?.remark}</td>
+                          <td colSpan={4} className="text-center">
+                            {summary?.remark}
+                          </td>
                         </tr>
                       </tbody>
                     </table>
