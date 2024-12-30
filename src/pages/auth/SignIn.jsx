@@ -5,9 +5,11 @@ import { toast } from "react-toastify";
 import { api } from "../../api";
 import useAuth from "../../hooks/useAuth";
 import Logo from "../../assets/school-logo.png";
+import GlobalLoadingState from "../../components/GlobalLoadingState/GlobalLoadingState";
 
 const SignIn = () => {
   const [showPass, setShowPass] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { setAuth } = useAuth();
 
@@ -22,6 +24,7 @@ const SignIn = () => {
   };
 
   const onSubmit = async (data) => {
+    setIsLoading(true);
     try {
       const response = await api.post("/login", { ...data });
       console.log(response);
@@ -41,6 +44,8 @@ const SignIn = () => {
     } catch (error) {
       console.log(error);
       toast.error(`Error: ${error.response.data.message}`);
+    } finally {
+      setIsLoading(false);
     }
 
     // const token = crypto.randomUUID().toString();
@@ -56,6 +61,10 @@ const SignIn = () => {
     // setAuth({ ...authData });
     // navigate('/');
   };
+
+  if (isLoading) {
+    return <GlobalLoadingState />;
+  }
 
   return (
     <div className="">
@@ -159,11 +168,13 @@ const SignIn = () => {
               </div>
 
               <div className="mb-5">
-                <input
+                <button
                   type="submit"
-                  value="Sign In"
                   className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90"
-                />
+                  disabled={isLoading}
+                >
+                  {isLoading ? "Loading..." : "Sign In"}
+                </button>
               </div>
             </form>
 

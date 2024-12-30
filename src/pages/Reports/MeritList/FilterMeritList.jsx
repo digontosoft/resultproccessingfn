@@ -3,10 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { groupData, termsData } from "../../../data/data";
 import axios from "axios";
 import { toast } from "react-toastify";
+import GlobalLoadingState from "../../../components/GlobalLoadingState/GlobalLoadingState";
 
 const FilterMeritList = () => {
   const navigate = useNavigate();
   const url = import.meta.env.VITE_SERVER_BASE_URL;
+  const [isLoading, setIsLoading] = useState(false);
   const [selectedClass, setSelectedClass] = useState("");
   const [formData, setFormData] = useState({
     className: "",
@@ -64,6 +66,7 @@ const FilterMeritList = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Form submitted:", formData);
+    setIsLoading(true);
     const response = await axios.post(`${url}/result/merit-list`, formData);
     if (response.status === 200) {
       toast.success("Merit list generated successfully!");
@@ -71,8 +74,13 @@ const FilterMeritList = () => {
       localStorage.setItem("meritListSchoolInfo", JSON.stringify(schoolInfo));
       navigate("/merit-list");
     }
+    setIsLoading(false);
     console.log("individual-result:", response.data);
   };
+
+  if (isLoading) {
+    return <GlobalLoadingState />;
+  }
 
   const FormSelect = ({ label, name, options, required = true }) => (
     <div className="mb-4.5">
