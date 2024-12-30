@@ -45,16 +45,37 @@ const MarkSheetFilter = () => {
     try {
       const response = await axios.post(`${url}/result/marksheet`, formData);
       if (response.status === 200) {
-        formData.is_merged
-          ? localStorage.setItem("mergeResult", JSON.stringify(response.data))
-          : localStorage.setItem("withoutMerge", JSON.stringify(response.data));
+        // formData.is_merged
+        //   ? localStorage.setItem("mergeResult", JSON.stringify(response.data))
+        //   : localStorage.setItem("withoutMerge", JSON.stringify(response.data));
 
-        navigate(
-          formData.is_merged ? "/get-merge-marksheet" : "/get-marksheet"
-        );
-        localStorage.setItem("schoolInfo", JSON.stringify(schoolInfo));
+        // navigate(
+        //   formData.is_merged ? "/get-merge-marksheet" : "/get-marksheet"
+        // );
+        const newTabUrl = formData.is_merged
+          ? "/get-merge-marksheet"
+          : "/get-marksheet";
+        const newTab = window.open(newTabUrl, "_blank");
+        if (newTab) {
+          // Pass the marksheet data to the new tab via localStorage
+          formData.is_merged
+            ? localStorage.setItem("mergeResult", JSON.stringify(response.data))
+            : localStorage.setItem(
+                "withoutMerge",
+                JSON.stringify(response.data)
+              );
+
+          newTab.focus();
+        } else {
+          toast.error(
+            "Unable to open a new tab. Please allow pop-ups in your browser."
+          );
+        }
+
         toast.success("Marksheet Generated Successfully");
-        console.log("marksheet:", response.data);
+        // localStorage.setItem("schoolInfo", JSON.stringify(schoolInfo));
+        // toast.success("Marksheet Generated Successfully");
+        // console.log("marksheet:", response.data);
       }
     } catch (error) {
       console.error("Error submitting form:", error);

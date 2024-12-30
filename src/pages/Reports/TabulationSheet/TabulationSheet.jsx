@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { api } from "../../../api";
 import { groupData, termsData } from "../../../data/data";
 import GlobalLoadingState from "../../../components/GlobalLoadingState/GlobalLoadingState";
+import { toast } from "react-toastify";
 
 const TabulationSheet = () => {
   const navigate = useNavigate();
@@ -56,12 +57,25 @@ const TabulationSheet = () => {
       console.log("individual-result:", response.data);
 
       if (response.status === 200) {
-        localStorage.setItem("tabulation", JSON.stringify(response.data));
-        localStorage.setItem(
-          "tabulation-schoolInfo",
-          JSON.stringify(schoolInfo)
-        );
-        navigate("/get-tabulation-sheet");
+        // localStorage.setItem("tabulation", JSON.stringify(response.data));
+        // localStorage.setItem(
+        //   "tabulation-schoolInfo",
+        //   JSON.stringify(schoolInfo)
+        // );
+        const newTabUrl = "/get-tabulation-sheet";
+        const newTab = window.open(newTabUrl, "_blank");
+        if (newTab) {
+          localStorage.setItem("tabulation", JSON.stringify(response.data));
+          localStorage.setItem(
+            "tabulation-schoolInfo",
+            JSON.stringify(schoolInfo)
+          );
+          newTab.focus();
+        } else {
+          toast.error(
+            "Unable to open a new tab. Please allow pop-ups in your browser."
+          );
+        }
       }
     } catch (error) {
       console.log(error);
