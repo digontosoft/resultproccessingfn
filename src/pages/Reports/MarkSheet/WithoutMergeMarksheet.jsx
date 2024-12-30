@@ -42,24 +42,54 @@ const WithoutMergeMarksheet = () => {
             {Data.map(
               ({ studentInfo, TotalResult, summary, meritPosition }, index) => (
                 <div key={index} className="min-h-screen">
-                  <div className="mb-8 flex flex-col items-center">
-                    <h1 className="text-xl font-bold">
-                      {transcriptData.school.name}
-                    </h1>
-                    <p className="text-lg font-semibold">Mymensingh</p>
-                    <img
-                      src="/vidyamoyee_logo.png"
-                      alt="school logo"
-                      width={80}
-                      height={80}
-                      className=""
-                    />
-                    <h2 className="text-lg font-semibold border-[1px] border-black px-2 rounded-md">
-                      ACADEMIC TRANSCRIPT
-                    </h2>
-                    <p className="text-md font-semibold">
-                      {term}, {session}
-                    </p>
+                  <div className="flex justify-between w-full">
+                    <div className="mb-8 flex flex-col items-center mx-auto">
+                      <h1 className="text-xl font-bold">
+                        {transcriptData.school.name}
+                      </h1>
+                      <p className="text-lg font-semibold">Mymensingh</p>
+                      <img
+                        src="/vidyamoyee_logo.png"
+                        alt="school logo"
+                        width={80}
+                        height={80}
+                        className=""
+                      />
+                      <h2 className="text-lg font-semibold border-[1px] border-black px-2 rounded-md">
+                        ACADEMIC TRANSCRIPT
+                      </h2>
+                      <p className="text-md font-semibold">
+                        {term}, {session}
+                      </p>
+                    </div>
+                    <div className="text-xs mb-6">
+                      <div className="overflow-x-auto">
+                        <table className="min-w-full border">
+                          <thead>
+                            <tr>
+                              <th className="border">Grade</th>
+                              <th className="border">Marks</th>
+                              <th className="border">GP</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {transcriptData.gradeScale.map((grade, index) => (
+                              <tr key={index}>
+                                <td className="border px-1 text-center">
+                                  {grade.grade}
+                                </td>
+                                <td className="border px-1 text-center">
+                                  {grade.marks}
+                                </td>
+                                <td className="border px-1 text-center">
+                                  {grade.gp}
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
                   </div>
 
                   <div className="">
@@ -112,35 +142,6 @@ const WithoutMergeMarksheet = () => {
                         <span className="font-semibold">Type:</span>{" "}
                         {transcriptData.student.studentType}
                       </p>
-                    </div>
-                  </div>
-
-                  <div className="text-xs mb-6 absolute top-4 right-4">
-                    <div className="overflow-x-auto">
-                      <table className="min-w-full border">
-                        <thead>
-                          <tr className="">
-                            <th className="border">Grade</th>
-                            <th className="border">Marks</th>
-                            <th className="border">GP</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {transcriptData.gradeScale.map((grade, index) => (
-                            <tr key={index}>
-                              <td className="border px-1 text-center">
-                                {grade.grade}
-                              </td>
-                              <td className="border px-1 text-center">
-                                {grade.marks}
-                              </td>
-                              <td className="border px-1 text-center">
-                                {grade.gp}
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
                     </div>
                   </div>
 
@@ -311,7 +312,7 @@ const WithoutMergeMarksheet = () => {
                       <img
                         src={signature}
                         alt="signature"
-                        className="w-auto h-20 object-cover"
+                        className="w-auto h-12 object-cover"
                       />
                       <div className="border-t border-black mx-8 pt-1">
                         Headmaster's Signature
