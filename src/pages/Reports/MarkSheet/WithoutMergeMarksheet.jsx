@@ -122,8 +122,7 @@ const WithoutMergeMarksheet = () => {
                         {studentInfo.section}
                       </p>
                       <p>
-                        <span className="font-semibold">Shift:</span>{" "}
-                        {studentInfo.shift}
+                        <span className="font-semibold">Shift:</span> {shift}
                       </p>
 
                       <p>
@@ -151,7 +150,7 @@ const WithoutMergeMarksheet = () => {
                       <thead>
                         <tr className="text-center">
                           <th colSpan="11" className="text-center">
-                            Half Yearly
+                            {term}
                           </th>
                         </tr>
                         <tr>

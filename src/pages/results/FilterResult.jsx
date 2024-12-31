@@ -22,9 +22,9 @@ const FilterResult = ({
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        const response = await axios.get(`${url}/getAllSub`);
+        const response = await axios.get(`${url}/subjects`);
         setSubjects(response.data.data);
-        // console.log("subjects:", response.data.data);
+        console.log("subjects:", response.data.data);
       } catch (error) {
         console.error("Error fetching students:", error);
       }

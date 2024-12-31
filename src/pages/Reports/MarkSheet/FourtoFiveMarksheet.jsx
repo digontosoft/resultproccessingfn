@@ -108,8 +108,7 @@ const FourtoFiveMarksheet = () => {
                     {studentInfo.section}
                   </p>
                   <p>
-                    <span className="font-semibold">Shift:</span>{" "}
-                    {studentInfo.shift}
+                    <span className="font-semibold">Shift:</span> {shift}
                   </p>
 
                   <p>
