@@ -45,6 +45,7 @@ const MarkSheetFilter = () => {
     try {
       const response = await axios.post(`${url}/result/marksheet`, formData);
       if (response.status === 200) {
+        localStorage.setItem("schoolInfo", JSON.stringify(schoolInfo));
         formData.is_merged
           ? localStorage.setItem("mergeResult", JSON.stringify(response.data))
           : localStorage.setItem("withoutMerge", JSON.stringify(response.data));

@@ -119,6 +119,9 @@ const FoutToFiveMergeMarksheet = () => {
                     <span className="font-semibold">Section:</span>{" "}
                     {studentInfo.section}
                   </p>
+                  <p>
+                    <span className="font-semibold">Shift:</span> {shift}
+                  </p>
 
                   <p>
                     <span className="font-semibold">Group:</span>{" "}
