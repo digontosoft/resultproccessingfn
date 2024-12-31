@@ -32,41 +32,27 @@ const ResultList = () => {
       selSelectedMark((prev) => [...prev, id]);
     } else {
       // Remove student ID from selectedStudents
-      selSelectedMark((prev) => prev.filter((item) => item!== id));
+      selSelectedMark((prev) => prev.filter((item) => item !== id));
     }
   };
-console.log(selectedMark);
+  console.log(selectedMark);
 
   //   // Fetch students
-  useEffect(() => {
-    const fetchStudents = async () => {
-      setIsLoading(true);
-      try {
-        const response = await axios.get(`${url}/getAllStudent`);
-        setStudents(response.data.data);
-      } catch (error) {
-        console.error("Error fetching students:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchStudents = async () => {
+  //     setIsLoading(true);
+  //     try {
+  //       const response = await axios.get(`${url}/getAllStudent`);
+  //       setStudents(response.data.data);
+  //     } catch (error) {
+  //       console.error("Error fetching students:", error);
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   };
 
-    fetchStudents();
-  }, [url]);
-
-  const getAllResult = async () => {
-    try {
-      const response = await axios.get(`${url}/result/get_all`);
-      setResults(response.data.data);
-     // console.log("result:", response.data.data);
-    } catch (error) {
-      console.error("Error fetching results:", error);
-    }
-  };
-
-  useEffect(() => {
-    getAllResult();
-  }, [url]);
+  //   fetchStudents();
+  // }, [url]);
 
   const deleteManyResult = async () => {
     try {
@@ -180,6 +166,24 @@ console.log(selectedMark);
     // console.log("criteria", criteria);
   };
 
+  const getAllResult = async (data) => {
+    // console.log("resultsData:", data);
+    setIsLoading(true);
+    try {
+      const response = await axios.post(`${url}/result/get_all`, data);
+      setResults(response.data.data);
+      console.log("result:", response.data.data);
+    } catch (error) {
+      console.error("Error fetching results:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // useEffect(() => {
+  //   getAllResult();
+  // }, [url]);
+
   useEffect(() => {
     if (getUser.userType === "teacher" || getUser.userType === "operator") {
       const data = results.filter(
@@ -236,6 +240,7 @@ console.log(selectedMark);
         <div className="p-6.5 space-y-5">
           <FilterResult
             onFilter={handleFilter}
+            getResults={getAllResult}
             handleFilterChange={handleFilterChange}
             filteredSubjects={filteredSubjects}
             filterClass={filterClass}
@@ -303,9 +308,11 @@ console.log(selectedMark);
               </tr>
             </thead>
             <tbody>
-              {filteredResults
-                .sort((a, b) => a.roll - b.roll)
-                ?.map((result, i) => {
+              {
+                // filteredResults
+                //   .sort((a, b) => a.roll - b.roll)
+                //   ?
+                results.map((result, i) => {
                   const classes = "p-4 border-b border-blue-gray-50";
 
                   return (
@@ -358,7 +365,8 @@ console.log(selectedMark);
                       </td>
                     </tr>
                   );
-                })}
+                })
+              }
             </tbody>
           </table>
         </div>

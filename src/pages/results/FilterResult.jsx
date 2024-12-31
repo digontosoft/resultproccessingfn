@@ -5,6 +5,7 @@ import { termsData } from "../../data/data";
 
 const FilterResult = ({
   onFilter,
+  getResults,
   handleFilterChange,
   filteredSubjects,
   filterClass,
@@ -35,6 +36,7 @@ const FilterResult = ({
 
   const onSubmit = (data) => {
     onFilter(data); // Pass filter criteria to parent component
+    getResults(data);
   };
 
   return (
