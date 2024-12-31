@@ -137,7 +137,7 @@ const FourtoFiveMarksheet = () => {
                   <thead>
                     <tr className="text-center">
                       <th colSpan="7" className="text-center">
-                        Half Yearly
+                        {term}
                       </th>
                     </tr>
                     <tr>
