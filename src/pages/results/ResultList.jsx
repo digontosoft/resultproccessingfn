@@ -228,7 +228,7 @@ const ResultList = () => {
     setFilteredSubjects(filtered);
   };
   // console.log("subjects:", results);
-  if (isLoading) return <GlobalLoadingState />;
+  // if (isLoading) return <GlobalLoadingState />;
   // console.log("filtert fjf",filteredResults);
 
   return (
@@ -307,67 +307,74 @@ const ResultList = () => {
                 </th>
               </tr>
             </thead>
-            <tbody>
-              {
-                // filteredResults
-                //   .sort((a, b) => a.roll - b.roll)
-                //   ?
-                results.map((result, i) => {
-                  const classes = "p-4 border-b border-blue-gray-50";
+            {isLoading ? (
+              <GlobalLoadingState />
+            ) : (
+              <tbody>
+                {
+                  // filteredResults
+                  //   .sort((a, b) => a.roll - b.roll)
+                  //   ?
 
-                  return (
-                    <tr key={result._id}>
-                      <td className={classes}>
-                        <input
-                          type="checkbox"
-                          onChange={(e) => handleCheckboxChange(e, result._id)}
-                          checked={selectedMark.includes(result._id)}
-                        />
-                      </td>
-                      <td className={classes}>{i + 1}</td>
-                      <td className={classes}>{result?.studentId}</td>
-                      <td className={classes}>{result?.roll}</td>
-                      <td className={classes}>{result?.className}</td>
-                      <td className={classes}>
-                        {result?.studentName || "Unknown"}
-                      </td>
-                      <td className={classes}>{result?.shift}</td>
-                      <td className={classes}>{result?.section}</td>
-                      <td className={classes}>{result?.term}</td>
-                      <td className={classes}>{result?.subjectName}</td>
-                      <td className={classes}>{result?.subjective}</td>
-                      <td className={classes}>{result?.objective}</td>
-                      <td className={classes}>{result?.practical}</td>
-                      <td className={classes}>{result?.classAssignment}</td>
-                      <td className={classes}>
-                        <div className="flex gap-3">
-                          <button
-                            className="text-blue-500"
-                            onClick={() => openEditModal(result)}
-                          >
-                            <img
-                              src="/edit.svg"
-                              alt="edit icon"
-                              className="h-5 w-5"
-                            />
-                          </button>
-                          <button
-                            className="text-red-500"
-                            onClick={() => openDeleteModal(result._id)}
-                          >
-                            <img
-                              src="/delete.svg"
-                              alt="delete icon"
-                              className="h-5 w-5"
-                            />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })
-              }
-            </tbody>
+                  results.map((result, i) => {
+                    const classes = "p-4 border-b border-blue-gray-50";
+
+                    return (
+                      <tr key={result._id}>
+                        <td className={classes}>
+                          <input
+                            type="checkbox"
+                            onChange={(e) =>
+                              handleCheckboxChange(e, result._id)
+                            }
+                            checked={selectedMark.includes(result._id)}
+                          />
+                        </td>
+                        <td className={classes}>{i + 1}</td>
+                        <td className={classes}>{result?.studentId}</td>
+                        <td className={classes}>{result?.roll}</td>
+                        <td className={classes}>{result?.className}</td>
+                        <td className={classes}>
+                          {result?.studentName || "Unknown"}
+                        </td>
+                        <td className={classes}>{result?.shift}</td>
+                        <td className={classes}>{result?.section}</td>
+                        <td className={classes}>{result?.term}</td>
+                        <td className={classes}>{result?.subjectName}</td>
+                        <td className={classes}>{result?.subjective}</td>
+                        <td className={classes}>{result?.objective}</td>
+                        <td className={classes}>{result?.practical}</td>
+                        <td className={classes}>{result?.classAssignment}</td>
+                        <td className={classes}>
+                          <div className="flex gap-3">
+                            <button
+                              className="text-blue-500"
+                              onClick={() => openEditModal(result)}
+                            >
+                              <img
+                                src="/edit.svg"
+                                alt="edit icon"
+                                className="h-5 w-5"
+                              />
+                            </button>
+                            <button
+                              className="text-red-500"
+                              onClick={() => openDeleteModal(result._id)}
+                            >
+                              <img
+                                src="/delete.svg"
+                                alt="delete icon"
+                                className="h-5 w-5"
+                              />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })
+                }
+              </tbody>
+            )}
           </table>
         </div>
       </div>
