@@ -56,7 +56,7 @@ const FilterMeritList = () => {
 
   const schoolInfo = {
     session: formData.session,
-    term: formData.term,
+    term: formData.is_merged ? "Half Yearly + Annual" : formData.term,
     shift: formData.shift,
     section: formData.section,
     group: formData.group,
