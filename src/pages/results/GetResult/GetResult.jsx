@@ -42,6 +42,15 @@ const GetResult = () => {
     }
   };
 
+  const individualSchoolInfo = {
+    session: formData.session,
+    term: formData.term,
+    shift: formData.shift,
+    section: formData.section,
+    group: formData.group,
+    className: formData.className,
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Form submitted:", formData);
@@ -50,6 +59,10 @@ const GetResult = () => {
       console.log("individual-result:", response.data);
 
       if (response.status === 200) {
+        localStorage.setItem(
+          "individualSchoolInfo",
+          JSON.stringify(individualSchoolInfo)
+        );
         localStorage.setItem("result", JSON.stringify(response.data));
         navigate("/get-result/transcript");
       }

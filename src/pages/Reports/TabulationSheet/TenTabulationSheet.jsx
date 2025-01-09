@@ -180,7 +180,7 @@
 
 import React, { useState, useEffect } from "react";
 
-const TabulationSheet = () => {
+const TenTabulationSheet = () => {
   const [subjects, setSubjects] = useState([]);
   const [students, setStudents] = useState([]);
 
@@ -265,7 +265,7 @@ const TabulationSheet = () => {
 
   return (
     <div className="overflow-auto">
-      <table className="min-w-full border-collapse border border-gray-300">
+      {/* <table className="min-w-full border-collapse border border-gray-300">
         <thead>
           <tr>
             <th className="border border-gray-300 p-2">Roll</th>
@@ -345,9 +345,10 @@ const TabulationSheet = () => {
             </tr>
           ))}
         </tbody>
-      </table>
+      </table> */}
+      <p>Class Ten Tabulation</p>
     </div>
   );
 };
 
-export default TabulationSheet;
+export default TenTabulationSheet;

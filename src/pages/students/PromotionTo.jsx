@@ -2,10 +2,13 @@ import axios from "axios";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import useUserProtectFilter from "../../hooks/useUserProtectFilter";
+import { groupData } from "../../data/data";
 
 const PromotionTo = ({ rollRangeStudent }) => {
+  console.log("rollRangeStudent:", rollRangeStudent);
   const url = import.meta.env.VITE_SERVER_BASE_URL;
-  const { filterClass, filterSection, filterShift } = useUserProtectFilter();
+  const { filterClass, filterSection, filterShift, sessions } =
+    useUserProtectFilter();
 
   // Initialize formData state with default values
   const [formData, setFormData] = useState(
@@ -15,6 +18,8 @@ const PromotionTo = ({ rollRangeStudent }) => {
       section: "",
       shift: "",
       roll: "",
+      group: "",
+      year: "",
     }))
   );
 
@@ -33,10 +38,42 @@ const PromotionTo = ({ rollRangeStudent }) => {
   };
 
   // Handle form submission
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     const payload = { promotedStudent: formData };
+  //     const response = await axios.post(`${url}/student-promotion`, payload);
+
+  //     if (response.status === 200) {
+  //       toast.success("Students promoted successfully!");
+  //       console.log("Response Data:", response.data);
+  //     }
+  //   } catch (err) {
+  //     console.error("Promotion Error:", err);
+  //     toast.error("Failed to promote students.");
+  //   }
+  // };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Filter out incomplete objects
+    const sanitizedFormData = formData.filter((data) => {
+      // Check if all fields have non-empty, non-undefined values
+      return Object.values(data).every(
+        (value) => value !== "" && value !== undefined
+      );
+    });
+
+    if (sanitizedFormData.length === 0) {
+      toast.error("Please complete all fields before submitting.");
+      return;
+    }
+    const payload = { promotedStudent: sanitizedFormData };
+    console.log("promotion:", payload);
+
     try {
-      const payload = { promotedStudent: formData };
+      const payload = { promotedStudent: sanitizedFormData };
       const response = await axios.post(`${url}/student-promotion`, payload);
 
       if (response.status === 200) {
@@ -66,6 +103,24 @@ const PromotionTo = ({ rollRangeStudent }) => {
                   <input
                     type="text"
                     value={student.class}
+                    disabled
+                    className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm"
+                  />
+                </div>
+                <div>
+                  <label>Group</label>
+                  <input
+                    type="text"
+                    value={student.group}
+                    disabled
+                    className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm"
+                  />
+                </div>
+                <div>
+                  <label>Session</label>
+                  <input
+                    type="text"
+                    value={student.year}
                     disabled
                     className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm"
                   />
@@ -140,6 +195,40 @@ const PromotionTo = ({ rollRangeStudent }) => {
                     {filterSection.map((sectionData) => (
                       <option key={sectionData} value={sectionData}>
                         {sectionData}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label>Group</label>
+                  <select
+                    value={data.group}
+                    onChange={(e) =>
+                      handleChange(data.id, "group", e.target.value)
+                    }
+                    className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm"
+                  >
+                    <option value="">Select Group</option>
+                    {groupData.map((group) => (
+                      <option key={group} value={group}>
+                        {group}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label>Session</label>
+                  <select
+                    value={data.year}
+                    onChange={(e) =>
+                      handleChange(data.id, "year", e.target.value)
+                    }
+                    className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm"
+                  >
+                    <option value="">Select Session</option>
+                    {sessions.map((session) => (
+                      <option key={session} value={session}>
+                        {session}
                       </option>
                     ))}
                   </select>

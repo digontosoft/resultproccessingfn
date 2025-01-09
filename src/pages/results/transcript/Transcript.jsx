@@ -12,6 +12,9 @@ const Transcript = () => {
   const reactToPrintFn = useReactToPrint({ contentRef });
   const [results, setResults] = useState([]);
   const url = import.meta.env.VITE_SERVER_BASE_URL;
+  const { shift, session, term } = JSON.parse(
+    localStorage.getItem("individualSchoolInfo")
+  );
 
   const {
     Data: { studentInfo, TotalResult, summary },
@@ -60,7 +63,7 @@ const Transcript = () => {
               <h1 className="text-xl font-bold">
                 {transcriptData.school.name}
               </h1>
-              <p className="text-lg font-semibold">Sadar Mymensingh</p>
+              <p className="text-lg font-semibold">Mymensingh</p>
               <img
                 src="/vidyamoyee_logo.png"
                 alt="school logo"
@@ -71,7 +74,9 @@ const Transcript = () => {
               <h2 className="text-lg font-semibold border-[1px] border-black px-2 rounded-md">
                 ACADEMIC TRANSCRIPT
               </h2>
-              <p className="text-md font-semibold">Pre-Test, 2024</p>
+              <p className="text-md font-semibold">
+                {term}, {session}
+              </p>
             </div>
 
             {/* Student Information */}
@@ -95,6 +100,9 @@ const Transcript = () => {
                 <p>
                   <span className="font-semibold">Section:</span>{" "}
                   {studentInfo.section}
+                </p>
+                <p>
+                  <span className="font-semibold">Shift:</span> {shift}
                 </p>
 
                 <p>

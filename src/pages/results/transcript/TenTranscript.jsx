@@ -5,7 +5,9 @@ import signature from "../../../assets/signature.png";
 const TenTranscript = () => {
   const contentRef = useRef(null);
   const reactToPrintFn = useReactToPrint({ contentRef });
-
+  const { shift, session, term } = JSON.parse(
+    localStorage.getItem("individualSchoolInfo")
+  );
   const {
     Data: { studentInfo, TotalResult, summary },
   } = JSON.parse(localStorage.getItem("result"));
@@ -26,7 +28,7 @@ const TenTranscript = () => {
       >
         <div className="mb-8 flex flex-col items-center">
           <h1 className="text-xl font-bold">{transcriptData.school.name}</h1>
-          <p className="text-lg font-semibold">Sadar Mymensingh</p>
+          <p className="text-lg font-semibold">Mymensingh</p>
           <img
             src="/vidyamoyee_logo.png"
             alt="school logo"
@@ -37,7 +39,9 @@ const TenTranscript = () => {
           <h2 className="text-lg font-semibold border-[1px] border-black px-2 rounded-md">
             ACADEMIC TRANSCRIPT
           </h2>
-          <p className="text-md font-semibold">Pre-Test, 2024</p>
+          <p className="text-md font-semibold">
+            {term}, {session}
+          </p>
         </div>
 
         {/* Student Information */}
@@ -60,6 +64,9 @@ const TenTranscript = () => {
             <p>
               <span className="font-semibold">Section:</span>{" "}
               {studentInfo.section}
+            </p>
+            <p>
+              <span className="font-semibold">Shift:</span> {shift}
             </p>
 
             <p>

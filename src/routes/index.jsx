@@ -39,7 +39,7 @@ import MarkSheet from "../pages/Reports/MarkSheet/MarkSheet";
 import TabulationSheet from "../pages/Reports/TabulationSheet/TabulationSheet";
 import Promotion from "../pages/students/Promotion";
 import GetTabulationPdf from "../pages/Reports/TabulationSheet/GetTabulationPdf";
-import TenTabulation from "../pages/Reports/TabulationSheet/TenTabulation";
+// import TenTabulation from "../pages/Reports/TabulationSheet/TenTabulation";
 import MergeTranscript from "../pages/results/transcript/MergeTranscript";
 import MarkSheetFilter from "../pages/Reports/MarkSheet/MarksheetFilter";
 import MergeMarksheet from "../pages/Reports/MarkSheet/MergeMarksheet";
