@@ -165,7 +165,7 @@ const FoutToFiveMergeMarksheet = () => {
                   <tbody>
                     {halfYearlyResults.map(
                       (result, index) => (
-                        console.log("totalMarks:", result.totalMarks),
+                        console.log("halfYearlyResults:", result),
                         (
                           <tr key={index}>
                             <td className="border px-1 py-1">
@@ -273,7 +273,6 @@ const FoutToFiveMergeMarksheet = () => {
                     </tr>
                     <tr>
                       <th className="border px-1 py-1">Subjective</th>
-
                       <th className="border px-1 py-1">Total(100%)</th>
                       <th className="border px-1 py-1">LG</th>
                       <th className="border px-1 py-1">GP</th>
@@ -282,26 +281,31 @@ const FoutToFiveMergeMarksheet = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {annualResults.map((result, index) => (
-                      <tr key={index}>
-                        <td className="border px-1 py-1 text-center">
-                          {result.subjective}
-                        </td>
-                        <td className="border px-1 py-1 text-center">
-                          {result.totalMarks}
-                        </td>
-                        <td className="border px-1 py-1 text-center">
-                          {result.grade}
-                        </td>
-                        <td className="border px-1 py-1 text-center">
-                          {result.GP}
-                        </td>
-                        <td className="border px-1 py-1 text-center">
-                          {result.Highest}
-                        </td>
-                        <td className="border px-1 py-1 text-center"></td>
-                      </tr>
-                    ))}
+                    {annualResults.map(
+                      (result, index) => (
+                        console.log("annualMarks", result),
+                        (
+                          <tr key={index}>
+                            <td className="border px-1 py-1 text-center">
+                              {result.subjective}
+                            </td>
+                            <td className="border px-1 py-1 text-center">
+                              {result.totalMarks}
+                            </td>
+                            <td className="border px-1 py-1 text-center">
+                              {result.grade}
+                            </td>
+                            <td className="border px-1 py-1 text-center">
+                              {result.GP}
+                            </td>
+                            <td className="border px-1 py-1 text-center">
+                              {result.Highest}
+                            </td>
+                            <td className="border px-1 py-1 text-center"></td>
+                          </tr>
+                        )
+                      )
+                    )}
                     <tr>
                       <td className="border px-1 py-1 text-center"></td>
                       <td className="border px-1 py-1 text-center">

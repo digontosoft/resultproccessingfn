@@ -269,9 +269,9 @@ const FourToFiveTabulation = () => {
     }
   }, []);
 
-  console.log("data:", data);
-  const [TotalResult] = data;
-  console.log("totalResult", TotalResult);
+  // console.log("data:", data);
+  // const [TotalResult] = data;
+  // console.log("totalResult", TotalResult);
 
   if (!data) {
     return <p>Loading...</p>;
