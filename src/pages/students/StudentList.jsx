@@ -27,26 +27,24 @@ const StudentList = () => {
   const [confirmDelete, setConfirmDelete] = useState(false);
   const { filterClass, filterSection, filterShift, sessions } =
     useUserProtectFilter();
-    const [selectStudent,setSelectStudent] = useState([])
+  const [selectStudent, setSelectStudent] = useState([]);
   const { getUser, loading } = useSingleUser();
 
-  const deleteManyStudent = async () =>{
+  const deleteManyStudent = async () => {
     try {
-      const response = await gurdedApi.post('/student/many-delete',{ids:selectStudent})
-      toast.success(response.data.message)
+      const response = await gurdedApi.post("/student/many-delete", {
+        ids: selectStudent,
+      });
+      toast.success(response.data.message);
       // console.log(response.data.message);
-      getStudents()
-      
+      getStudents();
     } catch (error) {
       console.log(error);
-      toast.error(response.data.message)
-      
+      toast.error(response.data.message);
     }
-  }
+  };
 
   console.log(selectStudent);
-  
-  
 
   const getStudents = async () => {
     try {
@@ -73,7 +71,7 @@ const StudentList = () => {
     const filtered = students.filter((student) => {
       return (
         (!filterCriteria.year ||
-          student.year.toString() === filterCriteria.year) &&
+          student.year?.toString() === filterCriteria.year) &&
         (!filterCriteria.shift || student.shift === filterCriteria.shift) &&
         (!filterCriteria.class || student.class === filterCriteria.class) &&
         (!filterCriteria.group || student.group === filterCriteria.group) &&
@@ -191,7 +189,14 @@ const StudentList = () => {
             shift={filterShift}
             sessions={sessions}
           />
-          {selectStudent.length>0&&<button className="w-42 bg-blue-500 text-white px-4 py-3 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500  " onClick={deleteManyStudent}>Delete selected</button>}
+          {selectStudent.length > 0 && (
+            <button
+              className="w-42 bg-blue-500 text-white px-4 py-3 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500  "
+              onClick={deleteManyStudent}
+            >
+              Delete selected
+            </button>
+          )}
           {filteredStudents.length > 0 ? (
             <StudentTable
               students={filteredStudents}

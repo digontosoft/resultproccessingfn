@@ -3,10 +3,12 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import useUserProtectFilter from "../../hooks/useUserProtectFilter";
 import { groupData } from "../../data/data";
+import { useNavigate } from "react-router-dom";
 
 const PromotionTo = ({ rollRangeStudent }) => {
   console.log("rollRangeStudent:", rollRangeStudent);
   const url = import.meta.env.VITE_SERVER_BASE_URL;
+  const navigate = useNavigate();
   const { filterClass, filterSection, filterShift, sessions } =
     useUserProtectFilter();
 
@@ -37,23 +39,6 @@ const PromotionTo = ({ rollRangeStudent }) => {
     );
   };
 
-  // Handle form submission
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     const payload = { promotedStudent: formData };
-  //     const response = await axios.post(`${url}/student-promotion`, payload);
-
-  //     if (response.status === 200) {
-  //       toast.success("Students promoted successfully!");
-  //       console.log("Response Data:", response.data);
-  //     }
-  //   } catch (err) {
-  //     console.error("Promotion Error:", err);
-  //     toast.error("Failed to promote students.");
-  //   }
-  // };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -79,6 +64,18 @@ const PromotionTo = ({ rollRangeStudent }) => {
       if (response.status === 200) {
         toast.success("Students promoted successfully!");
         console.log("Response Data:", response.data);
+        setFormData(
+          rollRangeStudent.map((student) => ({
+            id: student._id,
+            class: "",
+            section: "",
+            shift: "",
+            roll: "",
+            group: "",
+            year: "",
+          }))
+        );
+        navigate("/promotion");
       }
     } catch (err) {
       console.error("Promotion Error:", err);
@@ -152,6 +149,15 @@ const PromotionTo = ({ rollRangeStudent }) => {
                     className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm"
                   />
                 </div>
+                <div>
+                  <label>Student ID</label>
+                  <input
+                    type="text"
+                    value={student.studentId}
+                    disabled
+                    className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm"
+                  />
+                </div>
               </div>
             ))}
           </div>
@@ -172,6 +178,7 @@ const PromotionTo = ({ rollRangeStudent }) => {
                     onChange={(e) =>
                       handleChange(data.id, "class", e.target.value)
                     }
+                    required
                     className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm"
                   >
                     <option value="">Select Class</option>
@@ -189,6 +196,7 @@ const PromotionTo = ({ rollRangeStudent }) => {
                     onChange={(e) =>
                       handleChange(data.id, "section", e.target.value)
                     }
+                    required
                     className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm"
                   >
                     <option value="">Select Section</option>
@@ -206,6 +214,7 @@ const PromotionTo = ({ rollRangeStudent }) => {
                     onChange={(e) =>
                       handleChange(data.id, "group", e.target.value)
                     }
+                    required
                     className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm"
                   >
                     <option value="">Select Group</option>
@@ -223,6 +232,7 @@ const PromotionTo = ({ rollRangeStudent }) => {
                     onChange={(e) =>
                       handleChange(data.id, "year", e.target.value)
                     }
+                    required
                     className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm"
                   >
                     <option value="">Select Session</option>
@@ -240,6 +250,7 @@ const PromotionTo = ({ rollRangeStudent }) => {
                     onChange={(e) =>
                       handleChange(data.id, "shift", e.target.value)
                     }
+                    required
                     className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm"
                   >
                     <option value="">Select Shift</option>
@@ -258,6 +269,20 @@ const PromotionTo = ({ rollRangeStudent }) => {
                     onChange={(e) =>
                       handleChange(data.id, "roll", e.target.value)
                     }
+                    required
+                    className="block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm"
+                    placeholder="Enter Roll"
+                  />
+                </div>
+                <div>
+                  <label>Student ID</label>
+                  <input
+                    type="number"
+                    value={data.studentId}
+                    onChange={(e) =>
+                      handleChange(data.id, "studentId", e.target.value)
+                    }
+                    required
                     className="block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm"
                     placeholder="Enter Roll"
                   />
